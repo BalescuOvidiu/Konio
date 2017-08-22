@@ -31,7 +31,12 @@ Tehnologii folosite:
 2.cmake, g++ pentru compilarea codului sursa, pe Linux.
 3.IDE Sublime Text pentru editarea codului sursa.
 
+Muzica si sunet:
+1.Winds of Ithaca - Antti Martikainen
+2.Athena - Derek & Brandon Fiechter
+3.www.soundbible.com
+
 Bibliografie:
-1.www.wikipedia.ro
-2.www.ancientgreece.com
-3."Grecia antica" - Editura Litera International - Louise Schofield
+1.www.wikipedia.ro\n
+2.www.ancientgreece.com\n
+3."Grecia antica" - Editura Litera International - Louise Schofield\n
