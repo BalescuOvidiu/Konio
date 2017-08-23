@@ -4,11 +4,11 @@ Konio este un joc 2D de strategie in timp real, atat militar cat si economic. Ac
 
 In contextul istoric al jocului, orasele-stat grecesti nu au intalnit nici un rival care ar vrea sa le cucereasca decat pe ele insasi. Venitul in bani al orasul consta din taxele populatiei si comert. Fiecare oras-stat are o resursa pe care o produce si o exporta intr-un oras-stat aliat, la randul sau importa o anumita resursa dintr-un oras stat grecesc.<br />
 
-Atunci cand doua flote inamice se intalnesc incepe o batalie. In batalie, nava poate fi doborata daca lovita de una inamica cu partea frontala(berbecul de bronz), astfel ea se scufunda. O nava mai rapida are mai multe sanse sa supravietuiasca decat o nava mai lenta.<br />
+Atunci cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai rapida o scufunda pe cea mai lenta).<br />
 
 Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si concentrarea jucatorului. De asemenea contextul acestui joc este unu educativ.<br />
 
-Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentat de scuturi care au scris si anumite pictograme.<br />
+Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentata de scuturi care au scris si anumite pictograme. Scrisul este cu font alb, pe fundal negru semi-transparent.<br />
 
 Resurse:<br />
 1. Sclavi (10 monezi): Reduce costul de construire a navelor cu 40%.<br />
@@ -34,9 +34,9 @@ Tehnologii folosite:<br />
 Muzica si sunet:<br />
 1.Winds of Ithaca - Antti Martikainen<br />
 2.Athena - Derek & Brandon Fiechter<br />
-3.www.soundbible.com<br />
+3.www.soundbible.com <br />
 
 Bibliografie:<br />
-1.www.wikipedia.ro\n<br />
-2.www.ancientgreece.com\n<br />
-3."Grecia antica" - Editura Litera International - Louise Schofield\n<br />
+1.www.wikipedia.ro <br />
+2.www.ancientgreece.com <br />
+3."Grecia antica" - Editura Litera International - Louise Schofield <br />
