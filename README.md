@@ -15,9 +15,10 @@ Resurse:<br />
 2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme si Trireme.<br />
    Fara lemn, orasul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia si Trihemiolia.<br />
 3. Metalele (8 monezi): Cresc venitul in oras cu 30%.<br />
-4. Grau (3 monezi): Creste capacitatea populatiei orasului cu 20%.<br />
-5. Capre (5 monezi): Sporul natural este cu 10% mai mare si creste capacitatea populatiei cu 10%.<br />
-6. Peste (4 monezi): Sporul natural este cu 20% mai mare.<br />
+4. Masline (4 monezi): Cresc venitul in oras cu 15% si sporul natural cu 20%.<br />
+5. Grau (3 monezi): Creste capacitatea populatiei orasului cu 20%.<br />
+6. Capre (5 monezi): Sporul natural este cu 20% mai mare si creste capacitatea populatiei cu 10%.<br />
+7. Peste (4 monezi): Sporul natural este cu 40% mai mare.<br />
 
 Nave:<br />
 1. Pentekonter (6 monezi): Nava usoara cu 50 de vaslasi(un rand cu 25 pe ambele parti), 17km/h.<br />
