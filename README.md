@@ -38,6 +38,6 @@ Muzica si sunet:<br />
 3.www.soundbible.com <br />
 
 Bibliografie:<br />
-1.www.wikipedia.ro <br />
-2.www.ancientgreece.com <br />
-3."Grecia antica" - Editura Litera International - Louise Schofield <br />
+1.<a href='www.wikipedia.en'>wikipedia.en</a><br />
+2.<a href='www.ancientgreece.com'>ancientgreece.com</a><br />
+3.<a href='http://www.piticipecreier.ro/carte/52338-Grecia-antica.html'>"Grecia antica" - Editura Litera International - Louise Schofield</a><br />
