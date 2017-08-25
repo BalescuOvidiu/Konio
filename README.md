@@ -11,7 +11,7 @@ Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si c
 Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentata de scuturi care au scris si anumite pictograme. Scrisul este cu font alb, pe fundal negru semi-transparent.<br />
 
 Resurse:<br />
-1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%.<br />
+1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%. Capacitatea populatiei este in jur de 60000-70000<br />
 2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme si Trireme.<br />
    Fara lemn, orasul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia si Trihemiolia.<br />
 3. Metalele (8 monezi): Cresc venitul in oras din comert cu 20%.<br />
