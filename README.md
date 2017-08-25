@@ -11,14 +11,14 @@ Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si c
 Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentata de scuturi care au scris si anumite pictograme. Scrisul este cu font alb, pe fundal negru semi-transparent.<br />
 
 Resurse:<br />
-1. Sclavi (10 monezi): Reduce costul de construire a navelor cu 40%.<br />
+1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%.<br />
 2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme si Trireme.<br />
    Fara lemn, orasul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia si Trihemiolia.<br />
-3. Metalele (8 monezi): Cresc venitul in oras cu 30%.<br />
-4. Masline (4 monezi): Cresc venitul in oras cu 15% si sporul natural cu 20%.<br />
-5. Grau (3 monezi): Creste capacitatea populatiei orasului cu 20%.<br />
-6. Capre (5 monezi): Sporul natural este cu 20% mai mare si creste capacitatea populatiei cu 10%.<br />
-7. Peste (4 monezi): Sporul natural este cu 40% mai mare.<br />
+3. Metalele (8 monezi): Cresc venitul in oras din comert cu 20%.<br />
+4. Masline (4 monezi): Cresc venitul in oras cu 15% si sporul natural cu 10%.<br />
+5. Grau (4 monezi): Creste capacitatea populatiei a orasului cu 20%.<br />
+6. Capre (6 monezi): Sporul natural este cu 10% mai mare i venitul din taxe cu 10%.<br />
+7. Peste (4 monezi): Sporul natural este cu 20% mai mare.<br />
 
 Nave:<br />
 1. Pentekonter (6 monezi): Nava usoara cu 50 de vaslasi(un rand cu 25 pe ambele parti), 17km/h.<br />
