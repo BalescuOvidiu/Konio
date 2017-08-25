@@ -33,9 +33,9 @@ Tehnologii folosite:<br />
 3.IDE Sublime Text pentru editarea codului sursa.<br />
 
 Muzica si sunet:<br />
-1.Winds of Ithaca - Antti Martikainen<br />
-2.Athena - Derek & Brandon Fiechter<br />
-3.www.soundbible.com <br />
+1.<a href='https://www.youtube.com/watch?v=Eh51m6glEHo'>Winds of Ithaca - Antti Martikainen</a><br />
+2.<a href='https://www.youtube.com/watch?v=L-xEJxmxY_w'>Athena - Derek & Brandon Fiechter</a><br />
+3.<a href='www.soundbible.com'>soundbible.com</a><br />
 
 Bibliografie:<br />
 1.<a href='www.wikipedia.en'>wikipedia.en</a><br />
