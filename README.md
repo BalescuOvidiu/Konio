@@ -10,7 +10,7 @@ Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si c
 
 Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentata de scuturi care au scris si anumite pictograme. Scrisul este cu font alb, pe fundal negru semi-transparent.<br />
 
-<img src='http://imgur.com/6ksovPl'/>
+<img src='http://i.imgur.com/6ksovPl.jpg'/>
 
 Resurse:<br />
 1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%. Capacitatea populatiei este in jur de 60000-70000.<br />
