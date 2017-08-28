@@ -15,9 +15,9 @@ void Options::Update(){
 	//Update
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)||this->close->left("Close","Click or press I to close options section."))
 		this->visible=0;
-	if(music->Update(audio.musicVolume,0,100,0.2,1,"Music Volume",
+	if(music->Update(audio.musicVolume,0,100,1,1,"Music Volume",
 	"Left click to decrease or right click to increase music volume.")
-	||sound->Update(audio.soundVolume,0,100,0.2,1,"Sound Volume",
+	||sound->Update(audio.soundVolume,0,100,1,1,"Sound Volume",
 	"Left click to decrease or right click to increase sound volume."))
 		//Change volume
 		audio.Update();

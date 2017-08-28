@@ -16,7 +16,7 @@ Good::~Good(){
 }
 //Load description
 std::string goodDescription(short id){
-	std::ifstream in(std::to_string(id)+".txt");
+	std::ifstream in("data/game/goods/"+std::to_string(id)+".txt");
 	if(in.is_open()){
 		std::string text;
 		std::getline(in,text,'*');

@@ -60,14 +60,14 @@ bool Button::mouseOver(std::string title,std::string text){
 }
 //Mouse button
 bool Button::left(){
-	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left)&&gui.canClick(500)){
 		audio.Click();
 		return 1;
 	}
 	return 0;
 }
 bool Button::right(){
-	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right)&&gui.canClick(500)){
 		audio.Click();
 		return 1;
 	}
@@ -76,7 +76,7 @@ bool Button::right(){
 bool Button::left(std::string title,std::string text){
 	if(this->mouseOver()){
 		about.show(title,text);
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)&&gui.canClick(500)){
 			audio.Click();
 			return 1;
 		}
@@ -86,7 +86,7 @@ bool Button::left(std::string title,std::string text){
 bool Button::right(std::string title,std::string text){
 	if(this->mouseOver()){
 		about.show(title,text);
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Right)&&gui.canClick(500)){
 		audio.Click();
 			return 1;
 		}

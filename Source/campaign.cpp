@@ -46,11 +46,6 @@ void Campaign::Update(sf::View *view){
 			in.close();
 		}
 	}
-	//Run from campaign
-	if(gui.selected!=2){
-		about.hide();
-		sf::sleep(sf::Time(sf::milliseconds(150)));
-	}
 }
 Campaign::~Campaign(){
 

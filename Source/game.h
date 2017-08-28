@@ -5,6 +5,9 @@
 #include "labelSett.h"
 #include "labelPlayer.h"
 #include "labelFleet.h"
+#include "labelDip.h"
+#include "submenu.h"
+#include "options.h"
 //Definition
 class Game{
 private:
@@ -14,7 +17,6 @@ private:
 	SubMenu *subMenu;
 	Button *submenu,*main,*diplomacy;
 	sf::Text *text;
-	std::vector<Button> dip;
 	void showDiplomaticStatus(short player);
 	void showHumanStatus();
 	void showData();
@@ -35,6 +37,9 @@ private:
 	void Monthly();
 	//AI
 	void AI();
+	void getRoute(short fleet);
+	void lostFleet(short fleet);
+	void buyShip(short id,short sett);
 	//View
 	void moveView(sf::View *view,float x,float y);
 	void moveViewTo(sf::View *view,sf::Vector2f pos);

@@ -17,15 +17,11 @@ int main(){
 	//Data game
 	background=new Background("data/img/backgrounds/menu.png");
 	menu=new Menu();
+	//Navals
 	sails.loadFromFile("data/navals/sails.png");
 	sails.setSmooth(true);
-	naval.resize(5);
-	for(short i=0;i<5;i++){
-		std::ifstream in("data/navals/"+std::to_string(i)+".txt");
-		if(in.is_open())
-			in>>naval[i];
-		in.close();
-	}
+	for(short i=0;i<6;i++)
+		naval.push_back(i);
 	//Running
 	while(window.isOpen()){
 		gui.Update(&window);

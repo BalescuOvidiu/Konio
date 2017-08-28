@@ -9,7 +9,6 @@ struct Basic{
 };
 struct Entity{
 	Basic basic;
-	short height,width;
 	sf::Texture body;
 };
 //Overload reading from file

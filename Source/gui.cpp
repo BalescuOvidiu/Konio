@@ -53,6 +53,19 @@ float GUI::width(unsigned percent){
 float GUI::height(unsigned percent){
 	return this->winH*percent/100.;
 }
+//Mouse
+bool GUI::canClick(short time){
+	if(sf::milliseconds(click.getElapsedTime().asMilliseconds())<sf::milliseconds(time))
+		return 0;
+	click.restart();
+	return 1;	
+}
+bool GUI::canLeft(short time){
+	return (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&this->canClick(time));
+}
+bool GUI::canRight(short time){
+	return (sf::Mouse::isButtonPressed(sf::Mouse::Right)&&this->canClick(time));
+}
 sf::Vector2f GUI::mousePosition(){
 	float x=(sf::Mouse::getPosition().x-this->winX)*this->scale+this->x;
 	float y=(sf::Mouse::getPosition().y-this->winY-30)*this->scale+this->y;
@@ -60,9 +73,22 @@ sf::Vector2f GUI::mousePosition(){
 		y+=50*this->scale;
 	return sf::Vector2f(x,y);
 }
+//Text
 sf::Font* GUI::Font(){
 	return this->font;
 }
+std::string GUI::Format(float value){
+	std::stringstream stream;
+	stream<<std::fixed<<std::setprecision(1)<<value;
+	return stream.str();
+}
+std::string GUI::Format(int value){
+	if(value>999){
+		return std::to_string(value/1000)+"."+std::to_string(value/100%10)+" k";
+	}
+	return std::to_string(value);
+}
+//Destructor
 GUI::~GUI(){
 	
 }

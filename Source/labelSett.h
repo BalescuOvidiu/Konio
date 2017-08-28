@@ -8,7 +8,10 @@ class LabelSett{
 private:
 	short selected;
 	Label *label;
-	Button *player,*local,*import;
+	//Trade and player
+	Button *local,*import,*player;
+	//Navy
+	Button *first,*second,*third;
 public:
 	LabelSett(short selected);
 	void Render(sf::RenderWindow *window);
@@ -16,16 +19,20 @@ public:
 	void move(float x,float y);
 	bool playerLeft();
 	bool localMouseOver();
+	bool localLeft();
 	bool importMouseOver();
 	bool importLeft();
 	bool right();
 	bool mouseOver();
+	short getShip();
 	//Get data
 	short Selected();
+	Settlement sett();
 	~LabelSett();
 };
 //Global variable for GUI
 extern LabelSett *labelSett;
-//Deselect function
+//Global functions
 void deselectSett();
+bool isSelectedSett(short i);
 #endif

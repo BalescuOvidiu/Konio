@@ -3,13 +3,31 @@
 
 #include "entity.h"
 //Naval
-struct Naval:Entity{
+class Naval:Entity{
+private:
 	sf::Texture ram,rows;
-	short rowers,rowsWidth;
+	float cost;
+	short rowers;
+public:
+	Naval(short id);
+	//Get data
+	std::string Name();
+	std::string Description();
+	float Speed();
+	float Cost();
+	short Rowers();
+	//Size
+	short width();
+	short widthRows();
+	short height();
+	//Texture
+	sf::Texture& Body();
+	sf::Texture& Ram();
+	sf::Texture& Rows();
+	//Load texture
+	void loadTexture(short id);
 };
-//Overload reading from file
-std::ifstream &operator>>(std::ifstream &in,Naval &naval);
-//Gameplay
+//Gameplay global variable
 extern std::vector<Naval> naval;
 extern sf::Texture sails;
 #endif

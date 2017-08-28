@@ -1,14 +1,12 @@
 #include "player.h"
-//Constructors
-Player::Player(){
-	this->name="";
-	this->faction=0;
-}
+//Constructor
 Player::Player(short faction,float coins,short team,std::string name){
+	//Basic
 	this->faction=faction;
 	this->name=name;
 	this->coins=coins;
 	this->team=team;
+	//Statistics
 	this->reset();
 }
 //Set data functions
@@ -17,6 +15,18 @@ void Player::Faction(short faction){
 }
 void Player::Name(std::string name){
 	this->name=name;
+}
+void Player::Income(float coins){
+	this->coins+=coins;
+}
+void Player::WonBattle(){
+	this->won++;
+}
+void Player::LostBattle(){
+	this->lost++;
+}
+void Player::reset(){
+	this->lost=this->won=0;
 }
 //Get data functions
 short Player::Faction(){
@@ -28,28 +38,44 @@ short Player::Team(){
 std::string Player::Name(){
 	return this->name;
 }
-std::string Player::Coins(){
-	std::stringstream stream;
-	stream<<std::fixed<<std::setprecision(1)<<this->coins;
-	return stream.str();
+std::string Player::Statistics(){
+	std::string text="";
+	if(this->won)
+		text+="          Won battle: "+std::to_string(this->won)+"\n";
+	if(this->lost)
+		text+="          Lost battle: "+std::to_string(this->lost);
+	return text;
 }
-void Player::reset(){
-	this->destroyed=this->lost=this->total=this->selected=0;
+float Player::Coins(){
+	return this->coins;
 }
+bool Player::canBuy(float cost){
+	if(this->coins-cost>=0)
+		return 1;
+	return 0;
+}
+//Operator
 bool Player::operator!=(Player player){
 	return (this->Name()!=player.Name()||this->Faction()!=player.Faction());
 }
+//Destructor
 Player::~Player(){
 	
 }
-//Global variable
+//Global variables
 short human;
 std::vector<Player> player;
 //Global function
 std::string getDiplomaticStatus(short player){
 	if(player==human)
 		return " - You";
-	if(::player[player].Team()==::player[human].Team())
+	if(areAllies(human,player))
 		return " - Ally";
 	return " - Enemy";
+}
+bool areAllies(short i,short j){
+	return ::player[i].Team()==::player[j].Team();
+}
+bool areEnemies(short i,short j){
+	return ::player[i].Team()!=::player[j].Team();
 }

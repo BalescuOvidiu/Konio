@@ -35,22 +35,27 @@ bool Value::mouseOver(){
 	return 0;
 }
 bool Value::left(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left));
+	return (sf::Mouse::isButtonPressed(sf::Mouse::Left));
 }
 bool Value::right(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right));
+	return (sf::Mouse::isButtonPressed(sf::Mouse::Right));
 }
 bool Value::Update(float &value,float min,short max,float step,short type,std::string title,std::string text){
 	bool change=0;
-	if(this->mouseOver())
+	if(this->mouseOver()){
 		about.show(title,text);
-	if(this->left()&&value>min){
-		value-=step;
-		change=1;
-	}
-	else if(this->right()&&value<max){
-		value+=step;
-		change=1;
+		if(this->left()&&value>min){
+			if(gui.canClick(100)){
+				value-=step;
+				change=1;
+			}
+		}
+		else if(this->right()&&value<max){
+			if(gui.canClick(100)){
+				value+=step;
+				change=1;			
+			}
+		}
 	}
 	if(value<10)
 		this->text->setPosition(sprite->getPosition().x-tex->getSize().x/5+18,sprite->getPosition().y-tex->getSize().y/32);

@@ -3,9 +3,9 @@
 LabelFleet::LabelFleet(short selected){
 	this->selected=selected;
 	//Label
-	this->label=new Label(gui.x,232+gui.y,320,140,1);
+	this->label=new Label(gui.x,232+gui.y,325,140,1);
 	this->label->setTitle(::player[::fleet[selected].Player()].Name()+getDiplomaticStatus(::fleet[selected].Player()));
-	this->label->setText("");
+	this->label->setText("               "+std::to_string(::fleet[selected].size())+" ships");
 	//Buttons
 	this->player=new Button("data/game/icons/"+std::to_string(::fleet[selected].Player())+".png",45+gui.x,322+gui.y);
 }
@@ -17,6 +17,9 @@ void LabelFleet::move(float x,float y){
 	this->label->move(x,y);
 	this->player->move(x,y);
 }
+bool LabelFleet::playerLeft(){
+	return this->player->left();
+}
 bool LabelFleet::right(){
 	return this->label->right();
 }
@@ -26,6 +29,9 @@ bool LabelFleet::mouseOver(){
 //Get data
 short LabelFleet::Selected(){
 	return this->selected;
+}
+Fleet LabelFleet::fleet(){
+	return ::fleet[this->selected];
 }
 LabelFleet::~LabelFleet(){
 

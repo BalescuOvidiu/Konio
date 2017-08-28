@@ -14,10 +14,12 @@ public:
 	void Render(sf::RenderWindow *window);
 	//Update
 	void move(float x,float y);
+	bool playerLeft();
 	bool right();
 	bool mouseOver();
 	//Get data
 	short Selected();
+	Fleet fleet();
 	~LabelFleet();
 };
 extern LabelFleet *labelFleet;

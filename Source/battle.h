@@ -1,32 +1,28 @@
 #ifndef BATTLE_H
 #define BATTLE_H
-#include "background.h"
 #include "ship.h"
-#include "submenu.h"
-#include "fleet.h"
+#include "button.h"
+#include "layer.h"
 //Definition
 class Battle{
 private:
 	//Informational
 	std::string name,description;
 	//GUI
-	SubMenu *subMenu;
-	Button *submenu;
+	sf::Vector2f position;
 	sf::Text *text;
-	//Gameplay
-	short human;
+	Button *retreat;
 	bool pause;
+	short selected;
 	//AI
-	int nearest,best;
-	float d,minDist;
+	short clock;
+	void AI();
 	std::vector<std::deque<sf::Vector2f> > target;
-	std::vector<short> team;
 	//Water
 	Layer *water;
-	//Entity
-	std::vector<Player> player;
+	//Entities
 	std::vector<Ship> ship;
-	//Ship's points
+	//Ship's points target
 	sf::Vector2f local(sf::Vector2f point, short ship);
 	sf::Vector2f localForward(float dist,short ship);
 	sf::Vector2f localBackward(float dist,short ship);
@@ -52,11 +48,11 @@ private:
 	void deselect();
 public:
 	//Basic
-	Battle(std::string directory,sf::View *view);
+	Battle(short yourFleet,short enemyFleet,sf::View *view);
+	void AddFleet(sf::View *view,short fleet);
 	void Render(sf::RenderWindow *window);
-	void Reset(sf::RenderWindow *window,sf::View *view);
-	void Load(sf::View *view,std::string directory);
 	//Update
+	std::vector<short> fleets;
 	void Update(sf::RenderWindow *window,sf::View *view);
 	~Battle();
 };

@@ -1,28 +1,30 @@
-#ifndef LABELPLAYER_H
-#define LABELPLAYER_H
+#ifndef LABELDIP_H
+#define LABELDIP_H
 #include "settlement.h"
 #include "player.h"
 #include "fleet.h"
-//Display for player
-class LabelPlayer{
+//Diplomatic status display
+class LabelDip{
 private:
 	short selected;
 	Label *label;
-	Button *shield;
+	std::vector <Button> player;
 public:
-	LabelPlayer(short selected);
+	LabelDip();
 	void Render(sf::RenderWindow *window);
 	//Update
+	void Update();
 	void move(float x,float y);
 	bool right();
 	bool mouseOver();
 	//Get data
 	short Selected();
-	Player player();
-	~LabelPlayer();
+	//Show data
+	void showData(short player);
+	~LabelDip();
 };
 //Global variable
-extern LabelPlayer *labelPlayer;
-//Deselect function
-void deselectPlayer();
+extern LabelDip *labelDip;
+//Global function
+void deselectDip();
 #endif

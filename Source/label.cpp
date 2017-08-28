@@ -11,7 +11,7 @@ Label::Label(short x,short y,short width,short height,bool visible){
 	this->title=new sf::Text();
 	this->title->setString(sf::String(""));
 	this->title->setFont(*gui.Font());
-	this->title->setCharacterSize(34);
+	this->title->setCharacterSize(32);
 	this->title->setColor(sf::Color(255,255,255));
 	this->title->setPosition(x+8,y+5);
 	//Text
@@ -80,4 +80,4 @@ Label::~Label(){
 	
 }
 //Label with information about content
-Label about(0,gui.height()-120,gui.width(),120,0),detail(0,52,320,180,0),info(gui.width(50)-300,gui.height(50)-200,600,400,0);
+Label about(0,gui.height()-120,gui.width(),120,0),detail(0,52,325,180,0),info(gui.width(50)-300,gui.height(50)-200,600,400,0);

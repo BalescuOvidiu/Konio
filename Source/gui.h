@@ -25,7 +25,9 @@ private:
 	//Screen and window properties
 	unsigned winH,winW;
 	float scale;
-	unsigned winX,winY;	
+	unsigned winX,winY;
+	//Time
+	sf::Clock click;
 public:
 	float x,y;
 	short selected;
@@ -36,8 +38,16 @@ public:
 	unsigned height();
 	float width(unsigned percent);
 	float height(unsigned percent);
+	//Mouse
+	bool canClick(short time);
+	bool canLeft(short time);
+	bool canRight(short time);
 	sf::Vector2f mousePosition();
+	//Text
 	sf::Font* Font();
+	std::string Format(float value);
+	std::string Format(int value);
+	//Destructor
 	~GUI();
 };
 extern GUI gui;

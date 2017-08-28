@@ -35,12 +35,6 @@ void Menu::Update(sf::RenderWindow *window){
 		if(this->options->left("Options","You can set sound and volume music. Click or press O to open options section.")||sf::Keyboard::isKeyPressed(sf::Keyboard::O))
 			op.show();
 	}
-	//Run from menu to campaign or history
-	if(gui.selected!=1){
-		op.hide();
-		about.hide();
-		sf::sleep(sf::Time(sf::milliseconds(200)));
-	}
 }
 Menu::~Menu(){
 

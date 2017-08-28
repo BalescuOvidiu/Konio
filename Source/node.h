@@ -12,13 +12,12 @@ public:
 	//Rendering
 	void Render(sf::RenderWindow *window);
 	//Get data
-	sf::Vector2f Pos();
-	short X();
-	short Y();
-	short R();
+	sf::Vector2f getPosition();
+	short r();
 	float dist(sf::Vector2f point);
+	float dist(Node node);
 	//Collisions
-	bool contain(sf::Vector2f point);
+	bool contains(sf::Vector2f point);
 	bool collision(Node node);
 	~Node();
 };

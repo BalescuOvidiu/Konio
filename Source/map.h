@@ -14,8 +14,12 @@ private:
 	std::vector<Region> region;
 	//Graph
 	std::vector<Node> node;
-	std::vector<bool> selected;
+	std::vector<sf::Text> text;
 	std::vector<short> route;
+	//For search of route
+	std::vector<bool> selected;
+	std::vector<float> d;
+	std::vector<short> t;
 public:
 	Map();
 	//Rendering and update
@@ -23,7 +27,9 @@ public:
 	void move(short x,short y);
 	void Update();
 	//Graph
-	bool DFS(short begin,short end);
+	void Dijkstra(short begin,short end);
+	bool collision(short i,short j);
+	float dist(short i,short j);
 	short getNearestNode(sf::Vector2f point);
 	std::vector<short> getRoute(short begin,short end);
 	Node getNode(short i);

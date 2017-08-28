@@ -1,30 +1,38 @@
 #ifndef FLEET_H
 #define FLEET_H
-#include "ship.h"
+#include "naval.h"
+#include "player.h"
+#include "node.h"
 
 class Fleet{
 private:
 	//Graphics
 	sf::Sprite *body,*sails,*rows;
 	//Ships
+	float clock;
 	float provision,speed;
 	short player,formation;
 	std::vector<short> ship;
 	std::vector<short> integrity;
 	//Route
-	std::vector<sf::Vector2i> route;
+	std::vector<Node> route;
 public:
-	Fleet(sf::Vector2f pos,float angle,short player,short faction,short formation,float provision);
+	Fleet(sf::Vector2f pos,float angle,short player,short formation,float provision);
 	//Update and rendering
 	void Render(sf::RenderWindow *window);
 	void Update();
+	void Lost();
 	void addShip(short ship,short integrity);
-	void addNodeRoute(sf::Vector2f point);
+	//Route
+	void addNodeRoute(Node node);
+	void resetRoute();
+	//Move
 	void Move(float x,float y);
 	void Stop();
 	//Get data
 	short Player();
 	short Formation();
+	short Provision();
 	short size();
 	short Ship(short i);
 	short Integrity(short i);
@@ -34,22 +42,10 @@ public:
 	void setRotation(float angle);
 	float getRotation();
 	//Points
-	void setOrigin();
 	void setPosition(sf::Vector2f point);
-	float getDist(sf::Vector2f point);
+	float dist(sf::Vector2f point);
 	bool contains(sf::Vector2f point);
-	sf::Vector2f Origin();
-	//Front points
-	sf::Vector2f Front();
-	sf::Vector2f FrontLeft();
-	sf::Vector2f FrontRight();
-	//Back points
-	sf::Vector2f Back();
-	sf::Vector2f BackLeft();
-	sf::Vector2f BackRight();
-	//Side points
-	sf::Vector2f Left();
-	sf::Vector2f Right();
+	sf::Vector2f getPosition();
 	//Mouse
 	bool mouseOver();
 	bool left();
@@ -58,5 +54,10 @@ public:
 //Global variable
 extern std::vector<Fleet> fleet;
 //Global functions
+float distFleet(short i,short j);
 short getShips(short player);
+short getNearestFleet(sf::Vector2f point);
+bool isYourFleet(short i);
+bool isEnemyFleet(short i,short j);
+bool isAlliedFleet(short i,short j);
 #endif
