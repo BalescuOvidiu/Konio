@@ -10,7 +10,7 @@ Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si c
 
 Grafica jocului este relativ simpla ce tinde spre realism. Majoritatea butoanelor este reprezentata de scuturi care au scris si anumite pictograme. Scrisul este cu font alb, pe fundal negru semi-transparent.<br />
 
-<img src='http://i.imgur.com/6ksovPl.jpg'/>
+<img style='height:400px;' src='http://i.imgur.com/6ksovPl.jpg'/>
 
 Resurse:<br />
 1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%. Capacitatea populatiei este in jur de 60000-70000.<br />
@@ -22,6 +22,8 @@ Resurse:<br />
 6. Capre (6 monezi): Creste capacitatea populatiei orasului cu 10% mai mare si venitul din comert cu 10%.<br />
 7. Peste (4 monezi): Sporul natural este cu 20% mai mare.<br />
 
+<img style='height:400px;' src='http://imgur.com/aWZl6zF.jpg'>
+
 Nave:<br />
 1. Pentekonter (6 monezi): Nava usoara cu 50 de vaslasi(un rand cu 25 pe ambele parti), 17km/h.<br />
 2. Bireme (8 monezi): Nava media cu 120 de vaslasi(2 randuri cu 30 pe ambele parti), 17km/h.<br />
@@ -29,10 +31,15 @@ Nave:<br />
 4. Hemiolia (15 monezi): Nava medie cu 60 de vaslasi(un rand 20 si unu de 10), 20km/h.<br />
 5. Trihemiolia (17 monezi): Nava medie cu 120 de vaslasi(2 randuri de 40 si unu de 20), 20km/h.<br />
 
+
+<img style='height:400px;' src='http://imgur.com/2uL4G0O.jpg'>
+
 Tehnologii folosite:<br />
 1.Photoshop CS5 pentru creearea elementelor grafice.<br />
 2.cmake, g++ pentru compilarea codului sursa, pe Linux.<br />
 3.IDE Sublime Text pentru editarea codului sursa.<br />
+
+<img style='height:400px;' src='http://imgur.com/2782saH.jpg'>
 
 Muzica si sunet:<br />
 1.<a href='https://www.youtube.com/watch?v=Eh51m6glEHo'>Winds of Ithaca - Antti Martikainen</a><br />
