@@ -19,7 +19,7 @@
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/8.png'/>
 
 Tactici si formatii:<br/>
-1. Periplous: navele sunt asezate intr-o singura linie, inainteaza pana ce se apropie de flota inamica.<br/>
+1. Periplous: navele sunt asezate intr-o singura linie, inainteaza pana ce se apropie de flota inamica si trece in atac.<br/>
 2. Diekplous: navele sunt asezate in linii perpediculare fata de linia frontului. AI-ul  incearca sa patrunda printre nave.<br/>
 3. Kyklos: navele sunt asezate in cerc. Navele se misca in cerc pana ce se apropie suficient inamicul, atunci trece in contra-atac.<br/>
 
