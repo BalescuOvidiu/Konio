@@ -1,6 +1,6 @@
 # Konio
 
-Konio este un joc 2D de strategie in timp real, atat militar cat si economic. Actiunea acestui joc se situeaza in secolul 6 i.Hr, in peninsula Greaca. Jucatorul isi alege un oras-stat din cele 12 si trebuie sa se foloseasca de resursele economice, flota, orasele aliate si chiar de dusmani pentru a pastra suprematia navala. Momentan proiectul este in dezvoltare.<br />
+<p style='text-align:inline;'>Konio este un joc 2D de strategie in timp real, atat militar cat si economic. Actiunea acestui joc se situeaza in secolul 6 i.Hr, in peninsula Greaca. Jucatorul isi alege un oras-stat din cele 12 si trebuie sa se foloseasca de resursele economice, flota, orasele aliate si chiar de dusmani pentru a pastra suprematia navala. Momentan proiectul este in dezvoltare.<p/>
 
 In contextul istoric al jocului, orasele-stat grecesti nu au intalnit nici un rival care ar vrea sa le cucereasca decat pe ele insasi. Venitul in bani al orasul consta din taxele populatiei si comert. Fiecare oras-stat are o resursa pe care o produce si o exporta intr-un oras-stat aliat, la randul sau importa o anumita resursa dintr-un oras stat grecesc.<br />
 
