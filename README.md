@@ -32,7 +32,7 @@ Resurse:<br/>
 1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%. Capacitatea populatiei este in jur de 60000-70000.<br/>
 2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme si Trireme.<br/>
    Fara lemn, orasul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia si Trihemiolia.<br/>
-3. Metalele (8 monezi): Cresc venitul in oras din comert cu 20%.<br/>
+3. Metale (8 monezi): Cresc venitul in oras din comert cu 20%.<br/>
 4. Masline (4 monezi): Creste capacitatea populatiei orasului cu 10% si sporul natural cu 10%.<br/>
 5. Grau (4 monezi): Creste capacitatea populatiei a orasului cu 20%.<br/>
 6. Capre (6 monezi): Creste capacitatea populatiei orasului cu 10% mai mare si venitul din comert cu 10%.<br>
