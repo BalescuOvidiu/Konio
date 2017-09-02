@@ -15,9 +15,9 @@ private:
 	unsigned size;
 	//AI
 	short clock,tactic;
-	void Forward();
 	void Diekplous();
 	void Periplous();
+	void Kyklos();
 	void Attack();
 	void AI();
 	std::vector<std::deque<sf::Vector2f> > target;

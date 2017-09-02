@@ -87,7 +87,7 @@ void Battle::Render(sf::RenderWindow *window){
 		window->draw(*this->text);
 }
 //AI
-void Battle::Forward(){
+void Battle::Diekplous(){
 	for(short i=0;i<(short)this->ship.size();i++){
 		//Move
 		if(!this->isYourShip(i)){
@@ -107,7 +107,7 @@ void Battle::Forward(){
 		}
 	}
 }
-void Battle::Diekplous(){
+void Battle::Periplous(){
 	for(short i=0;i<(short)this->ship.size();i++){
 		if(!this->isYourShip(i)){
 			float dist=99999999;
@@ -135,7 +135,7 @@ void Battle::Diekplous(){
 		}
 	}
 }
-void Battle::Periplous(){
+void Battle::Kyklos(){
 	short begin=-1;
 	for(short i=0;i<(short)this->ship.size();i++){
 		if(!this->isYourShip(i)){
@@ -187,9 +187,9 @@ void Battle::Attack(){
 }
 void Battle::AI(){
 	switch(this->tactic){
-		case 0: Forward(); break;
-		case 1: Diekplous(); break;
-		case 2: Periplous(); break;
+		case 0: Diekplous(); break;
+		case 1: Periplous(); break;
+		case 2: Kyklos(); break;
 		default: Attack(); break;
 	}
 }
