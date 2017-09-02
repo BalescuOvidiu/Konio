@@ -15,8 +15,8 @@ private:
 	unsigned size;
 	//AI
 	short clock,tactic;
-	void Diekplous();
 	void Periplous();
+	void Diekplous();
 	void Kyklos();
 	void Attack();
 	void AI();
