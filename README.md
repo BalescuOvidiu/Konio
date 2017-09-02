@@ -4,7 +4,7 @@
 
 <p align=justify>In contextul istoric al jocului (550 i.Hr), orasele-stat grecesti nu au avut de intampinat un rival care sa le fi pus libertatea in pericol. Venitul in bani al orasul consta din taxele populatiei si comert. Fiecare oras-stat are o resursa pe care o produce si o exporta intr-un oras-stat aliat, la randul sau importa o anumita resursa dintr-un oras stat grecesc.</p>
 
-<p align=justify>Dezvoltarea proiectului a durat aproximativ 4 luni. Tot codul este scris si gandit de la zero. Imi asum raspunderea pentru orice bug sau eroare de rulare. Momentan jocul este disponibil doar pentru Linux. Fiecare element grafic este facut personal, fiind folosite anumite resurse externe.</p>
+<p align=justify>Dezvoltarea proiectului a durat aproximativ 4 luni. Tot codul este scris si gandit de la zero. Imi asum raspunderea pentru orice bug sau eroare de rulare ce tine de codul sursa. Momentan jocul este disponibil doar pentru Linux. Fiecare element grafic este facut personal, fiind folosite anumite resurse externe.</p>
 
 <p align=justify>Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si concentrarea jucatorului. De asemenea contextul acestui joc este unu educativ.</p>
 
