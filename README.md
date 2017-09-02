@@ -8,8 +8,8 @@ Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si c
 
 Grafica jocului este simplista ce imita anumite elemente din realitate(scuturi, picturi, apa, terenuri, corabii) si pune in valoare tema acestui joc. ce tinde spre realism. Textul este alb, pe fundal inchis, fiind foarte vizibil pentru jucator.<br/>
 
-<img height=200 src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/0.png'/>
-<img height=200 src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/1.png'/>
+<img height=200 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/0.png'/>
+<img height=200 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/1.png'/>
 
 Flotele sunt unitati militare ce au in componenta lor mai multe nave. Navele unei flote pot fi asezate in trei formatii, acestea stabilind tactica AI-ului. Fiecare flota are o anumita cantitate de provizii iar atunci cand aceasta ajunge la zero, flota este pierduta. Cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai rapida o scufunda pe cea mai lenta). Cand jucatorul se retrage din batalie pierde intreaga flota. Batalia se termina cand una dintre tabere ramane fara nave.<br/>
 
