@@ -94,7 +94,7 @@ void Game::Render(sf::RenderWindow *window){
 	map->Render(window);
 	//Settlements
 	for(short i=0;i<(short)::settlement.size();i++)
-		::settlement[i].Render(window);
+		settlement[i].Render(window);
 	//Fleets
 	for(short i=0;i<(short)::fleet.size();i++)
 		::fleet[i].Render(window);
@@ -134,7 +134,7 @@ void Game::showDiplomaticStatus(short player){
 	labelDip->showData(player);
 }
 void Game::showHumanStatus(){
-	detail.setText(gui.Format(::player[human].Coins())+" coins  "+gui.Format(getPopulation(human))+" freemen");
+	detail.setText(gui.Format(player[human].Coins())+" coins  "+gui.Format(getPopulation(human))+" freemen");
 	detail.hide();
 	detail.show();
 }
@@ -258,7 +258,6 @@ void Game::Reset(sf::RenderWindow *window,sf::View *view){
 	op.hide();
 	detail.hide();
 	about.hide();
-	info.hide();
 	this->moveView(view,-gui.x,-gui.y);
 	//Empty memory
 	deselectDip();
@@ -312,90 +311,107 @@ void Game::Clock(){
 void Game::Monthly(){
 	//Income
 	for(short i=0;i<(short)::player.size();i++)
-		::player[i].Income(getIncome(i)-getShips(i)/10.);
+		player[i].Income(getIncome(i)-getShips(i)/10.);
 	//Settlements
 	for(short i=0;i<(short)::settlement.size();i++)
-		::settlement[i].Monthly();
+		settlement[i].Monthly();
 	//GUI
 	this->showHumanStatus();
 	this->showData();
 	//Label for settlement, player, fleet
-	if(labelSett!=NULL){
-		this->selectSett(labelSett->Selected());
-	}
-	else if(labelPlayer!=NULL){
-		this->selectPlayer(labelPlayer->Selected());
-	}
-	else if(labelFleet!=NULL){
-		this->selectFleet(labelFleet->Selected());
-	}
+	if(labelSett!=NULL)
+		selectSett(labelSett->Selected());
+	if(labelPlayer!=NULL)
+		selectPlayer(labelPlayer->Selected());
+	if(labelFleet!=NULL)
+		selectFleet(labelFleet->Selected());
 	//Diplomacy label
-	if(labelDip!=NULL){
+	if(labelDip!=NULL)
 		labelDip->showData(labelDip->Selected());
-	}
 }
 //AI
 void Game::AI(){
-
-}
-void Game::getRoute(short fleet){
-	//Route
-	std::vector<short> route=map->getRoute(
-		map->getNearestNode(::fleet[fleet].getPosition()),
-		map->getNearestNode(gui.mousePosition())
-	);
-	::fleet[fleet].Stop();
-	while(route.size()){
-		::fleet[fleet].addNodeRoute(map->getNode(route[0]));
-		route.erase(route.begin());
+	//Buy ships
+	if(this->month%8000==0){
+		for(short i=0;i<(short)settlement.size();i++){
+			
+			if(!isYourSett(i)){
+				if(hasGood(i,1))
+					this->buyShip(1,i);
+				else
+					this->buyShip(4,i);
+			}
+		}
 	}
-	::fleet[fleet].addNodeRoute(Node(gui.mousePosition().x,gui.mousePosition().y,60));
+	//Attack
+	if(this->month==37000){
+		//Get number of team
+		short max=0;
+		for(short i=0;i<(short)player.size();i++)
+			if(max<player[i].Team())
+				max=player[i].Team();
+		std::vector<bool> send;
+		send.resize(max,0);
+		//Send a fleet for each team
+		for(short j=0;j<(short)fleet.size();j++){
+			if(!isYourFleet(j)&&!send[player[fleet[j].Player()].Team()]){
+				short nearest=-1;
+				float dist=999999999;
+				for(short i=0;i<(short)settlement.size();i++){
+					if(i!=j)
+						if(isEnemyFleet(i,j)&&fleet[i].size()<fleet[j].size())
+							if(dist>fleet[j].dist(fleet[i].getPosition())){
+								nearest=i;
+								dist=fleet[j].dist(fleet[i].getPosition());
+							}
+				}
+				//Go to the enemy settlement
+				if(nearest>=0){
+					send[player[fleet[j].Player()].Team()]=1;
+					getRoute(j,fleet[nearest].getPosition());
+				}
+			}
+		}
+	}
 }
-void Game::lostFleet(short i){
-	::player[::fleet[this->battle->fleets[i]].Player()].LostBattle();
-	//GUI
-	if(labelFleet!=NULL)
-		if(labelFleet->Selected()==this->battle->fleets[i]){
-			deselectFleet();
-		}
-	if(labelPlayer!=NULL)
-		if(labelPlayer->Selected()==::fleet[this->battle->fleets[i]].Player()){
-			selectPlayer(labelPlayer->Selected());
-		}
-	if(labelDip!=NULL)
-		deselectDip();
-	//Empty memory
-	::fleet.erase(::fleet.begin()+this->battle->fleets[i]);
-	for(short j=i+1;j<(short)this->battle->fleets.size();j++)
-		if(this->battle->fleets[i]<this->battle->fleets[j])
-			this->battle->fleets[j]--;
+void Game::getRoute(short fleet,sf::Vector2f target){
+	//Route
+	::fleet[fleet].getRoute(map->getRoute(
+		map->getNearestNode(::fleet[fleet].getPosition()),
+		map->getNearestNode(target)
+	));
+	//Point of target
+	::fleet[fleet].addNodeRoute(Node(target.x,target.y,60));
 }
 void Game::buyShip(short id,short sett){
+	//Check if id is valid
 	if(id<0||id>(short)naval.size())
 		return ;
-	if(!::player[::settlement[sett].getOwner()].canBuy(naval[id].Cost()))
+	//Check if player has enough coins
+	if(!player[settlement[sett].getOwner()].canBuy(naval[id].Cost()))
 		return ;
-	if(::settlement[sett].canRecruit(naval[id].Rowers())){
+	//Check if settlement has enough population
+	if(settlement[sett].canRecruit(naval[id].Rowers())){
 		//Pay and recruit
-		::player[::settlement[sett].getOwner()].Income(-naval[id].Cost());
-		::settlement[sett].Recruit(naval[id].Rowers());
+		player[settlement[sett].getOwner()].Income(-naval[id].Cost());
+		settlement[sett].Recruit(naval[id].Rowers());
 		//Labels
 		if(isYourSett(sett))
 			this->showHumanStatus();
-		if(isSelectedSett(sett))
-			selectSett(labelSett->Selected());
+		reloadLabelPlayer(settlement[sett].getOwner());
+		if(labelSett!=NULL)
+			reloadLabelSett(labelSett->Selected());
 		//Add ship to fleet from port
 		for(short i=0;i<(short)::fleet.size();i++){
-			if(
-				::dist(::fleet[i].getPosition(),::settlement[sett].getPosition())<70&&
-				::fleet[i].Player()==::settlement[sett].getOwner()
-			){
-				::fleet[i].addShip(id,100);
-				return ;
-			}
+			if(::fleet[i].dist(settlement[sett].getPosition())<100)
+				if(::fleet[i].Player()==settlement[sett].getOwner()){
+					::fleet[i].addShip(id,100);
+					reloadLabelFleet(i);
+					return ;					
+				}
 		}
 		//Create new fleet
-		::fleet.push_back(Fleet(::settlement[sett].getPosition(),::settlement[sett].getOwner(),0,2,100));
+		::fleet.push_back(Fleet(map->getNode(map->getNearestNode(settlement[sett].getPosition())).getPosition(),0,settlement[sett].getOwner(),2,100));
 		::fleet[::fleet.size()-1].addShip(id,100);
 	}
 }
@@ -404,19 +420,35 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 	//After the battle
 	if(this->battle!=NULL){
 		//Change statistics
-		for(short i=0;i<(short)this->battle->fleets.size();i++)
-			if(::fleet[this->battle->fleets[i]].size()){
-				::player[::fleet[this->battle->fleets[i]].Player()].WonBattle();
-				//Move camera to battle location
-				moveViewTo(view,::fleet[i].getPosition());
-			}else{
-				lostFleet(this->battle->fleets[i]);
-			}
+		for(short i=0;i<(short)this->battle->fleets.size();i++){
+			//Labels
+			reloadLabelPlayer(::fleet[this->battle->fleets[i]].Player());
+			reloadLabelFleet(this->battle->fleets[i]);
+			reloadLabelDip(::fleet[this->battle->fleets[i]].Player());
+			//Statistics
+			if(::fleet[this->battle->fleets[i]].size())
+				player[::fleet[this->battle->fleets[i]].Player()].WonBattle();
+			else
+				player[::fleet[this->battle->fleets[i]].Player()].LostBattle();
+		}
+		//Move view
+		moveViewTo(view,::fleet[this->battle->fleets[0]].getPosition());
 		//Clear memory
+		for(short i=0;i<(short)::fleet.size();i++)
+			if(!::fleet[i].size()){
+				//Labels
+				if(isSelectedFleet(i))
+					deselectFleet();
+				reloadLabelPlayer(::fleet[i].Player());
+				reloadLabelDip(::fleet[i].Player());
+				::fleet.erase(::fleet.begin()+i);
+				i--;
+			}
 		delete this->battle;
 		this->battle=NULL;
-		void showData();
-		void showHumanStatus();
+		//GUI
+		showData();
+		showHumanStatus();
 	}
 	//GUI
 	about.hide();
@@ -434,7 +466,7 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)||this->diplomacy->left("Diplomacy","Click or press R to see relations with other city-states."))
 			labelDip=new LabelDip();
 		//Human faction
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)||this->main->left(::player[::human].Name(),"Click or press F for to see economic and military status of your city-state."))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)||this->main->left(player[::human].Name(),"Click or press F for to see economic and military status of your city-state."))
 			this->selectPlayer(::human);
 		//Label of selected settlement, player, fleet...
 		if(labelSett!=NULL){
@@ -442,10 +474,15 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 			buyShip(labelSett->getShip(),labelSett->Selected());
 			//Local good
 			if(labelSett->localMouseOver()){
-				about.show(
-					good[::labelSett->sett().getGood()].Name()+" to "+(::settlement[getImporter(labelSett->Selected())].getName()),
-					goodDescription(::labelSett->sett().getGood())
-				);
+				about.show();
+				//Title
+				if(isBlockedExport(labelSett->Selected()))
+					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName())+" (blocked)");
+				else
+					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName()));
+				//Text
+				about.setText(goodDescription(labelSett->sett().getGood()));
+				//Left button
 				if(labelSett->localLeft()){
 					this->moveViewTo(view,settlement[getImporter(labelSett->Selected())].getPosition());
 					selectSett(getImporter(labelSett->Selected()));
@@ -453,35 +490,49 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 			}
 			//Import good
 			if(labelSett->importMouseOver()){
-				about.show(
-					good[getImportedGood(labelSett->Selected())].Name()+" from "+::settlement[::labelSett->sett().getImport()].getName(),
-					goodDescription(getImportedGood(labelSett->Selected()))
-				);
+				about.show();
+				//Title
+				if(isBlockedImport(labelSett->Selected()))
+					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName()+ "(blocked)");
+				else
+					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName());
+				//Text
+				about.setText(goodDescription(getImportedGood(labelSett->Selected())));
+				//Left button
 				if(labelSett->importLeft()){
 					this->moveViewTo(view,settlement[labelSett->sett().getImport()].getPosition());
 					selectSett(labelSett->sett().getImport());
 				}
 			}
-			//Owner
+			//Deselect
 			if(labelSett->playerLeft()){
-				this->selectPlayer(::labelSett->sett().getOwner());
+				this->selectPlayer(labelSett->sett().getOwner());
 			}else if(labelSett->right()){
 				deselectSett();
 			}
 		}
-		if(labelPlayer!=NULL){
+		//Label player
+		else if(labelPlayer!=NULL){
 			if(labelPlayer->right())
 				deselectPlayer();
 		}
-		if(labelFleet!=NULL){
-			if(labelFleet->right())
-				deselectFleet();
-			else if(labelFleet->playerLeft()){
+		//Label fleet
+		else if(labelFleet!=NULL){
+			if(isYourFleet(labelFleet->Selected())){
+				//Move
+				if(!this->mouseOverGUI()&&gui.canRight(100))
+					this->getRoute(labelFleet->Selected(),gui.mousePosition());
+				//Formation
+				if(labelFleet->FormationUpdate())
+					reloadLabelFleet(labelFleet->Selected());
+			}
+			//Deselect
+			if(labelFleet->playerLeft()){
 				this->selectPlayer(labelFleet->fleet().Player());
-			}else if(!this->mouseOverGUI()&&gui.canRight(100)&&isYourFleet(labelFleet->Selected())){
-				this->getRoute(labelFleet->Selected());
-			}	
+			}else if(labelFleet->right())
+				deselectFleet();
 		}
+		//Label diplomacy
 		if(labelDip!=NULL){
 			labelDip->Update();
 			if(labelDip->right()){
@@ -501,42 +552,75 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 			//Settlements
 			for(short i=0;i<(short)::settlement.size()&&!this->mouseOverGUI();i++){
 				//GUI
-				::settlement[i].Update();
+				settlement[i].Update();
 				if(!this->mouseOverGUI())
-					if(::settlement[i].left())
+					if(settlement[i].left())
 						this->selectSett(i);
-				//Conquest
-				for(short j=0;j<(short)::fleet.size();j++){
-					if(
-						areEnemies(::settlement[i].getOwner(),::fleet[j].Player())&&
-						dist(::settlement[i].getPosition(),::fleet[j].getPosition())<80
-					){
+				//Interactions with fleets
+				if(month%60==0) for(short j=0;j<(short)::fleet.size();j++){
+					//Near fleets
+					if(dist(settlement[i].getPosition(),::fleet[j].getPosition())<100){
 						//Conquest
-						::settlement[i].Conquest(::fleet[j].Player());
-						//Labels
+						if(areEnemies(settlement[i].getOwner(),::fleet[j].Player())){
+							settlement[i].Conquest(::fleet[j].Player());
+							reloadLabelSett(i);
+							reloadLabelSett(::settlement[i].getImport());
+							reloadLabelSett(getImporter(i));
+						//Supply
+						}else{
+							::fleet[j].Supply();
+						}
 						showHumanStatus();
-						if(isSelectedSett(i))
-							selectSett(i);
-					}
+						reloadLabelFleet(j);
+					}						
 				}
 			}
 			//Fleets
 			for(short i=0;i<(short)::fleet.size();i++){
+				//Move
 				::fleet[i].Update();
+				//Provision
+				if(::fleet[i].Provision()<=0){
+					if(isSelectedFleet(i))
+						deselectFleet();
+					::fleet.erase(::fleet.begin()+i);
+				}
+				//Label
+				reloadLabelFleet(i);
+				//Mouse
 				if(!this->mouseOverGUI())
-					if(::fleet[i].left())
+					if(::fleet[i].left()){
 						this->selectFleet(i);
+					}
 				//Into to battle
-				if(isYourFleet(i))
-					for(short j=0;j<(short)::fleet.size();j++){
-						if(i!=j)
-							if(isEnemyFleet(i,j)&&distFleet(i,j)<=70){
+				if(month%60==0) for(short j=0;j<(short)::fleet.size();j++){
+					if(i!=j){
+						if(isEnemyFleet(i,j)&&distFleet(i,j)<=70){
+							//Human fleet and AI fleet
+							if(isYourFleet(i)){
 								this->moveViewTo(view,sf::Vector2f(0,0));
 								this->battle=new Battle(i,j,view);
 								gui.selected=5;
 								break;
+							//AI fleets
+							}else if(!isYourFleet(j)){
+								if(fleet[i].size()>fleet[j].size()){
+									//Clear memory
+									fleet.erase(fleet.begin()+j);
+									//Change statistics
+									player[fleet[j].Player()].LostBattle();
+									player[fleet[i].Player()].WonBattle();
+								}else{
+									//Clear memory
+									fleet.erase(fleet.begin()+i);
+									//Change statistics
+									player[fleet[i].Player()].LostBattle();
+									player[fleet[j].Player()].WonBattle();									
+								}
 							}
-					}
+						}
+					}					
+				}
 			}
 		}
 	}

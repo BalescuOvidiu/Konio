@@ -42,7 +42,7 @@ void Ship::RenderSails(sf::RenderWindow *window){
 void Ship::show(){
 	if(this->integrity)
 		detail.show(naval[this->id].Name(),
-			"Integrity "+std::to_string((int)this->integrity)+"%\nSpeed "+std::to_string((int)this->speed)+" k/h\nMax speed "+std::to_string(naval[this->id].Speed())+" k/h\n"+std::to_string(naval[this->id].Rowers())+" rowers");
+			"Integrity "+gui.Format(this->integrity)+"%\nSpeed "+gui.Format(fabs(this->speed))+" km/h\nMax speed "+gui.Format(naval[this->id].Speed())+" km/h\n"+gui.Format(naval[this->id].Rowers())+" rowers");
 	else
 		detail.hide();
 }
@@ -109,7 +109,7 @@ bool Ship::rowsContains(sf::Vector2f point){
 	return 0;
 }
 sf::Vector2f Ship::Origin(){
-	return this->Origin();
+	return this->body->getPosition();
 }
 //Front points
 sf::Vector2f Ship::Ram(){
@@ -211,7 +211,7 @@ bool Ship::mouseOver(){
 		if(this->integrity)
 			about.show(
 				naval[this->id].Name()+getDiplomaticStatus(::fleet[this->fleet].Player())+" "+std::to_string((short)this->integrity)+"%",
-				"Max speed "+std::to_string(naval[this->id].Speed())+" km/h\n"+std::to_string(naval[this->id].Rowers())+" rowers"
+				"Max speed "+gui.Format(naval[this->id].Speed())+" km/h\n"+gui.Format(naval[this->id].Rowers())+" rowers"
 			);
 		return 1;
 	}
@@ -318,24 +318,21 @@ bool Ship::move(sf::Vector2f target){
 		//Rows
 		if(this->speed){
 			//Forward
-			if(this->clock>=12)
+			if(floor(this->clock)==11)
 				this->Rows(0);
 			//Reverse
 			if(this->clock<0)
-				this->Rows(11.9);
+				this->Rows(11);
 			//Stop
 			if(!this->speed)
 				this->Rows(0);
-			if(floor(this->clock-0.075*direction)!=floor(this->clock))
-				this->Rows(this->clock+0.075*direction);
+			this->Rows(this->clock+0.065*direction);
 		}
 	//Stop
 	}else{
 		//Speed
 		this->speed-=0.1*direction;
-		if(this->speed<0&&direction>0)
-			this->speed=0;
-		else if(this->speed>0&&direction<0)
+		if(this->speed*direction<0)
 			this->speed=0;
 		//Rows
 		this->Rows(0);
@@ -355,7 +352,8 @@ void Ship::Speed(float speed){
 void Ship::Rows(float clock){
 	this->clock=clock;
 	this->rows->setTextureRect(
-		sf::IntRect(naval[this->id].Rows().getSize().x/12*floor(clock),
+	sf::IntRect(
+		naval[this->id].Rows().getSize().x/12*floor(clock),
 		0,
 		naval[this->id].Rows().getSize().x/12,
 		naval[this->id].Rows().getSize().y)

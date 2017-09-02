@@ -34,5 +34,6 @@ public:
 extern LabelSett *labelSett;
 //Global functions
 void deselectSett();
+void reloadLabelSett(short i);
 bool isSelectedSett(short i);
 #endif

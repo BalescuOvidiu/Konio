@@ -24,5 +24,5 @@ public:
 	void Render(sf::RenderWindow *window);
 	operator bool();
 	~Label();
-}extern about,detail,info;
+}extern about,detail;
 #endif

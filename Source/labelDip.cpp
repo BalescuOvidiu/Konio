@@ -45,15 +45,30 @@ short LabelDip::Selected(){
 //Show data
 void LabelDip::showData(short player){
 	this->selected=player;
-	this->label->setText("\n\n\n\n\n\n\n\n\n"+::player[player].Name()+getDiplomaticStatus(player)+"\n"+gui.Format(::player[player].Coins())+" coins\n"+std::to_string(getPopulation(player))+" freeman\n"+std::to_string(getShips(player))+" ships");
+	this->label->setText(
+		"\n\n\n\n\n\n\n\n\n"+::player[player].Name()+getDiplomaticStatus(player)+
+		"\n"+gui.Format(::player[player].Coins())+" coins  "+gui.Format(getIncome(player)-getShips(player)/10.)+
+		" income  "+gui.Format(getPopulation(player))+
+		" freeman\n"+gui.Format(getShips(player))+" ships"+
+		::player[player].Statistics()
+	);
 }
 LabelDip::~LabelDip(){
 
 }
 //Global variable
 LabelDip *labelDip=NULL;
-//Global function
+//Global functions
 void deselectDip(){
 	delete labelDip;
 	labelDip=NULL;
+}
+void reloadLabelDip(short i){
+	if(isSelectedDip(i))
+		labelDip->showData(i);
+}
+bool isSelectedDip(short i){
+	if(labelDip!=NULL)
+		return (i==labelDip->Selected());
+	return 0;
 }

@@ -6,16 +6,19 @@
 //Definition
 class Battle{
 private:
-	//Informational
-	std::string name,description;
 	//GUI
 	sf::Vector2f position;
 	sf::Text *text;
 	Button *retreat;
 	bool pause;
 	short selected;
+	unsigned size;
 	//AI
-	short clock;
+	short clock,tactic;
+	void Forward();
+	void Diekplous();
+	void Periplous();
+	void Attack();
 	void AI();
 	std::vector<std::deque<sf::Vector2f> > target;
 	//Water
@@ -23,18 +26,19 @@ private:
 	//Entities
 	std::vector<Ship> ship;
 	//Ship's points target
-	sf::Vector2f local(sf::Vector2f point, short ship);
+	sf::Vector2f local(float dist, float angle, short ship);
 	sf::Vector2f localForward(float dist,short ship);
 	sf::Vector2f localBackward(float dist,short ship);
 	sf::Vector2f localLeft(float dist,short ship);
 	sf::Vector2f localRight(float dist,short ship);
+	float distShip(short i,short j);
 	bool validPoint(sf::Vector2f point);
-	//Team
-	bool isYour(short ship);
-	bool isRammed(short ship);
-	bool isEnemy(short i,short j);
-	bool isFriend(short i,short j);
-	//Event
+	//Teams
+	bool isYourShip(short ship);
+	bool isRammedShip(short ship);
+	bool isEnemyShip(short i,short j);
+	bool isFriendShip(short i,short j);
+	//Events
 	void Stop(short ship);
 	bool ramming(short i,short j);
 	bool collision(short i,short j);

@@ -6,6 +6,7 @@
 
 class History{
 private:
+	Label *info;
 	Button *menu;
 public:
 	History();

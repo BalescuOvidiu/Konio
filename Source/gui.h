@@ -45,7 +45,7 @@ public:
 	sf::Vector2f mousePosition();
 	//Text
 	sf::Font* Font();
-	std::string Format(float value);
+	std::string Format(double value);
 	std::string Format(int value);
 	//Destructor
 	~GUI();

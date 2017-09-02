@@ -63,4 +63,6 @@ short getImportedGood(short settlement);
 bool isOf(short i,short player);
 bool isAllyOf(short i,short player);
 bool isEnemyOf(short i,short player);
+bool isBlockedImport(short sett);
+bool isBlockedExport(short sett);
 #endif

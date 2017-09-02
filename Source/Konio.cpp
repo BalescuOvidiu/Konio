@@ -20,7 +20,7 @@ int main(){
 	//Navals
 	sails.loadFromFile("data/navals/sails.png");
 	sails.setSmooth(true);
-	for(short i=0;i<6;i++)
+	for(short i=0;i<5;i++)
 		naval.push_back(i);
 	//Running
 	while(window.isOpen()){

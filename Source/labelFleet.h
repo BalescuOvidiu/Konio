@@ -8,12 +8,13 @@ class LabelFleet{
 private:
 	short selected;
 	Label *label;
-	Button *player;
+	Button *player,*form1,*form2,*form3;
 public:
 	LabelFleet(short selected);
 	void Render(sf::RenderWindow *window);
 	//Update
 	void move(float x,float y);
+	bool FormationUpdate();
 	bool playerLeft();
 	bool right();
 	bool mouseOver();
@@ -23,6 +24,8 @@ public:
 	~LabelFleet();
 };
 extern LabelFleet *labelFleet;
-//Deselect function
+//Global functions
 void deselectFleet();
+void reloadLabelFleet(short i);
+bool isSelectedFleet(short i);
 #endif

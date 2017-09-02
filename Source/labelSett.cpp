@@ -66,7 +66,7 @@ void LabelSett::move(float x,float y){
 	}
 }
 bool LabelSett::playerLeft(){
-	return this->player->left();
+	return this->player->left(::player[::settlement[selected].getPlayer()].Name()+getDiplomaticStatus(::settlement[selected].getPlayer()),"Click to see information about owner of this settlement.");
 }
 bool LabelSett::localMouseOver(){
 	return this->local->mouseOver();
@@ -127,6 +127,12 @@ void deselectSett(){
 	if(labelSett!=NULL){
 		delete labelSett;
 		labelSett=NULL;
+	}
+}
+void reloadLabelSett(short i){
+	if(isSelectedSett(i)){
+		deselectSett();
+		labelSett=new LabelSett(i);
 	}
 }
 bool isSelectedSett(short i){

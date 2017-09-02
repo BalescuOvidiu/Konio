@@ -38,7 +38,7 @@ void Settlement::Recruit(short population){
 }
 bool Settlement::left(){
 	if(dist(sf::Vector2f(x,y),gui.mousePosition())<=40){
-		about.show(::player[this->getOwner()].Name()+"'s settlement"+getDiplomaticStatus(this->getOwner()),std::to_string(this->population)+" freemen");
+		about.show(::player[this->getOwner()].Name()+"'s settlement"+getDiplomaticStatus(this->getOwner()),gui.Format(this->population)+" freemen");
 		return (gui.canLeft(150));
 	}
 	return 0;
@@ -85,7 +85,7 @@ short Settlement::getImport(){
 	return this->import;
 }
 bool Settlement::hasGood(short good){
-	return (this->local==good||::settlement[this->import].getGood()==good);
+	return (this->local==good||(::settlement[this->import].getGood()==good&&areAllies(this->getOwner(),::settlement[this->getImport()].getOwner())));
 }
 //Population
 float Settlement::getRate(){
@@ -175,7 +175,7 @@ float getIncome(short player){
 	float income=0;
 	for(short i=0;i<(short)::settlement.size();i++)
 		if(isOf(i,player))
-			income+=income;
+			income+=getIncomeOf(i);
 	return income;
 }
 bool isYourSett(short settlement){
@@ -183,7 +183,7 @@ bool isYourSett(short settlement){
 }
 //Goods
 bool hasGood(short settlement,short good){
-	return(::settlement[settlement].getGood()==good||getImportedGood(settlement)==good);
+	return(::settlement[settlement].getGood()==good||(getImportedGood(settlement)==good&&!isBlockedImport(settlement)));
 }
 bool playerHasGood(short player,short good){
 	for(short i=0;i<(short)::settlement.size();i++)
@@ -209,4 +209,10 @@ bool isAllyOf(short i,short player){
 }
 bool isEnemyOf(short i,short player){
 	return (areEnemies(::settlement[i].getOwner(),player));
+}
+bool isBlockedImport(short sett){
+	return isEnemyOf(sett,::settlement[::settlement[sett].getImport()].getOwner());
+}
+bool isBlockedExport(short sett){
+	return isEnemyOf(sett,::settlement[getImporter(sett)].getOwner());
 }

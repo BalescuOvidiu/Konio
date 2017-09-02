@@ -77,7 +77,7 @@ sf::Vector2f GUI::mousePosition(){
 sf::Font* GUI::Font(){
 	return this->font;
 }
-std::string GUI::Format(float value){
+std::string GUI::Format(double value){
 	std::stringstream stream;
 	stream<<std::fixed<<std::setprecision(1)<<value;
 	return stream.str();

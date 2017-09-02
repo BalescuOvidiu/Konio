@@ -20,7 +20,7 @@ std::string goodDescription(short id){
 	if(in.is_open()){
 		std::string text;
 		std::getline(in,text,'*');
-		return text;
+		return text+" Price: "+gui.Format(::good[id].Price())+" coins";
 	}
 	in.close();
 	return " ";

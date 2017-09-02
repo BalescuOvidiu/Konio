@@ -23,6 +23,8 @@ public:
 };
 //Global variable
 extern LabelPlayer *labelPlayer;
-//Deselect function
+//Global functions
 void deselectPlayer();
+void reloadLabelPlayer(short i);
+bool isSelectedPlayer(short i);
 #endif

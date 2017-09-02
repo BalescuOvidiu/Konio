@@ -44,7 +44,7 @@ void Button::setPosition(float x,float y){
 }
 //Mouse over
 bool Button::mouseOver(){
-	if(this->sprite->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y)){
+	if(this->sprite->getGlobalBounds().contains(gui.mousePosition())){
 		this->sprite->setTextureRect(sf::IntRect(0,this->tex->getSize().y/2,this->tex->getSize().x,this->tex->getSize().y/2));
 		return 1;
 	}else
@@ -60,14 +60,14 @@ bool Button::mouseOver(std::string title,std::string text){
 }
 //Mouse button
 bool Button::left(){
-	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left)&&gui.canClick(500)){
+	if(this->mouseOver()&&gui.canLeft(400)){
 		audio.Click();
 		return 1;
 	}
 	return 0;
 }
 bool Button::right(){
-	if(this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right)&&gui.canClick(500)){
+	if(this->mouseOver()&&gui.canRight(400)){
 		audio.Click();
 		return 1;
 	}
@@ -76,7 +76,7 @@ bool Button::right(){
 bool Button::left(std::string title,std::string text){
 	if(this->mouseOver()){
 		about.show(title,text);
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)&&gui.canClick(500)){
+		if(gui.canLeft(400)){
 			audio.Click();
 			return 1;
 		}
@@ -86,7 +86,7 @@ bool Button::left(std::string title,std::string text){
 bool Button::right(std::string title,std::string text){
 	if(this->mouseOver()){
 		about.show(title,text);
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Right)&&gui.canClick(500)){
+		if(gui.canRight(400)){
 		audio.Click();
 			return 1;
 		}

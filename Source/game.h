@@ -37,8 +37,7 @@ private:
 	void Monthly();
 	//AI
 	void AI();
-	void getRoute(short fleet);
-	void lostFleet(short fleet);
+	void getRoute(short fleet,sf::Vector2f target);
 	void buyShip(short id,short sett);
 	//View
 	void moveView(sf::View *view,float x,float y);

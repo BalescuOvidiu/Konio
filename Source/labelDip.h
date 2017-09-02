@@ -27,4 +27,6 @@ public:
 extern LabelDip *labelDip;
 //Global function
 void deselectDip();
+void reloadLabelDip(short i);
+bool isSelectedDip(short i);
 #endif

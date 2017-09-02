@@ -19,7 +19,7 @@ void SubMenu::Update(sf::RenderWindow *window){
 		this->visible=0;
 	}else if(this->campaign->left("Campaign","Click or press C to exit from game and see campaign.")||sf::Keyboard::isKeyPressed(sf::Keyboard::C)){		
 		gui.selected=2;
-	}else if(this->exit->left("Resume","Click or press Esc to exit from game.")||sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+	}else if(this->exit->left("Exit","Click or press Esc to exit from game.")||sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
 		window->close();
 	}
 	//Options

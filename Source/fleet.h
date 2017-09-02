@@ -21,21 +21,28 @@ public:
 	//Update and rendering
 	void Render(sf::RenderWindow *window);
 	void Update();
-	void Lost();
 	void addShip(short ship,short integrity);
+	void removeShip(short ship);
+	void Reform(short formation);
+	void Retreat();
+	void Supply();
 	//Route
 	void addNodeRoute(Node node);
+	void getRoute(std::vector<Node> route);
 	void resetRoute();
 	//Move
 	void Move(float x,float y);
+	void Clock(float clock);
 	void Stop();
 	//Get data
 	short Player();
 	short Formation();
 	short Provision();
+	short Direction();
 	short size();
 	short Ship(short i);
 	short Integrity(short i);
+	float Speed();
 	//Rotation
 	void rotate(float angle);
 	void rotateTo(float angle);
@@ -51,13 +58,18 @@ public:
 	bool left();
 	~Fleet();
 };
-//Global variable
+//Global variables
 extern std::vector<Fleet> fleet;
+extern Naval nFleet;
 //Global functions
 float distFleet(short i,short j);
 short getShips(short player);
 short getNearestFleet(sf::Vector2f point);
+//Diplomacy
 bool isYourFleet(short i);
 bool isEnemyFleet(short i,short j);
 bool isAlliedFleet(short i,short j);
+//Formations
+std::string FormationName(short formation);
+std::string FormationText(short formation);
 #endif

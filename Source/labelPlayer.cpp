@@ -5,10 +5,7 @@ LabelPlayer::LabelPlayer(short selected){
 	//Label
 	this->label=new Label(gui.x,232+gui.y,325,180,1);
 	this->label->setTitle(::player[selected].Name()+getDiplomaticStatus(selected));
-	if(selected==human)
-		this->label->setText("          "+gui.Format(getShips(selected))+" ships");
-	else
-		this->label->setText("          "+gui.Format(::player[selected].Coins())+" coins \n          "+gui.Format(getPopulation(selected))+" freemen\n          "+std::to_string(getShips(selected))+" ships"+::player[selected].Statistics());
+	this->label->setText("          "+gui.Format(::player[selected].Coins())+" coins "+gui.Format(getIncome(selected)-getShips(selected)/10.)+" income\n          "+gui.Format(getPopulation(selected))+" freemen\n          "+std::to_string(getShips(selected))+" ships"+::player[selected].Statistics());
 	//Buttons
 	this->shield=new Button("data/game/icons/"+std::to_string(selected)+".png",45+gui.x,322+gui.y);
 }
@@ -24,6 +21,7 @@ bool LabelPlayer::right(){
 	return this->label->right();
 }
 bool LabelPlayer::mouseOver(){
+	this->shield->mouseOver("Shield","This is symbol of player.");
 	return this->label->mouseOver();
 }
 //Get data
@@ -38,10 +36,21 @@ LabelPlayer::~LabelPlayer(){
 }
 //Global variable
 LabelPlayer *labelPlayer=NULL;
-//Deselect function
+//Global functions
 void deselectPlayer(){
 	if(labelPlayer!=NULL){
 		delete labelPlayer;
 		labelPlayer=NULL;
 	}
+}
+void reloadLabelPlayer(short i){
+	if(isSelectedPlayer(i)){
+		deselectPlayer();
+		labelPlayer=new LabelPlayer(i);
+	}
+}
+bool isSelectedPlayer(short i){
+	if(labelPlayer!=NULL)
+		return (i==labelPlayer->Selected());
+	return 0;
 }

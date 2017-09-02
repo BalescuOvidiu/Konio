@@ -32,7 +32,7 @@ short Naval::width(){
 	return (short)this->body.getSize().x;
 }
 short Naval::widthRows(){
-	return (short)this->rows.getSize().x;
+	return (short)this->rows.getSize().y;
 }
 short Naval::height(){
 	return (short)this->body.getSize().y;
