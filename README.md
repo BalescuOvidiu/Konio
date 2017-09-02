@@ -10,12 +10,12 @@ Grafica jocului este simplista ce imita anumite elemente din realitate(scuturi, 
 
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/0.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/1.png'/>
-
+<br/>
 Flotele sunt unitati militare ce au in componenta lor mai multe nave. Navele unei flote pot fi asezate in trei formatii, acestea stabilind tactica AI-ului. Fiecare flota are o anumita cantitate de provizii iar atunci cand aceasta ajunge la zero, flota este pierduta. Cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai rapida o scufunda pe cea mai lenta). Cand jucatorul se retrage din batalie pierde intreaga flota. Batalia se termina cand una dintre tabere ramane fara nave.<br/>
 
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/7.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/8.png'/>
-
+<br/>
 Tactici si formatii:<br/>
 1. Periplous: navele sunt asezate intr-o singura linie, inainteaza pana ce se apropie de flota inamica.<br/>
 2. Diekplous: navele sunt asezate in linii perpediculare fata de linia frontului. AI-ul  incearca sa patrunda printre nave.<br/>
@@ -23,7 +23,7 @@ Tactici si formatii:<br/>
 
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/10.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/11.png'/>
-
+<br/>
 Sistemul economic al jocului este simplist. Fiecare jucator(sau AI) are un oras cu deschidere la mare ce produce o anumita resursa. Fiecare oras exporta aceea resursa catre un oras aliat si importa o alta resursa de la un aliat. Venitul in bani pentru fiecare jucator consta in taxe si comert. Taxele constau intr-o moneda la fiecare 1000 de locuitori al oraselor pe care il detine. Un oras este cucerit daca se afla o flota inamica in aproprierea sa. De asemenea orasul poate fi recucerit de aliati, orasul devenind proprietatea vechiului jucator.<br/>
 
 Resurse:<br/>
