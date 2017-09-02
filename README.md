@@ -4,11 +4,11 @@ Konio este un joc 2D de strategie in timp real, singleplayer, militar si economi
 
 In contextul istoric al jocului (550 i.Hr), orasele-stat grecesti nu au avut de intampinat un rival care sa le fi pus libertatea in pericol. Venitul in bani al orasul consta din taxele populatiei si comert. Fiecare oras-stat are o resursa pe care o produce si o exporta intr-un oras-stat aliat, la randul sau importa o anumita resursa dintr-un oras stat grecesc.<br/>
 
-Dezvoltarea proiectului a durat aproximativ 4 luni. Tot codul este scris si gandit de la zero si imi asum raspunderea pentru orice bug sau eroare de rulare. Momentan jocul este disponibil doar pentru Linux. Fiecare element grafic este facut personal, fiind folosite anumite resurse externe.<br/>
+Dezvoltarea proiectului a durat aproximativ 4 luni. Tot codul este scris si gandit de la zero. Imi asum raspunderea pentru orice bug sau eroare de rulare. Momentan jocul este disponibil doar pentru Linux. Fiecare element grafic este facut personal, fiind folosite anumite resurse externe.<br/>
 
 Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si concentrarea jucatorului. De asemenea contextul acestui joc este unu educativ.<br/>
 
-Grafica jocului este simplista ce imita anumite elemente din realitate(scuturi, picturi, apa, terenuri, corabii) si pune in valoare tema acestui joc. ce tinde spre realism. Textul este alb, pe fundal inchis, fiind foarte vizibil pentru jucator.<br/>
+Grafica jocului este simplista ce imita anumite elemente din realitate(scuturi, picturi, apa, terenuri, corabii) si pune in valoare tema acestui joc. Textul este alb, pe fundal inchis, fiind foarte vizibil pentru jucator.<br/>
 
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/0.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/1.png'/>
