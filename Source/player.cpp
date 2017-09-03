@@ -76,3 +76,7 @@ bool areAllies(short i,short j){
 bool areEnemies(short i,short j){
 	return ::player[i].Team()!=::player[j].Team();
 }
+void Defeated(short winner,short defeated){
+	::player[winner].WonBattle();
+	::player[defeated].LostBattle();
+}

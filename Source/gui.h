@@ -39,6 +39,7 @@ public:
 	float width(unsigned percent);
 	float height(unsigned percent);
 	//Mouse
+	bool timeElapsed(short time);
 	bool canClick(short time);
 	bool canLeft(short time);
 	bool canRight(short time);

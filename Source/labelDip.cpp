@@ -47,7 +47,7 @@ void LabelDip::showData(short player){
 	this->selected=player;
 	this->label->setText(
 		"\n\n\n\n\n\n\n\n\n"+::player[player].Name()+getDiplomaticStatus(player)+
-		"\n"+gui.Format(::player[player].Coins())+" coins  "+gui.Format(getIncome(player)-getShips(player)/10.)+
+		"\n"+gui.Format(::player[player].Coins())+" coins  "+gui.Format(getIncome(player))+
 		" income  "+gui.Format(getPopulation(player))+
 		" freeman\n"+gui.Format(getShips(player))+" ships"+
 		::player[player].Statistics()

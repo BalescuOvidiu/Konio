@@ -5,12 +5,10 @@
 class Node{
 private:
 	sf::Vector2f pos;
-	sf::CircleShape *circle;
 	short radius;
 public:
 	Node(short x,short y,short radius);
 	//Rendering
-	void Render(sf::RenderWindow *window);
 	//Get data
 	sf::Vector2f getPosition();
 	short r();

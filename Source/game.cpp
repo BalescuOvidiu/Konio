@@ -179,6 +179,96 @@ bool Game::mouseOverGUI(){
 			return 1;
 	return (detail.mouseOver());
 }
+void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
+	if(*this->subMenu){
+		//Options
+		if(op)
+			op.Update();
+		//Submenu
+		this->subMenu->Update(window);
+	}else{
+		//Key
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::M)||this->submenu->left("Menu","Click or press M for menu.\nPress P for pause."))
+			this->subMenu->show();
+		//Diplomacy label
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)||this->diplomacy->left("Diplomacy","Click or press R to see relations with other city-states."))
+			labelDip=new LabelDip();
+		//Human faction
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)||this->main->left(player[::human].Name(),"Click or press F for to see economic and military status of your city-state."))
+			this->selectPlayer(::human);
+		//Label of selected settlement, player, fleet...
+		if(labelSett!=NULL){
+			//Ship
+			buyShip(labelSett->getShip(),labelSett->Selected());
+			//Local good
+			if(labelSett->localMouseOver()){
+				about.show();
+				//Title
+				if(isBlockedExport(labelSett->Selected()))
+					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName())+" (blocked)");
+				else
+					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName()));
+				//Text
+				about.setText(goodDescription(labelSett->sett().getGood()));
+				//Left button
+				if(labelSett->localLeft()){
+					this->moveViewTo(view,settlement[getImporter(labelSett->Selected())].getPosition());
+					selectSett(getImporter(labelSett->Selected()));
+				}
+			}
+			//Import good
+			if(labelSett->importMouseOver()){
+				about.show();
+				//Title
+				if(isBlockedImport(labelSett->Selected()))
+					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName()+ "(blocked)");
+				else
+					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName());
+				//Text
+				about.setText(goodDescription(getImportedGood(labelSett->Selected())));
+				//Left button
+				if(labelSett->importLeft()){
+					this->moveViewTo(view,settlement[labelSett->sett().getImport()].getPosition());
+					selectSett(labelSett->sett().getImport());
+				}
+			}
+			//Deselect
+			if(labelSett->playerLeft()){
+				this->selectPlayer(labelSett->sett().getOwner());
+			}else if(labelSett->right()){
+				deselectSett();
+			}
+		}
+		//Label player
+		else if(labelPlayer!=NULL){
+			if(labelPlayer->right())
+				deselectPlayer();
+		}
+		//Label fleet
+		else if(labelFleet!=NULL){
+			if(isYourFleet(labelFleet->Selected())){
+				//Move
+				if(!this->mouseOverGUI()&&gui.canRight(100))
+					this->getRoute(labelFleet->Selected(),gui.mousePosition());
+				//Formation
+				if(labelFleet->FormationUpdate())
+					reloadLabelFleet(labelFleet->Selected());
+			}
+			//Deselect
+			if(labelFleet->playerLeft()){
+				this->selectPlayer(labelFleet->fleet().Player());
+			}else if(labelFleet->right())
+				deselectFleet();
+		}
+		//Label diplomacy
+		if(labelDip!=NULL){
+			labelDip->Update();
+			if(labelDip->right()){
+				deselectDip();
+			}
+		}
+	}
+}
 //View
 void Game::moveView(sf::View *view,float x,float y){
 	if(gui.x+x<0||gui.x+x>4000-view->getSize().x)
@@ -334,7 +424,6 @@ void Game::AI(){
 	//Buy ships
 	if(this->month%8000==0){
 		for(short i=0;i<(short)settlement.size();i++){
-			
 			if(!isYourSett(i)){
 				if(hasGood(i,1))
 					this->buyShip(1,i);
@@ -344,7 +433,7 @@ void Game::AI(){
 		}
 	}
 	//Attack
-	if(this->month==37000){
+	if(this->month%6000==0){
 		//Get number of team
 		short max=0;
 		for(short i=0;i<(short)player.size();i++)
@@ -369,6 +458,7 @@ void Game::AI(){
 				if(nearest>=0){
 					send[player[fleet[j].Player()].Team()]=1;
 					getRoute(j,fleet[nearest].getPosition());
+					break;
 				}
 			}
 		}
@@ -452,94 +542,8 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 	}
 	//GUI
 	about.hide();
-	if(*this->subMenu){
-		//Options
-		if(op)
-			op.Update();
-		//Submenu
-		this->subMenu->Update(window);
-	}else{
-		//Key
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::M)||this->submenu->left("Menu","Click or press M for menu.\nPress P for pause."))
-			this->subMenu->show();
-		//Diplomacy label
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)||this->diplomacy->left("Diplomacy","Click or press R to see relations with other city-states."))
-			labelDip=new LabelDip();
-		//Human faction
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)||this->main->left(player[::human].Name(),"Click or press F for to see economic and military status of your city-state."))
-			this->selectPlayer(::human);
-		//Label of selected settlement, player, fleet...
-		if(labelSett!=NULL){
-			//Ship
-			buyShip(labelSett->getShip(),labelSett->Selected());
-			//Local good
-			if(labelSett->localMouseOver()){
-				about.show();
-				//Title
-				if(isBlockedExport(labelSett->Selected()))
-					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName())+" (blocked)");
-				else
-					about.setTitle(good[labelSett->sett().getGood()].Name()+" to "+(settlement[getImporter(labelSett->Selected())].getName()));
-				//Text
-				about.setText(goodDescription(labelSett->sett().getGood()));
-				//Left button
-				if(labelSett->localLeft()){
-					this->moveViewTo(view,settlement[getImporter(labelSett->Selected())].getPosition());
-					selectSett(getImporter(labelSett->Selected()));
-				}
-			}
-			//Import good
-			if(labelSett->importMouseOver()){
-				about.show();
-				//Title
-				if(isBlockedImport(labelSett->Selected()))
-					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName()+ "(blocked)");
-				else
-					about.setTitle(good[getImportedGood(labelSett->Selected())].Name()+" from "+settlement[labelSett->sett().getImport()].getName());
-				//Text
-				about.setText(goodDescription(getImportedGood(labelSett->Selected())));
-				//Left button
-				if(labelSett->importLeft()){
-					this->moveViewTo(view,settlement[labelSett->sett().getImport()].getPosition());
-					selectSett(labelSett->sett().getImport());
-				}
-			}
-			//Deselect
-			if(labelSett->playerLeft()){
-				this->selectPlayer(labelSett->sett().getOwner());
-			}else if(labelSett->right()){
-				deselectSett();
-			}
-		}
-		//Label player
-		else if(labelPlayer!=NULL){
-			if(labelPlayer->right())
-				deselectPlayer();
-		}
-		//Label fleet
-		else if(labelFleet!=NULL){
-			if(isYourFleet(labelFleet->Selected())){
-				//Move
-				if(!this->mouseOverGUI()&&gui.canRight(100))
-					this->getRoute(labelFleet->Selected(),gui.mousePosition());
-				//Formation
-				if(labelFleet->FormationUpdate())
-					reloadLabelFleet(labelFleet->Selected());
-			}
-			//Deselect
-			if(labelFleet->playerLeft()){
-				this->selectPlayer(labelFleet->fleet().Player());
-			}else if(labelFleet->right())
-				deselectFleet();
-		}
-		//Label diplomacy
-		if(labelDip!=NULL){
-			labelDip->Update();
-			if(labelDip->right()){
-				deselectDip();
-			}
-		}
-	}
+	if(gui.timeElapsed(200))
+		this->gameGUI(window,view);
 	//Gameplay
 	if(!this->Pause()){
 		//View
@@ -557,7 +561,7 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 					if(settlement[i].left())
 						this->selectSett(i);
 				//Interactions with fleets
-				if(month%60==0) for(short j=0;j<(short)::fleet.size();j++){
+				for(short j=0;j<(short)::fleet.size();j++){
 					//Near fleets
 					if(dist(settlement[i].getPosition(),::fleet[j].getPosition())<100){
 						//Conquest
@@ -586,14 +590,15 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 					::fleet.erase(::fleet.begin()+i);
 				}
 				//Label
-				reloadLabelFleet(i);
+				if(gui.timeElapsed(200))
+					reloadLabelFleet(i);
 				//Mouse
 				if(!this->mouseOverGUI())
 					if(::fleet[i].left()){
 						this->selectFleet(i);
 					}
 				//Into to battle
-				if(month%60==0) for(short j=0;j<(short)::fleet.size();j++){
+				for(short j=0;j<(short)::fleet.size();j++){
 					if(i!=j){
 						if(isEnemyFleet(i,j)&&distFleet(i,j)<=70){
 							//Human fleet and AI fleet
@@ -608,14 +613,12 @@ void Game::Update(sf::RenderWindow *window,sf::View *view){
 									//Clear memory
 									fleet.erase(fleet.begin()+j);
 									//Change statistics
-									player[fleet[j].Player()].LostBattle();
-									player[fleet[i].Player()].WonBattle();
+									Defeated(i,j);
 								}else{
 									//Clear memory
 									fleet.erase(fleet.begin()+i);
 									//Change statistics
-									player[fleet[i].Player()].LostBattle();
-									player[fleet[j].Player()].WonBattle();									
+									Defeated(j,i);								
 								}
 							}
 						}

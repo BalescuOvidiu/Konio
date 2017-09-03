@@ -1,8 +1,6 @@
 #ifndef LABELPLAYER_H
 #define LABELPLAYER_H
-#include "settlement.h"
-#include "player.h"
-#include "fleet.h"
+#include "gameData.h"
 //Display for player
 class LabelPlayer{
 private:

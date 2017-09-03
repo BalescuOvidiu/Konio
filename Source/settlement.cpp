@@ -171,13 +171,6 @@ float getIncomeOf(short i){
 		trade-=::good[settlement[settlement[i].getImport()].getGood()].Price();
 	return taxes+trade+bonuses;
 }
-float getIncome(short player){
-	float income=0;
-	for(short i=0;i<(short)::settlement.size();i++)
-		if(isOf(i,player))
-			income+=getIncomeOf(i);
-	return income;
-}
 bool isYourSett(short settlement){
 	return (::settlement[settlement].getOwner()==human);
 }

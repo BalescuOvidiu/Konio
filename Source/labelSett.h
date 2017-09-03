@@ -1,8 +1,6 @@
 #ifndef LABELSETT_H
 #define LABELSETT_H
-#include "settlement.h"
-#include "player.h"
-#include "fleet.h"
+#include "gameData.h"
 //Display for settlement
 class LabelSett{
 private:

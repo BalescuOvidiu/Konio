@@ -13,11 +13,6 @@ void Map::Render(sf::RenderWindow *window){
 	this->water->Render(window);
 	//Lands
 	window->draw(*sprite);
-	//Graph
-	for(short i=0;i<(short)this->node.size();i++){
-		this->node[i].Render(window);
-		window->draw(this->text[i]);
-	}
 	//Regions
 	for(short i=0;i<(short)this->region.size();i++)
 		this->region[i].Render(window);
@@ -68,7 +63,7 @@ void Map::Dijkstra(short begin,short end){
 		float minDist=999999999;
 		for(short i=0;i<(short)this->node.size();i++)
 			if(!selected[i]){
-				if(dist(begin,i)<minDist){
+				if(this->dist(begin,i)<minDist){
 					near=i;
 					minDist=dist(begin,i);
 				}
@@ -86,7 +81,6 @@ void Map::Dijkstra(short begin,short end){
 	}
 	//Get route
 	while(t[end]!=-1){
-		//std::cout<<"t[ "<<end<<" ]= "<<t[end]<<'\n';
 		this->route.insert(this->route.begin(),this->node[end]);
 		end=t[end];
 	}
@@ -126,9 +120,6 @@ void Map::add(Region region){
 	this->region.push_back(region);
 }
 void Map::add(Node node){
-	this->text.push_back(sf::Text(sf::String(std::to_string(this->node.size())),*gui.Font(),26));
-	this->text[this->text.size()-1].setPosition(node.getPosition());
-	this->text[this->text.size()-1].setColor(sf::Color(255,255,255));
 	this->node.push_back(node);
 }
 Map::~Map(){

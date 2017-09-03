@@ -6,10 +6,9 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	this->provision=provision;
 	this->formation=formation;
 	this->speed=0;
-	this->clock=0;
 	//Rows
 	this->rows=new sf::Sprite(nFleet.Rows());
-	this->rows->setTextureRect(sf::IntRect(0,0,nFleet.Rows().getSize().x/12,nFleet.Rows().getSize().y));
+	this->Clock(0);
 	//Body
 	this->body=new sf::Sprite(nFleet.Body());
 	//Sails
@@ -45,8 +44,7 @@ void Fleet::Update(){
 		if(direction*this->speed<0){
 			this->speed=0;
 			//Rows
-			this->rows->setTextureRect(sf::IntRect(0,0,nFleet.Rows().getSize().x/12,nFleet.Rows().getSize().y));
-			this->clock=0;
+			this->Clock(0);
 		}
 		if(!this->route[0].contains(this->getPosition())){
 			//Get way
@@ -54,31 +52,19 @@ void Fleet::Update(){
 				way*=-1;
 			//Change angle
 			if(angleShip<angle){
-				if(angle<angleShip+way*this->speed/30)
+				if(angle<angleShip+way/2.)
 					this->setRotation(angle);
 				else
-					this->rotateTo(this->speed/30*way);
+					this->rotateTo(way/2.);
 			}
 			else if(angleShip>angle){
-				if(angle>angleShip-way*this->speed/30)
+				if(angle>angleShip-way/2.)
 					this->setRotation(angle);
 				else
-					this->rotateTo(-this->speed/30*way);
+					this->rotateTo(-way/2.);
 			}
 			//Modify speed
-			if((int)(angleShip-angle)){
-				if(fabs(this->speed)>fabs((nFleet.Speed()*4/5+nFleet.Speed()/5*clock/12)*this->provision/100))
-					this->speed=fabs((nFleet.Speed()*4/5+nFleet.Speed()/5*clock/12)*this->provision/100)*direction;
-				else
-					this->speed+=0.015*direction*(clock+1)/6;			
-			}else{
-				if(fabs(this->speed)>fabs((nFleet.Speed()*4/5+nFleet.Speed()/5*clock/11+1)*this->provision/100))
-					this->speed=fabs((nFleet.Speed()*4/5+nFleet.Speed()/5*clock/11+1)*this->provision/100)*direction;
-				else
-					this->speed+=0.025*direction*(clock+1)/6;
-			}
-			if(this->speed*direction>nFleet.Speed())
-				this->speed=direction*nFleet.Speed();	
+			this->speed=direction*nFleet.Speed();	
 			//Rows
 			if(this->speed){
 				//Forward
@@ -96,13 +82,12 @@ void Fleet::Update(){
 		}else
 			this->route.erase(this->route.begin());
 		//Move
-		this->Move(this->speed*0.0384151667*cos(this->getRotation()*0.017453293),this->speed*0.0384151667*sin(this->getRotation()*0.017453293));
+		this->Move(
+			this->SpeedOnFrame()*cos(this->getRotationRad()),
+			this->SpeedOnFrame()*sin(this->getRotationRad())
+		);
 	}else if(this->speed){
-		//Speed
-		this->speed-=0.1*this->Direction();
-		if(this->speed*this->Direction()<0)
-			this->speed=0;
-		this->Clock(0);
+		this->Stop();
 	}
 }
 void Fleet::addShip(short ship,short integrity){
@@ -144,10 +129,18 @@ void Fleet::Move(float x,float y){
 }
 void Fleet::Clock(float clock){
 	this->clock=clock;
-	this->rows->setTextureRect(sf::IntRect(nFleet.Rows().getSize().x/12*floor(clock),0,nFleet.Rows().getSize().x/12,nFleet.Rows().getSize().y));	
+	this->rows->setTextureRect(
+		sf::IntRect(
+			nFleet.Rows().getSize().x/12*floor(clock),
+			0,
+			nFleet.Rows().getSize().x/12,
+			nFleet.Rows().getSize().y
+		)
+	);	
 }
 void Fleet::Stop(){
 	this->speed=0;
+	this->Clock(0);
 	this->route.clear();
 }
 //Get data
@@ -177,6 +170,9 @@ short Fleet::Integrity(short i){
 float Fleet::Speed(){
 	return this->speed;
 }
+float Fleet::SpeedOnFrame(){
+	return this->speed*0.0384151667;
+}
 //Rotation
 void Fleet::rotate(float angle){
 	this->setRotation(this->getRotation()+angle);
@@ -196,6 +192,9 @@ void Fleet::setRotation(float angle){
 }
 float Fleet::getRotation(){
 	return this->body->getRotation();
+}
+float Fleet::getRotationRad(){
+	return this->body->getRotation()*0.017453293;
 }
 //Points
 void Fleet::setPosition(sf::Vector2f point){

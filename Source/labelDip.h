@@ -1,8 +1,6 @@
 #ifndef LABELDIP_H
 #define LABELDIP_H
-#include "settlement.h"
-#include "player.h"
-#include "fleet.h"
+#include "gameData.h"
 //Diplomatic status display
 class LabelDip{
 private:

@@ -13,7 +13,7 @@ Battle::Battle(short yourFleet,short enemyFleet,sf::View *view){
 	//Water
 	this->water=new Layer(1,256,"data/img/water.png");
 	//Music
-	audio.changeMusic("data/audio/music/Winds of Ithaca.ogg");
+	audio.changeMusic("data/audio/music/Battle.ogg");
 	audio.changeAmbient("data/audio/sound/water.ogg");
 	//Size
 	if(::fleet[yourFleet].size()<::fleet[enemyFleet].size())
@@ -266,14 +266,11 @@ bool Battle::ramming(short i,short j){
 		this->ship[j].takeDamage(40);
 		if(this->ship[i].Power()/this->ship[j].Power()>0.5)
 			this->ship[j].takeDamage(10);
+		if(this->ship[i].Float())
+			this->target[i].push_back(this->localBackward(30,i));
 		Stop(j);
 		Stop(i);
 		detail.show("Battle",this->getStatistic());
-		if(!this->ship[j].Float()){
-		}
-		if(!this->ship[i].Float()){
-
-		}
 		return 1;
 	}
 	return 0;
@@ -287,15 +284,17 @@ bool Battle::collision(short i,short j){
 	if(isEnemyShip(i,j)){
 		if(this->ramming(i,j))
 			return 1;
+	}
 	//Rammed
-	}else if(this->isRammedShip(j)){
+	if(this->isRammedShip(j)){
 			if(this->ship[j].contains(this->ship[i].Front())){
 			this->target[i].clear();
 			this->target[i].push_back(this->localBackward(30,i));
 			return 1;
 		}
+	}
 	//Friend
-	}else if(this->isFriendShip(i,j)){
+	if(this->isFriendShip(i,j)){
 		//Possible collision from beside
 		if(dist(this->ship[i].Front(),this->ship[j].Back())<50&&this->ship[i].Direction()*this->ship[j].Direction()<0){
 			this->target[i].clear();
@@ -397,14 +396,7 @@ bool Battle::collision(short i,short j){
 }
 //GUI
 std::string Battle::getStatistic(){
-	short friends=0,enemies=0;
-	for(short k=0;k<(short)this->ship.size();k++){
-		if(this->isFriendShip(0,k))
-			friends++;
-		else if(this->isEnemyShip(0,k))
-			enemies++;
-	}
-	return "Friend ships: "+std::to_string(friends)+"\nEnemy ships: "+std::to_string(enemies);
+	return "Friend ships: "+std::to_string(::fleet[this->fleets[0]].size())+"\nEnemy ships: "+std::to_string(::fleet[this->fleets[1]].size());
 }
 bool Battle::Pause(){
 	this->text->setString(sf::String("PAUSED"));
@@ -489,7 +481,6 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 	if(!this->Pause()){
 		//Clock and AI
 		if(!(this->clock=(clock+1)%60)){
-			detail.show("Battle",this->getStatistic());
 			AI();
 		}
 		//View
@@ -563,6 +554,8 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 				//Clear memory
 				this->ship.erase(this->ship.begin()+i);
 				this->target.erase(this->target.begin()+i);
+				//GUI
+				detail.show("Battle",this->getStatistic());
 			}
 		}
 	}

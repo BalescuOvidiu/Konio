@@ -25,6 +25,7 @@ private:
 	void selectFleet(short fleet);
 	void selectSett(short sett);
 	bool mouseOverGUI();
+	void gameGUI(sf::RenderWindow *window,sf::View *view);
 	//Map
 	Map *map;
 	//Clock

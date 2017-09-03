@@ -43,11 +43,13 @@ public:
 	short Ship(short i);
 	short Integrity(short i);
 	float Speed();
+	float SpeedOnFrame();
 	//Rotation
 	void rotate(float angle);
 	void rotateTo(float angle);
 	void setRotation(float angle);
 	float getRotation();
+	float getRotationRad();
 	//Points
 	void setPosition(sf::Vector2f point);
 	float dist(sf::Vector2f point);

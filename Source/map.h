@@ -14,7 +14,6 @@ private:
 	std::vector<Region> region;
 	//Graph
 	std::vector<Node> node;
-	std::vector<sf::Text> text;
 	std::vector<Node> route;
 	//For search of route
 	std::vector<bool> selected;

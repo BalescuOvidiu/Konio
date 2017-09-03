@@ -52,7 +52,6 @@ extern std::vector<Settlement> settlement;
 short getNearestSett(sf::Vector2f point);
 short getPopulation(short player);
 float getIncomeOf(short i);
-float getIncome(short player);
 bool isYourSett(short settlement);
 //Goods
 bool hasGood(short settlement,short good);

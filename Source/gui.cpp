@@ -54,6 +54,9 @@ float GUI::height(unsigned percent){
 	return this->winH*percent/100.;
 }
 //Mouse
+bool GUI::timeElapsed(short time){
+	return (sf::milliseconds(click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
+}
 bool GUI::canClick(short time){
 	if(sf::milliseconds(click.getElapsedTime().asMilliseconds())<sf::milliseconds(time))
 		return 0;

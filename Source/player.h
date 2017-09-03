@@ -39,4 +39,5 @@ extern std::vector<Player> player;
 std::string getDiplomaticStatus(short player);
 bool areAllies(short i,short j);
 bool areEnemies(short i,short j);
+void Defeated(short winner,short defeated);
 #endif

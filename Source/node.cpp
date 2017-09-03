@@ -4,13 +4,6 @@ Node::Node(short x,short y,short radius){
 	this->pos.x=x;
 	this->pos.y=y+52;
 	this->radius=radius;
-	this->circle=new sf::CircleShape(radius,64);
-	this->circle->setFillColor(sf::Color(255,0,0,128));
-	this->circle->setOrigin(radius,radius);
-	this->circle->setPosition(x,y+52);
-}
-void Node::Render(sf::RenderWindow *window){
-	window->draw(*this->circle);
 }
 //Get data
 sf::Vector2f Node::getPosition(){
