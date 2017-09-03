@@ -13,13 +13,13 @@
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/0.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/1.png'/>
 
-<p align=justify>Flotele sunt unitati militare ce au in componenta lor mai multe nave. Navele unei flote pot fi asezate in trei formatii, acestea stabilind tactica AI-ului. Fiecare flota are o anumita cantitate de provizii iar atunci cand aceasta ajunge la zero, flota este pierduta. Cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai rapida o scufunda pe cea mai lenta). Cand jucatorul se retrage din batalie pierde intreaga flota. Batalia se termina cand una dintre tabere ramane fara nave.</p>
+<p align=justify>Flotele sunt unitati militare ce au in componenta lor mai multe nave. Navele unei flote pot fi asezate in trei formatii, acestea stabilind tactica AI-ului. Fiecare flota are o anumita cantitate de provizii iar atunci cand aceasta ajunge la zero, flota este pierduta. Cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai puternica si rapida o scufunda pe cea mai lenta si mai mica). Cand jucatorul se retrage din batalie pierde intreaga flota. Batalia se termina cand una dintre tabere ramane fara nave.</p>
 
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/7.png'/>
 <img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/Gallery/8.png'/>
 
 Tactici si formatii:<br/>
-1. Periplous: navele sunt asezate intr-o singura linie, inainteaza pana ce se apropie de flota inamica si trece in atac.<br/>
+1. Periplous: navele sunt asezate intr-o singura linie, inainteaza in formatie pana ce flota inamica e aproape si sparg linia, navele atacand individual.<br/>
 2. Diekplous: navele sunt asezate in linii perpediculare fata de linia frontului. AI-ul  incearca sa patrunda printre nave.<br/>
 3. Kyklos: navele sunt asezate in cerc. Navele se misca in cerc pana ce se apropie suficient inamicul, atunci flota trece in contra-atac.<br/>
 
