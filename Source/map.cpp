@@ -63,9 +63,9 @@ void Map::Dijkstra(short begin,short end){
 		float minDist=999999999;
 		for(short i=0;i<(short)this->node.size();i++)
 			if(!selected[i]){
-				if(this->dist(begin,i)<minDist){
+				if(minDist>this->d[i]){
 					near=i;
-					minDist=dist(begin,i);
+					minDist=this->d[i];
 				}
 			}
 		selected[near]=1;
