@@ -15,20 +15,20 @@ void SubMenu::Render(sf::RenderWindow *window){
 }
 void SubMenu::Update(sf::RenderWindow *window){
 	//Keys
-	if(this->resume->left("Resume","Click or press R to remain in game.")||sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+	if(this->resume->left("Resume","Click or press R to remain in game.",sf::Keyboard::R)){
 		this->visible=0;
-	}else if(this->campaign->left("Campaign","Click or press C to exit from game and see campaign.")||sf::Keyboard::isKeyPressed(sf::Keyboard::C)){		
+	}else if(this->campaign->left("Campaign","Click or press C to exit from game and to see campaign map.",sf::Keyboard::C)){		
 		gui.selected=2;
-	}else if(this->exit->left("Exit","Click or press Esc to exit from game.")||sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+	}else if(this->exit->left("Exit","Click or press Esc to exit from game.",sf::Keyboard::Escape)){
 		window->close();
 	}
 	//Options
 	if(op){
 		op.Update();
-		if(this->options->right("Options","Press right button of mouse or I to close options section."))
+		if(this->options->left("Options","Press left button of mouse or O to close options section."))
 				op.hide();
 	}else{
-		if(this->options->left("Options","You can set sound and volume music. Click or press O to open options section.")||sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+		if(this->options->left("Options","You can set sound and volume music. Click or press O to open options section.",sf::Keyboard::O))
 			op.show();
 	}
 	if(!this->visible)

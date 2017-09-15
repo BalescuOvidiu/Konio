@@ -37,6 +37,7 @@ extern short human;
 extern std::vector<Player> player;
 //Global functions
 std::string getDiplomaticStatus(short player);
+std::string PlayerInfo(short player);
 bool areAllies(short i,short j);
 bool areEnemies(short i,short j);
 void Defeated(short winner,short defeated);

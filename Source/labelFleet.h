@@ -11,6 +11,7 @@ public:
 	LabelFleet(short selected);
 	void Render(sf::RenderWindow *window);
 	//Update
+	void reload();
 	void move(float x,float y);
 	bool FormationUpdate();
 	bool playerLeft();

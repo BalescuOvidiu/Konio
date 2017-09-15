@@ -24,6 +24,9 @@ float Naval::Speed(){
 float Naval::Cost(){
 	return this->cost;
 }
+float Naval::Power(){
+	return this->basic.speed*this->rowers;
+}
 short Naval::Rowers(){
 	return this->rowers;
 }

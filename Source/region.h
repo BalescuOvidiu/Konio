@@ -10,8 +10,6 @@ public:
 	//Basic
 	Region(short x,short y,short size,std::string name);
 	void Render(sf::RenderWindow *window);
-	//Update
-	void Update();
 	//Get data
 	std::string getName();
 	//Delete

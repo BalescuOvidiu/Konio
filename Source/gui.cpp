@@ -55,25 +55,36 @@ float GUI::height(unsigned percent){
 }
 //Mouse
 bool GUI::timeElapsed(short time){
-	return (sf::milliseconds(click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
+	return (sf::milliseconds(this->click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
 }
 bool GUI::canClick(short time){
-	if(sf::milliseconds(click.getElapsedTime().asMilliseconds())<sf::milliseconds(time))
+	if(sf::milliseconds(this->click.getElapsedTime().asMilliseconds())<sf::milliseconds(time))
 		return 0;
-	click.restart();
-	return 1;	
+	this->click.restart();
+	return 1;
 }
 bool GUI::canLeft(short time){
-	return (sf::Mouse::isButtonPressed(sf::Mouse::Left)&&this->canClick(time));
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		return (this->canClick(time));
+	return 0;
 }
 bool GUI::canRight(short time){
-	return (sf::Mouse::isButtonPressed(sf::Mouse::Right)&&this->canClick(time));
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		return (this->canClick(time));
+	return 0;
+}
+void GUI::clickRestart(){
+	this->click.restart();
 }
 sf::Vector2f GUI::mousePosition(){
 	float x=(sf::Mouse::getPosition().x-this->winX)*this->scale+this->x;
 	float y=(sf::Mouse::getPosition().y-this->winY-30)*this->scale+this->y;
 	if(this->scale<1.1)
 		y+=50*this->scale;
+	if(x<0)
+		x=0;
+	if(y<0)
+		y=0;
 	return sf::Vector2f(x,y);
 }
 //Text

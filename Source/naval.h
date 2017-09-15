@@ -15,6 +15,7 @@ public:
 	std::string Description();
 	float Speed();
 	float Cost();
+	float Power();
 	short Rowers();
 	//Size
 	short width();

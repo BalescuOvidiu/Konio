@@ -4,9 +4,9 @@ LabelFleet::LabelFleet(short selected){
 	this->selected=selected;
 	//Label
 	this->label=new Label(gui.x,232+gui.y,325,200+25*(::fleet[selected].size()-2),1);
-	this->label->setTitle(::player[::fleet[selected].Player()].Name()+getDiplomaticStatus(::fleet[selected].Player()));
+	this->label->setTitle(FleetInfo(selected));
 	//Text
-	std::string text="          "+std::to_string(::fleet[selected].size())+" ships\n          "+::FormationName(::fleet[selected].Formation())+"\n          Provision: "+gui.Format(::fleet[selected].Provision())+"%";
+	std::string text="          "+PlayerInfo(::fleet[selected].Player())+"\n          "+::FormationName(::fleet[selected].Formation())+"\n          "+gui.Format(::fleet[selected].Upkeep())+" upkeep";
 	//Ships
 	for(short i=0;i<(short)::fleet[selected].size();i++)
 		text+="\n"+naval[::fleet[selected].Ship(i)].Name()+" - "+gui.Format(::fleet[selected].Integrity(i))+"%";
@@ -30,6 +30,18 @@ void LabelFleet::Render(sf::RenderWindow *window){
 	}
 }
 //Update
+void LabelFleet::reload(){
+	this->label->setTitle(FleetInfo(selected));
+}
+void LabelFleet::move(float x,float y){
+	this->label->move(x,y);
+	this->player->move(x,y);
+	if(::fleet[this->selected].Player()==::human){
+		this->form1->move(x,y);
+		this->form2->move(x,y);
+		this->form3->move(x,y);
+	}
+}
 bool LabelFleet::FormationUpdate(){
 	if(isYourFleet(this->selected)){
 		if(this->form1->left(FormationName(0),FormationText(0))){
@@ -45,17 +57,8 @@ bool LabelFleet::FormationUpdate(){
 	}
 	return 0;
 }
-void LabelFleet::move(float x,float y){
-	this->label->move(x,y);
-	this->player->move(x,y);
-	if(::fleet[this->selected].Player()==::human){
-		this->form1->move(x,y);
-		this->form2->move(x,y);
-		this->form3->move(x,y);
-	}
-}
 bool LabelFleet::playerLeft(){
-	return this->player->left(::player[::fleet[selected].Player()].Name()+getDiplomaticStatus(::fleet[selected].Player()),"Click to see information about owner of this fleet.");
+	return this->player->left(PlayerInfo(::fleet[selected].Player()),"Click to see information about owner of this fleet.");
 }
 bool LabelFleet::right(){
 	return this->label->right();

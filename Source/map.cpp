@@ -23,17 +23,8 @@ void Map::move(short x,short y){
 void Map::Update(){
 	//Water
 	this->water->Update();
-	//Regions
-	for(short i=0;i<(short)this->region.size();i++)
-		this->region[i].Update();
 }
 //Graph
-std::vector<Node> Map::getRoute(short begin,short end){
-	this->clearRoute();
-	this->selected.resize(this->node.size(),0);
-	Dijkstra(begin,end);
-	return this->route;
-}
 void Map::Dijkstra(short begin,short end){
 	//If begin is adiacent with end
 	if(this->node[begin].collision(this->node[end])){
@@ -85,6 +76,12 @@ void Map::Dijkstra(short begin,short end){
 		end=t[end];
 	}
 }
+void Map::clearRoute(){
+	this->t.clear();
+	this->route.clear();
+	this->selected.clear();
+	this->d.clear();
+}
 bool Map::collision(short i,short j){
 	return (this->node[i].collision(this->node[j]));
 }
@@ -106,14 +103,17 @@ short Map::getNearestNode(sf::Vector2f point){
 	}
 	return nearest;
 }
-void Map::clearRoute(){
-	this->t.clear();
-	this->route.clear();
-	this->selected.clear();
-	this->d.clear();
+Node Map::GetNearestNode(sf::Vector2f point){
+	return this->getNode(this->getNearestNode(point));
 }
 Node Map::getNode(short i){
 	return this->node[i];
+}
+std::vector<Node> Map::getRoute(short begin,short end){
+	this->clearRoute();
+	this->selected.resize(this->node.size(),0);
+	Dijkstra(begin,end);
+	return this->route;
 }
 //Add functions
 void Map::add(Region region){

@@ -70,6 +70,9 @@ std::string getDiplomaticStatus(short player){
 		return " - Ally";
 	return " - Enemy";
 }
+std::string PlayerInfo(short player){
+	return ::player[player].Name()+getDiplomaticStatus(player);
+}
 bool areAllies(short i,short j){
 	return ::player[i].Team()==::player[j].Team();
 }

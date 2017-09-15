@@ -39,7 +39,9 @@ private:
 	bool isEnemyShip(short i,short j);
 	bool isFriendShip(short i,short j);
 	//Events
+	void SetTarget(short ship,sf::Vector2f target);
 	void Stop(short ship);
+	void Rotate(short i,short j,short direction);
 	bool ramming(short i,short j);
 	bool collision(short i,short j);
 	//GUI

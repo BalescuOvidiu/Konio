@@ -43,6 +43,7 @@ public:
 	bool canClick(short time);
 	bool canLeft(short time);
 	bool canRight(short time);
+	void clickRestart();
 	sf::Vector2f mousePosition();
 	//Text
 	sf::Font* Font();

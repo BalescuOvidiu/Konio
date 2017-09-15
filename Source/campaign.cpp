@@ -23,7 +23,7 @@ void Campaign::Update(sf::View *view){
 	about.hide();
 	if(gui.selected!=4)
 		this->game=NULL;
-	if(this->menu->left("Menu","Click or press M to leave from campaign.")||sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	if(this->menu->left("Menu","Click or press M to leave from campaign.",sf::Keyboard::M))
 		gui.selected=1;
 	for(short i=0;i<(short)(this->button.size());i++){
 		if(this->button[i].mouseOver()){

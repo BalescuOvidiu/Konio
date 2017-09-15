@@ -58,6 +58,7 @@ public:
 	bool left();
 	bool right();
 	//Get data
+	bool Stopped();
 	bool Float();
 	float Integrity();
 	float SpeedMax();

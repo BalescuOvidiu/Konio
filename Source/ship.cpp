@@ -228,6 +228,9 @@ bool Ship::right(){
 	return this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right);
 }
 //Get data
+bool Ship::Stopped(){
+	return !this->speed;
+}
 bool Ship::Float(){
 	return (this->integrity>50);
 }
@@ -323,9 +326,6 @@ bool Ship::move(sf::Vector2f target){
 			//Reverse
 			if(this->clock<0)
 				this->Rows(11);
-			//Stop
-			if(!this->speed)
-				this->Rows(0);
 			this->Rows(this->clock+0.065*direction);
 		}
 	//Stop

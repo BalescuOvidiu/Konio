@@ -16,9 +16,7 @@ public:
 	//Update
 	void move(float x,float y);
 	bool playerLeft();
-	bool localMouseOver();
 	bool localLeft();
-	bool importMouseOver();
 	bool importLeft();
 	bool right();
 	bool mouseOver();

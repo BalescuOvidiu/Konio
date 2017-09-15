@@ -19,6 +19,8 @@ public:
 	bool right();
 	bool left(std::string title,std::string text);
 	bool right(std::string title,std::string text);
+	bool left(std::string title,std::string text,sf::Keyboard::Key key);
+	bool right(std::string title,std::string text,sf::Keyboard::Key key);
 	~Button();
 };
 #endif

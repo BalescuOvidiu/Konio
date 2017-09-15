@@ -13,7 +13,7 @@ void Options::Render(sf::RenderWindow *window){
 }
 void Options::Update(){
 	//Update
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)||this->close->left("Close","Click or press I to close options section."))
+	if(this->close->left("Close","Click or press O to close options section."))
 		this->visible=0;
 	if(music->Update(audio.musicVolume,0,100,1,1,"Music Volume",
 	"Left click to decrease or right click to increase music volume.")

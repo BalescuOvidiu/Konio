@@ -16,20 +16,22 @@ private:
 	//GUI
 	SubMenu *subMenu;
 	Button *submenu,*main,*diplomacy;
-	sf::Text *text;
-	void showDiplomaticStatus(short player);
+	//Toggle GUI
+	sf::CircleShape* range;
+	sf::Text *paused;
 	void showHumanStatus();
 	void showData();
 	void deselectAll();
 	void selectPlayer(short player);
 	void selectFleet(short fleet);
 	void selectSett(short sett);
+	void goToSett(sf::View *view,short sett);
+	bool canSelectSett();
 	bool mouseOverGUI();
 	void gameGUI(sf::RenderWindow *window,sf::View *view);
 	//Map
 	Map *map;
 	//Clock
-	bool pause;
 	unsigned month;
 	short year;
 	bool Pause();
@@ -38,12 +40,14 @@ private:
 	void Monthly();
 	//AI
 	void AI();
+	void DefeatedFleet(short i,short j);
+	void CombatFleet(short i,short j);
 	void getRoute(short fleet,sf::Vector2f target);
 	void buyShip(short id,short sett);
 	//View
 	void moveView(sf::View *view,float x,float y);
 	void moveViewTo(sf::View *view,sf::Vector2f pos);
-	void moveCamera(sf::RenderWindow *window,sf::View *view);
+	void moveCamera(sf::RenderWindow *window,sf::View *view,float speed);
 public:
 	//Battle
 	Battle *battle;

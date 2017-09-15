@@ -23,6 +23,7 @@ public:
 	void Update();
 	void addShip(short ship,short integrity);
 	void removeShip(short ship);
+	void setIntegrity(short ship,short integrity);
 	void Reform(short formation);
 	void Retreat();
 	void Supply();
@@ -42,8 +43,10 @@ public:
 	short size();
 	short Ship(short i);
 	short Integrity(short i);
+	float Upkeep();
 	float Speed();
 	float SpeedOnFrame();
+	float Power();
 	//Rotation
 	void rotate(float angle);
 	void rotateTo(float angle);
@@ -67,6 +70,7 @@ extern Naval nFleet;
 float distFleet(short i,short j);
 short getShips(short player);
 short getNearestFleet(sf::Vector2f point);
+std::string FleetInfo(short i);
 //Diplomacy
 bool isYourFleet(short i);
 bool isEnemyFleet(short i,short j);

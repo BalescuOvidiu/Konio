@@ -18,10 +18,11 @@ public:
 	Settlement(short x,short y,short player,int population,int limit,int rate,short local,short import,short occupied,std::string name);
 	void Render(sf::RenderWindow *window);
 	//Update
-	void Update();
 	void Monthly();
 	void Conquest(short player);
 	void Recruit(short population);
+	//Mouse
+	bool mouseOver();
 	bool left();
 	//Get data
 	sf::Vector2f getPosition();

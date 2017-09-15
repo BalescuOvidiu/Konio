@@ -1,7 +1,7 @@
 #include "settlement.h"
 //Basic
 Settlement::Settlement(short x,short y,short player,int population,int limit,int rate,short local,short import,short occupied,std::string name){
-	this->region=new Region(x,y,30,name);
+	this->region=new Region(x-6*name.length(),y-10,30,name);
 	this->x=x;
 	this->y=y;
 	this->player=player;
@@ -16,9 +16,6 @@ void Settlement::Render(sf::RenderWindow *window){
 	this->region->Render(window);
 }
 //Update
-void Settlement::Update(){
-	this->region->Update();
-}
 void Settlement::Monthly(){
 	//Population
 	this->population+=this->getGrowth();
@@ -36,11 +33,13 @@ void Settlement::Conquest(short player){
 void Settlement::Recruit(short population){
 	this->population-=population;
 }
+//Mouse
+bool Settlement::mouseOver(){
+	return (dist(sf::Vector2f(x,y),gui.mousePosition())<=40);
+}
 bool Settlement::left(){
-	if(dist(sf::Vector2f(x,y),gui.mousePosition())<=40){
-		about.show(::player[this->getOwner()].Name()+"'s settlement"+getDiplomaticStatus(this->getOwner()),gui.Format(this->population)+" freemen");
+	if(this->mouseOver())
 		return (gui.canLeft(150));
-	}
 	return 0;
 }
 //Get data
@@ -145,7 +144,7 @@ short getNearestSett(sf::Vector2f point){
 	return nearest;
 }
 short getPopulation(short player){
-	short pop=0;
+	unsigned pop=0;
 	for(short i=0;i<(short)::settlement.size();i++){
 		if(isOf(i,player))
 			pop+=::settlement[i].getPopulation();

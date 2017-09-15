@@ -60,22 +60,25 @@ bool Button::mouseOver(std::string title,std::string text){
 }
 //Mouse button
 bool Button::left(){
-	if(this->mouseOver()&&gui.canLeft(400)){
-		audio.Click();
-		return 1;
+	if(this->mouseOver()){
+		if(gui.canLeft(400)){
+			audio.Click();
+			return 1;
+		}
 	}
 	return 0;
 }
 bool Button::right(){
-	if(this->mouseOver()&&gui.canRight(400)){
-		audio.Click();
-		return 1;
+	if(this->mouseOver()){
+		if(gui.canRight(400)){
+			audio.Click();
+			return 1;
+		}
 	}
 	return 0;
 }
 bool Button::left(std::string title,std::string text){
-	if(this->mouseOver()){
-		about.show(title,text);
+	if(this->mouseOver(title,text)){
 		if(gui.canLeft(400)){
 			audio.Click();
 			return 1;
@@ -84,10 +87,45 @@ bool Button::left(std::string title,std::string text){
 	return 0;
 }
 bool Button::right(std::string title,std::string text){
-	if(this->mouseOver()){
-		about.show(title,text);
+	if(this->mouseOver(title,text)){
 		if(gui.canRight(400)){
-		audio.Click();
+			audio.Click();
+			return 1;
+		}
+	}
+	return 0;
+}
+bool Button::left(std::string title,std::string text,sf::Keyboard::Key key){
+	//Mouse
+	if(this->mouseOver(title,text)){
+		if(gui.canLeft(400)){
+			audio.Click();
+			return 1;
+		}
+	}
+	//Key
+	if(gui.timeElapsed(400)){
+		if(sf::Keyboard::isKeyPressed(key)){
+			gui.clickRestart();
+			audio.Click();
+			return 1;
+		}
+	}
+	return 0;
+}
+bool Button::right(std::string title,std::string text,sf::Keyboard::Key key){
+	//Mouse
+	if(this->mouseOver(title,text)){
+		if(gui.canRight(400)){
+			audio.Click();
+			return 1;
+		}
+	}
+	//Key
+	if(gui.timeElapsed(400)){
+		if(sf::Keyboard::isKeyPressed(key)){
+			gui.clickRestart();
+			audio.Click();
 			return 1;
 		}
 	}

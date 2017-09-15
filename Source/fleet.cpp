@@ -14,7 +14,7 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	//Sails
 	this->sails=new sf::Sprite(::sails);
 	this->sails->setTextureRect(sf::IntRect(13*(::player[player].Faction()),0,12,100));
-	//Origin	
+	//Origin
 	this->body->setOrigin(nFleet.Body().getSize().x/2,nFleet.Body().getSize().y/2);
 	this->rows->setOrigin(nFleet.Rows().getSize().x/24,nFleet.Rows().getSize().y/2);
 	this->sails->setOrigin(0,::sails.getSize().y/2);
@@ -22,7 +22,7 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	this->setPosition(pos);
 	this->setRotation(angle);
 	//Scale
-	this->sails->setScale(0.4,0.5);
+	this->sails->setScale(0.6,0.6);
 }
 //Update and rendering
 void Fleet::Render(sf::RenderWindow *window){
@@ -98,6 +98,9 @@ void Fleet::removeShip(short ship){
 	this->ship.erase(this->ship.begin()+ship);
 	this->integrity.erase(this->integrity.begin()+ship);
 }
+void Fleet::setIntegrity(short ship,short integrity){
+	this->integrity[ship]=integrity;
+}
 void Fleet::Reform(short formation){
 	this->formation=formation;
 }
@@ -167,11 +170,20 @@ short Fleet::Ship(short i){
 short Fleet::Integrity(short i){
 	return this->integrity[i];
 }
+float Fleet::Upkeep(){
+	return this->integrity.size()*0.1;
+}
 float Fleet::Speed(){
 	return this->speed;
 }
 float Fleet::SpeedOnFrame(){
 	return this->speed*0.0384151667;
+}
+float Fleet::Power(){
+	float power=0;
+	for(short i=0;i<(short)this->ship.size();i++)
+		power+=::naval[this->ship[i]].Power();
+	return (power*this->formation*this->integrity.size());
 }
 //Rotation
 void Fleet::rotate(float angle){
@@ -215,8 +227,8 @@ sf::Vector2f Fleet::getPosition(){
 bool Fleet::mouseOver(){
 	if(this->contains(gui.mousePosition())){
 		about.show(
-			::player[this->player].Name()+"'s fleet"+getDiplomaticStatus(this->player),
-			gui.Format(this->size())+" ships  "+gui.Format(this->size()/10.)+" upkeep"
+			::player[this->player].Name()+"'s fleet"+getDiplomaticStatus(this->player)+" - "+gui.Format((int)this->provision)+"%",
+			FormationName(this->formation)+"\n"+gui.Format(this->size())+" ships  "+gui.Format(this->Upkeep())+" upkeep"
 		);
 		return 1;
 	}
@@ -251,6 +263,9 @@ short getNearestFleet(sf::Vector2f point){
 			nearest=i;
 		}
 	return nearest;
+}
+std::string FleetInfo(short i){
+	return gui.Format(::fleet[i].size())+" ships - "+gui.Format(::fleet[i].Provision())+"%";
 }
 bool isYourFleet(short i){
 	return ::fleet[i].Player()==human;

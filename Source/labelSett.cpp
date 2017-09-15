@@ -37,8 +37,8 @@ void LabelSett::Render(sf::RenderWindow *window){
 	this->local->Render(window);
 	this->import->Render(window);
 	//Navy buttons
-	if(isYourSett(selected)){
-		if(hasGood(selected,1)){
+	if(isYourSett(this->selected)){
+		if(hasGood(this->selected,1)){
 			this->first->Render(window);
 			this->second->Render(window);
 			this->third->Render(window);
@@ -54,8 +54,8 @@ void LabelSett::move(float x,float y){
 	this->local->move(x,y);
 	this->import->move(x,y);
 	//Navy buttons
-	if(isYourSett(selected)){
-		if(hasGood(selected,1)){
+	if(isYourSett(this->selected)){
+		if(hasGood(this->selected,1)){
 			this->first->move(x,y);
 			this->second->move(x,y);
 			this->third->move(x,y);
@@ -66,19 +66,13 @@ void LabelSett::move(float x,float y){
 	}
 }
 bool LabelSett::playerLeft(){
-	return this->player->left(::player[::settlement[selected].getPlayer()].Name()+getDiplomaticStatus(::settlement[selected].getPlayer()),"Click to see information about owner of this settlement.");
-}
-bool LabelSett::localMouseOver(){
-	return this->local->mouseOver();
+	return this->player->left(PlayerInfo(::settlement[this->selected].getPlayer()),"Click to see information about owner of this settlement.");
 }
 bool LabelSett::localLeft(){
-	return this->local->left();
-}
-bool LabelSett::importMouseOver(){
-	return this->import->mouseOver();
+	return this->local->left(ExportedGoodStatus(this->selected),goodDescription(this->sett().getGood()));
 }
 bool LabelSett::importLeft(){
-	return this->import->left();
+	return this->import->left(ImportedGoodStatus(this->selected),goodDescription(getImportedGood(this->selected)));
 }
 bool LabelSett::right(){
 	return this->label->right();
@@ -88,24 +82,34 @@ bool LabelSett::mouseOver(){
 }
 short LabelSett::getShip(){
 	//Navy buttons
-	if(isYourSett(selected)){
-		if(hasGood(selected,1)){
-			if(this->first->left(naval[0].Name(),naval[0].Description())){
-				return 0;
-			}
-			if(this->second->left(naval[1].Name(),naval[1].Description())){
-				return 1;
-			}
-			if(this->third->left(naval[2].Name(),naval[2].Description())){
-				return 2;
-			}
+	if(isYourSett(this->selected)){
+		if(hasGood(this->selected,1)){
+			if(this->first->mouseOver(naval[0].Name(),naval[0].Description()))
+				if(::player[::human].canBuy(naval[0].Cost()))
+					if(this->first->left()){
+						return 0;
+					}
+			if(this->second->mouseOver(naval[1].Name(),naval[1].Description()))
+				if(::player[::human].canBuy(naval[1].Cost()))
+					if(this->second->left()){
+						return 1;
+					}
+			if(this->third->mouseOver(naval[2].Name(),naval[2].Description()))
+				if(::player[::human].canBuy(naval[2].Cost()))
+					if(this->third->left()){
+						return 2;
+					}
 		}else{
-			if(this->first->left(naval[3].Name(),naval[3].Description())){
-				return 3;
-			}
-			if(this->second->left(naval[4].Name(),naval[4].Description())){
-				return 4;
-			}
+			if(this->first->mouseOver(naval[3].Name(),naval[3].Description()))
+				if(::player[::human].canBuy(naval[3].Cost()))
+					if(this->first->left()){
+						return 3;
+					}
+			if(this->second->mouseOver(naval[4].Name(),naval[4].Description()))
+				if(::player[::human].canBuy(naval[4].Cost()))
+					if(this->second->left()){
+						return 4;
+					}
 		}
 	}
 	return -1;

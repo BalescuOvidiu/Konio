@@ -21,18 +21,15 @@ void History::Update(){
 					getline(in,title);
 					getline(in,text,'*');
 					this->info->show(title,text);
-				}else{
-					this->info->setTitle(std::to_string(i)+" "+std::to_string(j));
-					this->info->setText(std::to_string(gui.width(25)*i)+" "+std::to_string(gui.width(20)+gui.width(20)*j)+" "+std::to_string(gui.width(25))+" "+std::to_string(gui.width(20)));
-					this->info->show();
-				}
+				}else
+					this->info->show("Unvailable!","The file "+std::to_string(i+j*5)+".txt is unvailable.");
 				in.close();
 			}
 		}
 	}
 	if(this->info->right())
 		this->info->hide();
-	if(this->menu->left("Menu","Click or press M to leave from campaign.")||sf::Keyboard::isKeyPressed(sf::Keyboard::M)){
+	if(this->menu->left("Menu","Click or press M to leave from campaign.",sf::Keyboard::M)){
 		gui.selected=1;
 		this->info->hide();
 	}
