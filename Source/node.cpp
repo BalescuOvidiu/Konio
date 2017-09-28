@@ -2,7 +2,7 @@
 
 Node::Node(short x,short y,short radius){
 	this->pos.x=x;
-	this->pos.y=y+52;
+	this->pos.y=y;
 	this->radius=radius;
 }
 //Get data

@@ -3,7 +3,7 @@
 LabelFleet::LabelFleet(short selected){
 	this->selected=selected;
 	//Label
-	this->label=new Label(gui.x,232+gui.y,325,200+25*(::fleet[selected].size()-2),1);
+	this->label=new Label(gui.x,180+gui.y,325,200+25*(::fleet[selected].size()-2),1);
 	this->label->setTitle(FleetInfo(selected));
 	//Text
 	std::string text="          "+PlayerInfo(::fleet[selected].Player())+"\n          "+::FormationName(::fleet[selected].Formation())+"\n          "+gui.Format(::fleet[selected].Upkeep())+" upkeep";
@@ -13,11 +13,11 @@ LabelFleet::LabelFleet(short selected){
 	//Text of label
 	this->label->setText(text);
 	//Buttons
-	this->player=new Button("data/game/icons/"+std::to_string(::fleet[selected].Player())+".png",45+gui.x,322+gui.y);
+	this->player=new Button("data/game/icons/"+std::to_string(::fleet[selected].Player())+".png",45+gui.x,270+gui.y);
 	if(isYourFleet(this->selected)){
-		this->form1=new Button("data/game/formations/0.png",220+gui.x,387+gui.y);
-		this->form2=new Button("data/game/formations/1.png",260+gui.x,387+gui.y);
-		this->form3=new Button("data/game/formations/2.png",300+gui.x,387+gui.y);
+		this->form1=new Button("data/game/formations/0.png",220+gui.x,335+gui.y);
+		this->form2=new Button("data/game/formations/1.png",260+gui.x,335+gui.y);
+		this->form3=new Button("data/game/formations/2.png",300+gui.x,335+gui.y);
 	}
 }
 void LabelFleet::Render(sf::RenderWindow *window){

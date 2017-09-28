@@ -210,7 +210,7 @@ bool Ship::mouseOver(){
 	if(this->contains(gui.mousePosition())){
 		if(this->integrity)
 			about.show(
-				naval[this->id].Name()+getDiplomaticStatus(::fleet[this->fleet].Player())+" "+std::to_string((short)this->integrity)+"%",
+				naval[this->id].Name()+getDiplomaticStatus(::fleet[this->fleet].Player())+" "+gui.Format((int)this->integrity)+"%",
 				"Max speed "+gui.Format(naval[this->id].Speed())+" km/h\n"+gui.Format(naval[this->id].Rowers())+" rowers"
 			);
 		return 1;
@@ -241,7 +241,7 @@ float Ship::SpeedMax(){
 	return ((naval[this->id].Speed()*4/5+naval[this->id].Speed()/5*clock/11+1)*this->integrity/100);
 }
 float Ship::SpeedOnFrame(){
-	return this->speed*0.0384151667;
+	return this->speed*0.032;
 }
 float Ship::Speed(){
 	return this->speed;

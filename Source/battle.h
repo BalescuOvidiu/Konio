@@ -1,8 +1,9 @@
 #ifndef BATTLE_H
 #define BATTLE_H
-#include "ship.h"
 #include "button.h"
+#include "labelIcon.h"
 #include "layer.h"
+#include "ship.h"
 //Definition
 class Battle{
 private:
@@ -11,7 +12,7 @@ private:
 	sf::Text *text;
 	Button *retreat;
 	bool pause;
-	short selected;
+	short selected,enemies,friends;
 	unsigned size;
 	//AI
 	short clock,tactic;

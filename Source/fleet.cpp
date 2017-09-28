@@ -31,17 +31,14 @@ void Fleet::Render(sf::RenderWindow *window){
 	window->draw(*this->sails);
 }
 void Fleet::Update(){
-	this->provision-=0.005;
+	this->provision-=0.01;
 	if(this->route.size()){
 		//Get the angles
 		float angleShip=this->body->getRotation();
 		float angle=getAngle(this->getPosition(),this->route[0].getPosition());
-		int direction=1,way=1;
-		//Get direction
-		if(140<fabs(angleShip-angle)&&fabs(angleShip-angle)<230&&this->dist(this->route[0].getPosition())<60)
-			direction=-1;
+		int way=1;
 		//If direction is change
-		if(direction*this->speed<0){
+		if(this->speed<0){
 			this->speed=0;
 			//Rows
 			this->Clock(0);
@@ -52,19 +49,19 @@ void Fleet::Update(){
 				way*=-1;
 			//Change angle
 			if(angleShip<angle){
-				if(angle<angleShip+way/2.)
+				if(angle<angleShip+way*this->Randament())
 					this->setRotation(angle);
 				else
-					this->rotateTo(way/2.);
+					this->rotateTo(way*this->Randament());
 			}
 			else if(angleShip>angle){
-				if(angle>angleShip-way/2.)
+				if(angle>angleShip-way*this->Randament())
 					this->setRotation(angle);
 				else
-					this->rotateTo(-way/2.);
+					this->rotateTo(-way*this->Randament());
 			}
 			//Modify speed
-			this->speed=direction*nFleet.Speed();	
+			this->speed=nFleet.Speed()*this->Randament();	
 			//Rows
 			if(this->speed){
 				//Forward
@@ -76,7 +73,7 @@ void Fleet::Update(){
 				//Stop
 				if(!this->speed)
 					Clock(0);
-				Clock(this->clock+0.065*direction);
+				Clock(this->clock+0.065);
 			}
 		//Stop
 		}else
@@ -177,13 +174,16 @@ float Fleet::Speed(){
 	return this->speed;
 }
 float Fleet::SpeedOnFrame(){
-	return this->speed*0.0384151667;
+	return this->speed*0.032;
 }
 float Fleet::Power(){
 	float power=0;
 	for(short i=0;i<(short)this->ship.size();i++)
 		power+=::naval[this->ship[i]].Power();
 	return (power*this->formation*this->integrity.size());
+}
+float Fleet::Randament(){
+	return this->provision/100;
 }
 //Rotation
 void Fleet::rotate(float angle){
@@ -242,40 +242,6 @@ Fleet::~Fleet(){
 }
 //Global variables
 std::vector<Fleet> fleet;
-Naval nFleet(-1);
-//Global functions
-float distFleet(short i,short j){
-	return ::fleet[i].dist(fleet[j].getPosition());
-}
-short getShips(short player){
-	short ships=0;
-	for(short i=0;i<(short)::fleet.size();i++)
-		if(::fleet[i].Player()==player)
-			ships+=::fleet[i].size();
-	return ships;
-}
-short getNearestFleet(sf::Vector2f point){
-	short nearest=0;
-	float Dist=dist(point,fleet[5].getPosition());
-	for(short i=1;i<(short)fleet.size();i++)
-		if(Dist>dist(point,fleet[i].getPosition())){
-			Dist=dist(point,fleet[i].getPosition());
-			nearest=i;
-		}
-	return nearest;
-}
-std::string FleetInfo(short i){
-	return gui.Format(::fleet[i].size())+" ships - "+gui.Format(::fleet[i].Provision())+"%";
-}
-bool isYourFleet(short i){
-	return ::fleet[i].Player()==human;
-}
-bool isEnemyFleet(short i,short j){
-	return ::player[::fleet[i].Player()].Team()!=::player[::fleet[j].Player()].Team();
-}
-bool isAlliedFleet(short i,short j){
-	return ::player[::fleet[i].Player()].Team()==::player[::fleet[j].Player()].Team();
-}
 //Formations
 std::string FormationName(short formation){
 	std::ifstream in("data/game/formations/"+std::to_string(formation)+".txt");
@@ -298,3 +264,4 @@ std::string FormationText(short formation){
 	}
 	return "";
 }
+Naval nFleet(-1);

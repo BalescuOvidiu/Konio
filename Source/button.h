@@ -6,6 +6,7 @@ class Button{
 private:
 	sf::Texture *tex;
 	sf::Sprite *sprite;
+	void Pressed();
 public:
 	Button(std::string directory,short x,short y);
 	Button(short x,short y,std::string directory);

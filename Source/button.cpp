@@ -62,7 +62,7 @@ bool Button::mouseOver(std::string title,std::string text){
 bool Button::left(){
 	if(this->mouseOver()){
 		if(gui.canLeft(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
@@ -71,7 +71,7 @@ bool Button::left(){
 bool Button::right(){
 	if(this->mouseOver()){
 		if(gui.canRight(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
@@ -80,7 +80,7 @@ bool Button::right(){
 bool Button::left(std::string title,std::string text){
 	if(this->mouseOver(title,text)){
 		if(gui.canLeft(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
@@ -89,7 +89,7 @@ bool Button::left(std::string title,std::string text){
 bool Button::right(std::string title,std::string text){
 	if(this->mouseOver(title,text)){
 		if(gui.canRight(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
@@ -99,15 +99,14 @@ bool Button::left(std::string title,std::string text,sf::Keyboard::Key key){
 	//Mouse
 	if(this->mouseOver(title,text)){
 		if(gui.canLeft(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
 	//Key
-	if(gui.timeElapsed(400)){
+	if(gui.canClick(400)){
 		if(sf::Keyboard::isKeyPressed(key)){
-			gui.clickRestart();
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
@@ -117,19 +116,22 @@ bool Button::right(std::string title,std::string text,sf::Keyboard::Key key){
 	//Mouse
 	if(this->mouseOver(title,text)){
 		if(gui.canRight(400)){
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
 	//Key
-	if(gui.timeElapsed(400)){
+	if(gui.canClick(400)){
 		if(sf::Keyboard::isKeyPressed(key)){
-			gui.clickRestart();
-			audio.Click();
+			this->Pressed();
 			return 1;
 		}
 	}
 	return 0;
+}
+void Button::Pressed(){
+	gui.clickRestart();
+	audio.Click();	
 }
 Button::~Button(){
 

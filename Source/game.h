@@ -1,13 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
-#include "map.h"
 #include "battle.h"
-#include "labelSett.h"
-#include "labelPlayer.h"
-#include "labelFleet.h"
 #include "labelDip.h"
-#include "submenu.h"
+#include "labelFleet.h"
+#include "labelIcon.h"
+#include "labelPlayer.h"
+#include "labelSett.h"
+#include "map.h"
 #include "options.h"
+#include "submenu.h"
 //Definition
 class Game{
 private:
@@ -16,6 +17,7 @@ private:
 	//GUI
 	SubMenu *subMenu;
 	Button *submenu,*main,*diplomacy;
+	LabelIcon *coins,*pop;
 	//Toggle GUI
 	sf::CircleShape* range;
 	sf::Text *paused;
@@ -26,7 +28,6 @@ private:
 	void selectFleet(short fleet);
 	void selectSett(short sett);
 	void goToSett(sf::View *view,short sett);
-	bool canSelectSett();
 	bool mouseOverGUI();
 	void gameGUI(sf::RenderWindow *window,sf::View *view);
 	//Map

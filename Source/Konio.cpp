@@ -4,16 +4,21 @@
 //Local
 int main(){
 	//Window
-	sf::RenderWindow window(sf::VideoMode::getDesktopMode(),"Konio");
+	sf::RenderWindow window(sf::VideoMode(gui.width(),gui.height(),32),"Konio",sf::Style::Fullscreen,sf::ContextSettings(24,8,2,3,3));
 	sf::View view(sf::FloatRect(0,0,(float)gui.width(),(float)gui.height()));
-	sf::ContextSettings settings;
+
 	window.setView(view);
 	window.setFramerateLimit(60);
+	//Initialize
+	float scale=(float)sf::VideoMode::getDesktopMode().width/window.getSize().x;
+	window.setSize(sf::Vector2u(window.getSize().x,sf::VideoMode::getDesktopMode().height/scale));
 	//GUI
 	Background *background;
 	Menu *menu;
 	Campaign *campaign;
 	History *history;
+	about=Label(0,gui.height()-120,gui.width(),120,0);
+	detail=Label(0,0,325,180,0);
 	//Data game
 	background=new Background("data/img/backgrounds/menu.png");
 	menu=new Menu();
@@ -24,7 +29,6 @@ int main(){
 		naval.push_back(i);
 	//Running
 	while(window.isOpen()){
-		gui.Update(&window);
 		//Events
 		sf::Event event;
 		while(window.pollEvent(event)){

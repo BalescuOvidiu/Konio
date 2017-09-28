@@ -2,6 +2,7 @@
 #define GUI_H
 
 #include <cmath>
+#include <cstdio>
 #include <deque>
 #include <fstream>
 #include <iomanip>
@@ -24,8 +25,6 @@ private:
 	sf::Font *font;
 	//Screen and window properties
 	unsigned winH,winW;
-	float scale;
-	unsigned winX,winY;
 	//Time
 	sf::Clock click;
 public:
@@ -33,13 +32,11 @@ public:
 	short selected;
 	//Functions
 	GUI();
-	void Update(sf::RenderWindow *window);
 	unsigned width();
 	unsigned height();
 	float width(unsigned percent);
 	float height(unsigned percent);
 	//Mouse
-	bool timeElapsed(short time);
 	bool canClick(short time);
 	bool canLeft(short time);
 	bool canRight(short time);

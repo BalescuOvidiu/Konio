@@ -3,11 +3,11 @@
 LabelPlayer::LabelPlayer(short selected){
 	this->selected=selected;
 	//Label
-	this->label=new Label(gui.x,232+gui.y,325,180,1);
+	this->label=new Label(gui.x,180+gui.y,325,180,1);
 	this->label->setTitle(::player[selected].Name()+getDiplomaticStatus(selected));
 	this->label->setText("          "+gui.Format(::player[selected].Coins())+" coins "+gui.Format(getIncome(selected))+" income\n          "+gui.Format(getPopulation(selected))+" freemen\n          "+std::to_string(getShips(selected))+" ships"+::player[selected].Statistics());
 	//Buttons
-	this->shield=new Button("data/game/icons/"+std::to_string(selected)+".png",45+gui.x,322+gui.y);
+	this->shield=new Button("data/game/icons/"+std::to_string(selected)+".png",45+gui.x,270+gui.y);
 }
 void LabelPlayer::Render(sf::RenderWindow *window){
 	this->label->Render(window);

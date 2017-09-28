@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "button.h"
-
+//Definitions
 class Player{
 private:
 	//Basic
@@ -32,13 +32,13 @@ public:
 	//Destructor
 	~Player();
 };
-//Global variables
+//Declarations of global variables
 extern short human;
 extern std::vector<Player> player;
 //Global functions
-std::string getDiplomaticStatus(short player);
-std::string PlayerInfo(short player);
 bool areAllies(short i,short j);
 bool areEnemies(short i,short j);
-void Defeated(short winner,short defeated);
+std::string getDiplomaticStatus(short player);
+std::string PlayerInfo(short player);
+//End of declarations
 #endif

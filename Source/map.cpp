@@ -4,7 +4,7 @@ Map::Map(){
 	this->tex=new sf::Texture();
 	this->tex->loadFromFile("data/game/map/sprite.png");
 	this->sprite=new sf::Sprite(*tex);
-	this->sprite->setPosition(0,52);
+	this->sprite->setPosition(0,0);
 	water=new Layer(1,64,"data/game/map/water.png");
 }
 //Rendering and update

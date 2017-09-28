@@ -9,27 +9,37 @@ Game::Game(std::string directory,sf::View *view,short human){
 	map=new Map();
 	//GUI
 	this->subMenu=new SubMenu();
-	this->submenu=new Button("data/game/icons//menu.png",275,185);
-	this->diplomacy=new Button("data/game/icons//diplomacy.png",160,185);
-	this->main=new Button("data/game/icons/"+std::to_string(human)+".png",45,185);
+	this->submenu=new Button("data/game/icons/menu.png",275,132);
+	this->diplomacy=new Button("data/game/icons/diplomacy.png",160,132);
+	this->main=new Button("data/game/icons/"+std::to_string(human)+".png",45,132);
+	this->coins=new LabelIcon(10,50,"data/game/icons/coins.png");
+	this->pop=new LabelIcon(150,50,"data/game/icons/coins.png");
+	detail.show();
+	//Range
 	this->range=new sf::CircleShape(90,64);
 	this->range->setFillColor(sf::Color(255,255,255,64));
 	this->range->setOutlineColor(sf::Color(255,255,255,100));
 	this->range->setOutlineThickness(1);
-	detail.show();
 	//Music
 	audio.changeMusic("data/audio/music/Winds of Ithaca.ogg");
 	audio.changeAmbient("data/audio/sound/water.ogg");
 	//Reading variables
 	short faction,formation,local,import,integrity,m,n,occupied;
-	short player,price,ship,size,team,radius,x,y;
+	short player,price,ship,size,team,radius;
 	int limit,population,rate;
-	float angle,coins,provision;
+	float angle,coins,provision,x,y;
 	std::string name;
 	sf::Vector2f pos;
-	//Read data from file
-	std::ifstream in(directory.c_str());
-	in>>month>>year;
+	//Read goods
+	std::ifstream in("data/game/goods/data.txt");
+	while(in>>price){
+		std::getline(in,name);
+		std::getline(in,name);
+		good.push_back(Good(name,price));
+	}
+	in.close();
+	//READ MAP
+	in.open("data/game/map/data.txt");
 	//Read regions
 	in>>n;
 	while(n--){
@@ -38,6 +48,13 @@ Game::Game(std::string directory,sf::View *view,short human){
 		std::getline(in,name);
 		map->add(Region(x,y,size,name));
 	}
+	//Read graph
+	while(in>>x>>y>>radius)
+		map->add(Node(x,y,radius));
+	in.close();
+	//Load data of game
+	in.open(directory.c_str());
+	in>>month>>year;
 	//Read settlements
 	in>>n;
 	while(n--){
@@ -72,17 +89,6 @@ Game::Game(std::string directory,sf::View *view,short human){
 			::fleet.back().addShip(ship,integrity);
 		}
 	}
-	//Read graph
-	while(in>>x>>y>>radius)
-		map->add(Node(x,y,radius));
-	in.close();
-	//Read goods
-	in.open("data/game/goods/data.txt");
-	while(in>>price){
-		std::getline(in,name);
-		std::getline(in,name);
-		good.push_back(Good(name,price));
-	}
 	in.close();
 	//Human player GUI
 	this->showHumanStatus();
@@ -115,11 +121,13 @@ void Game::Render(sf::RenderWindow *window){
 		if(op)
 			op.Render(window);
 	}else{
-		if(detail)
-			detail.Render(window);
+		detail.Render(window);
+		//Buttons and icons
 		this->main->Render(window);
 		this->diplomacy->Render(window);
 		this->submenu->Render(window);
+		this->coins->Render(window);
+		this->pop->Render(window);
 		//Label of selected settlement, player, fleet...
 		if(labelSett!=NULL)
 			labelSett->Render(window);
@@ -133,15 +141,14 @@ void Game::Render(sf::RenderWindow *window){
 }
 //GUI
 void Game::showHumanStatus(){
-	detail.setText(gui.Format(player[human].Coins())+" coins  "+gui.Format(getPopulation(human))+" freemen");
-	detail.show();
+	this->coins->setText(gui.Format(player[human].Coins()));
+	this->pop->setText(gui.Format(getPopulation(human)));
 }
 void Game::showData(){
 	if(year<0)
-		detail.setTitle(std::to_string(-this->year)+" BC - "+this->getMonthName());
+		detail.show(std::to_string(-this->year)+" BC - "+this->getMonthName(),"");
 	else
-		detail.setTitle(std::to_string(this->year)+" AD - "+this->getMonthName());
-	detail.show();
+		detail.show(std::to_string(this->year)+" AD - "+this->getMonthName(),"");
 }
 void Game::deselectAll(){
 	deselectPlayer();
@@ -166,20 +173,6 @@ void Game::goToSett(sf::View *view,short sett){
 	this->moveViewTo(view,settlement[sett].getPosition());
 	selectSett(sett);
 }
-bool Game::canSelectSett(){
-	for(short i=0;i<(short)::settlement.size();i++){
-		if(settlement[i].mouseOver()){
-			about.show(
-				::player[settlement[i].getOwner()].Name()+"'s settlement"+getDiplomaticStatus(settlement[i].getOwner()),
-				settlement[i].getPopulationString()+" freemen  "+settlement[i].getGrowthString()+"  "+gui.Format(getIncomeOf(i))+" income\n"+EconomicStatus(i)
-			);
-			if(settlement[i].left())
-				this->selectSett(i);
-			return 1;
-		}
-	}
-	return 0;
-}
 bool Game::mouseOverGUI(){
 	if(labelSett!=NULL){
 		if(labelSett->mouseOver())
@@ -200,7 +193,7 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 	//Map
 	map->Update();
 	//View
-	this->moveCamera(window,view,10);
+	this->moveCamera(window,view,8);
 	//GUI
 	if(labelFleet!=NULL)
 		this->range->setPosition(labelFleet->fleet().getPosition().x-90,labelFleet->fleet().getPosition().y-90);
@@ -211,7 +204,9 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 			op.Update();
 		//Submenu
 		this->subMenu->Update(window);
-	}else if(gui.timeElapsed(300)){
+	}else if(gui.canClick(400)){
+		//About
+		about.hide();
 		//Pause
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
 			if(this->paused==NULL){
@@ -224,12 +219,11 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 			}
 			gui.clickRestart();
 		}
-		//GUI
-		about.hide();
-		//Main menu
+		//Human label
+		this->coins->mouseOver("Coins","Coins are used to buy ships and pay marines.\nYou can get coins from populations and trades.");
+		this->pop->mouseOver("Population","It's used to recruit marines.\nPopulation increase revenue in your settlements.");
 		if(this->submenu->left("Menu","Click or press M for menu.\nPress P for pause.",sf::Keyboard::M))
 			this->subMenu->show();
-		//Diplomacy label
 		if(labelDip==NULL){
 			if(this->diplomacy->left("Diplomacy","Click or press R to see relations with other city-states.",sf::Keyboard::R))
 				labelDip=new LabelDip();
@@ -237,7 +231,6 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 			if(this->diplomacy->left("Diplomacy","Click or press R to close diplomacy label.",sf::Keyboard::R))
 				deselectDip();
 		}
-		//Faction of player
 		if(isSelectedPlayer(::human)){
 			if(this->main->left(player[::human].Name(),"Click or press F for to close faction label.",sf::Keyboard::F))
 				deselectPlayer();
@@ -294,15 +287,6 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 		}
 		//Gameplay
 		if(!this->mouseOverGUI()){
-			//Settlements
-			if(!this->canSelectSett()){
-				//Fleets
-				for(short i=0;i<(short)::fleet.size();i++){
-					//Mouse
-					if(::fleet[i].left())
-						this->selectFleet(i);
-				}
-			}
 			//Selected fleet
 			if(labelFleet!=NULL){
 				if(labelFleet->fleet().Player()==human){
@@ -311,6 +295,22 @@ void Game::gameGUI(sf::RenderWindow *window,sf::View *view){
 					}
 				}
 			}
+			//Settlements
+			for(short i=0;i<(short)::settlement.size();i++){
+				if(settlement[i].mouseOver()){
+					about.show(
+						::player[settlement[i].getOwner()].Name()+"'s settlement"+getDiplomaticStatus(settlement[i].getOwner()),
+						settlement[i].getPopulationString()+" freemen  "+settlement[i].getGrowthString()+" growth  "+gui.Format(getIncomeOf(i))+" income\n"+EconomicStatus(i)
+					);
+					if(settlement[i].left())
+						this->selectSett(i);
+					return ;
+				}
+			}
+			//Fleets
+			for(short i=0;i<(short)::fleet.size();i++)
+				if(::fleet[i].left())
+					this->selectFleet(i);
 		}
 	}
 }
@@ -333,6 +333,8 @@ void Game::moveView(sf::View *view,float x,float y){
 	this->main->move(x,y);
 	this->diplomacy->move(x,y);
 	this->submenu->move(x,y);
+	this->coins->move(x,y);
+	this->pop->move(x,y);
 	map->move(x,y);
 	//Label of selected settlement, player, fleet...
 	if(labelSett!=NULL)
@@ -355,6 +357,8 @@ void Game::moveViewTo(sf::View *view,sf::Vector2f pos){
 		pos.x=0;
 	if(pos.y-gui.height()/2<0)
 		pos.y=0;
+	pos.x-=(int)pos.x%8;
+	pos.y-=(int)pos.y%8;
 	if(pos.x>4000-gui.width()/2)
 		pos.x=4000-gui.width()/2;
 	if(pos.y>2000-gui.height()/2)
@@ -457,6 +461,31 @@ void Game::Monthly(){
 		selectFleet(labelFleet->Selected());
 	//Diplomacy label
 	reloadLabelDip();
+	//Save game
+	std::ofstream out("data/game/saved/"+std::to_string(::human)+".txt");
+	out<<this->month<<' '<<this->year<<'\n';
+	//Write settlements
+	out<<::settlement.size()<<'\n';
+	for(short i=0;i<(short)::settlement.size();i++){
+		out<<::settlement[i].getPosition().x<<' '<<::settlement[i].getPosition().y<<' '<<::settlement[i].getPlayer()<<' '<<::settlement[i].getPopulation()<<' '<<::settlement[i].getLimit()<<' '<<(int)(::settlement[i].getRate()*100)<<' '<<::settlement[i].getGood()<<' '<<::settlement[i].getImport()<<' '<<::settlement[i].getOccupied();
+		out<<'\n'<<::settlement[i].getName()<<'\n';
+	}
+	//Write players
+	out<<::player.size()<<'\n';
+	for(short i=0;i<(short)::player.size();i++){
+		out<<::player[i].Faction()<<' '<<::player[i].Coins()<<' '<<::player[i].Team();
+		out<<'\n'<<::player[i].Name()<<'\n';
+	}
+	//Write fleets
+	out<<::fleet.size()<<'\n';
+	for(short i=0;i<(short)::fleet.size();i++){
+		out<<::fleet[i].getPosition().x<<' '<<::fleet[i].getPosition().y<<' '<<::fleet[i].getRotation()<<' '<<::fleet[i].Player()<<' '<<::fleet[i].Formation()<<' '<<::fleet[i].Provision()<<' '<<::fleet[i].size()<<'\n';
+		for(short j=0;j<(short)::fleet[i].size();j++){
+			out<<::fleet[i].Ship(j)<<' '<<::fleet[i].Integrity(j)<<' ';
+		}
+		out<<'\n';
+	}
+	out.close();
 }
 //AI
 void Game::AI(){

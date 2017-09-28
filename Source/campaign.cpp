@@ -27,10 +27,15 @@ void Campaign::Update(sf::View *view){
 		gui.selected=1;
 	for(short i=0;i<(short)(this->button.size());i++){
 		if(this->button[i].mouseOver()){
+			std::ifstream saved("data/game/saved/"+std::to_string(i)+".txt");
 			if(this->button[i].left()){
 				std::ifstream file("data/game/data.txt");
 				if(file.is_open()){
-					this->game=new Game("data/game/data.txt",view,i);
+					//Enter in game
+					if(saved.is_open())
+						this->game=new Game("data/game/saved/"+std::to_string(i)+".txt",view,i);
+					else
+						this->game=new Game("data/game/data.txt",view,i);
 					gui.selected=4;
 				}
 				file.close();
@@ -41,7 +46,13 @@ void Campaign::Update(sf::View *view){
 				std::string title,text;
 				getline(in,title);
 				getline(in,text,'*');
-				about.show(title,text);
+				if(saved.is_open()){
+					about.show(title+" Right-click to delete saved game.",text);
+					if(this->button[i].right())
+						remove(("data/game/saved/"+std::to_string(i)+".txt").c_str());
+				}
+				else
+					about.show(title,text);
 			}
 			in.close();
 		}

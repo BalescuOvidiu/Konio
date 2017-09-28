@@ -4,7 +4,6 @@ Battle::Battle(short yourFleet,short enemyFleet,sf::View *view){
 	//Begin
 	this->pause=0;
 	this->selected=0;
-	detail.show();
 	//GUI
 	this->retreat=new Button(90,85,15,"data/img/buttons/menu/retreat.png");
 	this->text=new sf::Text(sf::String(""),*gui.Font(),36);
@@ -24,6 +23,8 @@ Battle::Battle(short yourFleet,short enemyFleet,sf::View *view){
 	this->target.resize(::fleet[yourFleet].size()+::fleet[enemyFleet].size());
 	this->AddFleet(view,yourFleet);
 	this->AddFleet(view,enemyFleet);
+	this->friends=::fleet[yourFleet].size();
+	this->enemies=::fleet[enemyFleet].size();
 	//Statistics
 	detail.show("Battle",this->getStatistic());
 	//Get tactics for AI
@@ -180,7 +181,7 @@ void Battle::Attack(){
 					this->SetTarget(i,this->localLeft(100,nearest));
 			}
 		}
-	}	
+	}
 }
 void Battle::AI(){
 	switch(this->tactic){
@@ -250,8 +251,8 @@ void Battle::Stop(short ship){
 	this->ship[ship].Speed(0);
 }
 void Battle::Rotate(short i,short j,short direction){
-	this->ship[i].rotate(direction*fabs(this->ship[i].Speed())/60);
-	this->ship[j].rotate(-direction*fabs(this->ship[i].Speed())/60);
+	this->ship[i].rotate(direction*fabs(this->ship[i].SpeedOnFrame()));
+	this->ship[j].rotate(-direction*fabs(this->ship[i].SpeedOnFrame()));
 }
 bool Battle::ramming(short i,short j){
 	if(this->ship[j].contains(this->ship[i].Ram())){
@@ -272,14 +273,26 @@ bool Battle::ramming(short i,short j){
 			this->ship[j].takeDamage(40);
 			if(this->ship[i].Power()/this->ship[j].Power()>0.5)
 				this->ship[j].takeDamage(10);
-			if(this->ship[i].Float())
-				this->target[i].push_back(this->localBackward(30,i));
 			Stop(j);
-			Stop(i);
-			detail.show("Battle",this->getStatistic());
+			this->SetTarget(i,this->localBackward(30,i));
+			if(this->isRammedShip(i)){
+				if(i+1==this->selected)
+					this->deselect();
+				else if(j<this->selected)
+					this->selected--;
+			}
+			if(this->isRammedShip(j)){
+				if(j+1==this->selected)
+					this->deselect();
+				else if(j<this->selected)
+					this->selected--;
+			}
+			//Statistics
+			if(!this->selected)
+				detail.show("Battle",this->getStatistic());
 			return 1;
-		}
-		Stop(i);
+		}else
+			this->SetTarget(i,this->localBackward(30,i));
 	}
 	return 0;
 }
@@ -288,17 +301,17 @@ bool Battle::collision(short i,short j){
 		return 0;
 	if(this->isRammedShip(i))
 		return 0;
-	//Enemy
-	if(this->isEnemyShip(i,j)){
-		if(this->ramming(i,j))
-			return 1;
-	}
 	//Rammed
 	if(this->isRammedShip(j)){
 		if(this->ship[j].contains(this->ship[i].Front())){
 			this->SetTarget(i,this->localBackward(30,i));
 			return 1;
 		}
+	}
+	//Enemy
+	if(this->isEnemyShip(i,j)){
+		if(this->ramming(i,j))
+			return 1;
 	}
 	//Friend
 	if(this->isFriendShip(i,j)){
@@ -319,36 +332,36 @@ bool Battle::collision(short i,short j){
 		}
 		//Front points
 		if(this->ship[j].rowsContains(this->ship[i].rowsFrontLeft())){
-			this->ship[i].rotate(fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}else if(this->ship[j].rowsContains(this->ship[i].rowsFrontRight())){
-			this->ship[i].rotate(-fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(-fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 		//Reverse case
 		if(this->ship[i].rowsContains(this->ship[j].rowsFrontLeft())){
-			this->ship[i].rotate(-fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(-fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}else if(this->ship[i].rowsContains(this->ship[j].rowsFrontRight())){
-			this->ship[i].rotate(fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 		//Back points
 		if(this->ship[j].rowsContains(this->ship[i].rowsBackLeft())){
-			this->ship[i].rotate(-fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(-fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 		if(this->ship[j].rowsContains(this->ship[i].rowsBackRight())){
-			this->ship[i].rotate(fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 		//Reverse case
 		if(this->ship[i].rowsContains(this->ship[j].rowsBackLeft())){
-			this->ship[i].rotate(fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 		if(this->ship[j].rowsContains(this->ship[i].rowsBackRight())){
-			this->ship[i].rotate(-fabs(this->ship[i].Speed())/60);
+			this->ship[i].rotate(-fabs(this->ship[i].SpeedOnFrame()));
 			return 1;
 		}
 	}
@@ -402,7 +415,7 @@ bool Battle::collision(short i,short j){
 }
 //GUI
 std::string Battle::getStatistic(){
-	return "Friend ships: "+std::to_string(::fleet[this->fleets[0]].size())+"\nEnemy ships: "+std::to_string(::fleet[this->fleets[1]].size());
+	return "Friend ships: "+gui.Format(this->friends)+"\nEnemy ships: "+gui.Format(this->enemies);
 }
 bool Battle::Pause(){
 	this->text->setString(sf::String("PAUSED"));
@@ -493,15 +506,20 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 		this->moveCamera(window,view);
 		//Water
 		this->water->Update();
-		//Select ship with keyboard
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
-			if(gui.canClick(80))
-				this->select(this->selected-2);
+		//Zoom
+		if(gui.canClick(30)){
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+				view->zoom(0.98);
+				window->setView(*view);
+				gui.clickRestart();
+			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+				view->zoom(1/0.98);
+				window->setView(*view);
+				gui.clickRestart();
+			}
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-			if(gui.canClick(80))
-				this->select(this->selected);
-		}
+
 		//Selected
 		if(this->selected){
 			//Selected ship by player
@@ -512,7 +530,7 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 				this->target[this->selected-1].push_back(gui.mousePosition());
 			}
 			//Deselect
-			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)||isRammedShip(this->selected-1)){
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				this->deselect();
 				detail.show("Battle",this->getStatistic());
 			}
@@ -577,7 +595,9 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 		}
 	//Exit from battle
 	if(gui.selected==4){
-		//Get to initial position
+		//Camera
+		view->setSize(sf::Vector2f((float)gui.width(),(float)gui.height()));
+		window->setView(*view);
 		this->moveView(view,-gui.x,-gui.y);
 		//Empty memory
 		this->target.clear();

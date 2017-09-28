@@ -28,18 +28,9 @@ GUI::GUI(){
 	//Screen
 	this->winH=sf::VideoMode::getDesktopMode().height;
 	this->winW=sf::VideoMode::getDesktopMode().width;
-	this->scale=1;
-	this->winX=this->winY=this->x=this->y=0;
 	//Font
 	this->font=new sf::Font();
 	this->font->loadFromFile("data/GFSNeohellenic.ttf");
-}
-void GUI::Update(sf::RenderWindow *window){
-	//Screen and window
-	this->scale=(float)winW/window->getSize().x;
-	this->winX=window->getPosition().x;
-	this->winY=window->getPosition().y;
-	window->setSize(sf::Vector2u(window->getSize().x,this->winH/this->scale));
 }
 unsigned GUI::width(){
 	return this->winW;
@@ -54,14 +45,8 @@ float GUI::height(unsigned percent){
 	return this->winH*percent/100.;
 }
 //Mouse
-bool GUI::timeElapsed(short time){
-	return (sf::milliseconds(this->click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
-}
 bool GUI::canClick(short time){
-	if(sf::milliseconds(this->click.getElapsedTime().asMilliseconds())<sf::milliseconds(time))
-		return 0;
-	this->click.restart();
-	return 1;
+	return (sf::milliseconds(this->click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
 }
 bool GUI::canLeft(short time){
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -77,15 +62,7 @@ void GUI::clickRestart(){
 	this->click.restart();
 }
 sf::Vector2f GUI::mousePosition(){
-	float x=(sf::Mouse::getPosition().x-this->winX)*this->scale+this->x;
-	float y=(sf::Mouse::getPosition().y-this->winY-30)*this->scale+this->y;
-	if(this->scale<1.1)
-		y+=50*this->scale;
-	if(x<0)
-		x=0;
-	if(y<0)
-		y=0;
-	return sf::Vector2f(x,y);
+	return sf::Vector2f(sf::Mouse::getPosition().x+this->x,sf::Mouse::getPosition().y+this->y);
 }
 //Text
 sf::Font* GUI::Font(){

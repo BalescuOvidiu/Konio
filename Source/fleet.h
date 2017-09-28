@@ -47,6 +47,7 @@ public:
 	float Speed();
 	float SpeedOnFrame();
 	float Power();
+	float Randament();
 	//Rotation
 	void rotate(float angle);
 	void rotateTo(float angle);
@@ -66,15 +67,6 @@ public:
 //Global variables
 extern std::vector<Fleet> fleet;
 extern Naval nFleet;
-//Global functions
-float distFleet(short i,short j);
-short getShips(short player);
-short getNearestFleet(sf::Vector2f point);
-std::string FleetInfo(short i);
-//Diplomacy
-bool isYourFleet(short i);
-bool isEnemyFleet(short i,short j);
-bool isAlliedFleet(short i,short j);
 //Formations
 std::string FormationName(short formation);
 std::string FormationText(short formation);

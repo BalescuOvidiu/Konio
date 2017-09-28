@@ -8,7 +8,6 @@ private:
 	short radius;
 public:
 	Node(short x,short y,short radius);
-	//Rendering
 	//Get data
 	sf::Vector2f getPosition();
 	short r();

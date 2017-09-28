@@ -3,7 +3,7 @@
 #include "good.h"
 #include "region.h"
 #include "player.h"
-//Class
+//Definition
 class Settlement{
 private:
 	//Location
@@ -49,20 +49,5 @@ public:
 };
 //Global variable
 extern std::vector<Settlement> settlement;
-//Global functions
-short getNearestSett(sf::Vector2f point);
-short getPopulation(short player);
-float getIncomeOf(short i);
-bool isYourSett(short settlement);
-//Goods
-bool hasGood(short settlement,short good);
-bool playerHasGood(short player,short good);
-short getImporter(short settlement);
-short getImportedGood(short settlement);
-//Military
-bool isOf(short i,short player);
-bool isAllyOf(short i,short player);
-bool isEnemyOf(short i,short player);
-bool isBlockedImport(short sett);
-bool isBlockedExport(short sett);
+//End declaration
 #endif

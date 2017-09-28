@@ -44,17 +44,15 @@ bool Value::Update(float &value,float min,short max,float step,short type,std::s
 	bool change=0;
 	if(this->mouseOver()){
 		about.show(title,text);
-		if(this->left()&&value>min){
-			if(gui.canClick(100)){
-				value-=step;
-				change=1;
-			}
+		if(gui.canLeft(100)&&value>min){
+			value-=step;
+			change=1;
+			gui.clickRestart();
 		}
-		else if(this->right()&&value<max){
-			if(gui.canClick(100)){
-				value+=step;
-				change=1;			
-			}
+		else if(gui.canRight(100)&&value<max){
+			value+=step;
+			change=1;
+			gui.clickRestart();
 		}
 	}
 	if(value<10)

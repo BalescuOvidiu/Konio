@@ -80,4 +80,4 @@ Label::~Label(){
 	
 }
 //Label with information about content
-Label about(0,gui.height()-120,gui.width(),120,0),detail(0,52,325,180,0);
+Label about(0,gui.height()-120,gui.width(),120,0),detail(0,0,325,180,0);

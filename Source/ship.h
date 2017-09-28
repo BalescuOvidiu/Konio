@@ -1,8 +1,7 @@
 #ifndef SHIP_H
 #define SHIP_H
 #include "naval.h"
-#include "player.h"
-#include "fleet.h"
+#include "gameData.h"
 //Ship
 class Ship{
 private:

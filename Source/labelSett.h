@@ -1,15 +1,18 @@
 #ifndef LABELSETT_H
 #define LABELSETT_H
 #include "gameData.h"
+#include "labelIcon.h"
 //Display for settlement
 class LabelSett{
 private:
 	short selected;
 	Label *label;
+	//Economy and population
+	LabelIcon *pop,*growth,*income,*dip;
 	//Trade and player
 	Button *local,*import,*player;
-	//Navy
-	Button *first,*second,*third;
+	//Military
+	Button *recruit;
 public:
 	LabelSett(short selected);
 	void Render(sf::RenderWindow *window);

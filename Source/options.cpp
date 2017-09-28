@@ -15,11 +15,12 @@ void Options::Update(){
 	//Update
 	if(this->close->left("Close","Click or press O to close options section."))
 		this->visible=0;
-	if(music->Update(audio.musicVolume,0,100,1,1,"Music Volume",
-	"Left click to decrease or right click to increase music volume.")
-	||sound->Update(audio.soundVolume,0,100,1,1,"Sound Volume",
-	"Left click to decrease or right click to increase sound volume."))
-		//Change volume
+	if(
+		music->Update(audio.musicVolume,0,100,1,1,"Music Volume",
+		"Left click to decrease or right click to increase music volume.")
+		||sound->Update(audio.soundVolume,0,100,1,1,"Sound Volume",
+		"Left click to decrease or right click to increase sound volume.")
+	)
 		audio.Update();
 }
 void Options::show(){
