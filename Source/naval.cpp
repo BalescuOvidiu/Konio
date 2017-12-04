@@ -1,22 +1,27 @@
 #include "naval.h"
 
 //Constructor
-Naval::Naval(short id){
+Naval::Naval(std::string directory){
 	//Read data from file
-	std::ifstream in("data/navals/"+std::to_string(id)+".txt");
+	std::ifstream in(directory+".txt");
 	in>>this->basic;
 	in>>this->rowers;
 	in>>this->cost;
 	in.close();
-	//load texture
-	loadTexture(id);
+	//Load texture
+	this->body.loadFromFile(directory+".png");
+	this->ram.loadFromFile(directory+"_ram.png");
+	this->rows.loadFromFile(directory+"_rows.png");
+	this->body.setSmooth(true);
+	this->ram.setSmooth(true);
+	this->rows.setSmooth(true);
 }
 //Get data
 std::string Naval::Name(){
 	return this->basic.name;
 }
 std::string Naval::Description(){
-	return "Cost: "+std::to_string((int)this->cost)+" coins    Speed: "+std::to_string(this->basic.speed)+" km/h with "+std::to_string(this->rowers)+" rowers";
+	return "Cost: "+Format(this->cost)+" coins    Speed: "+Format(this->basic.speed)+" km/h with "+Format(this->rowers)+" rowers";
 }
 float Naval::Speed(){
 	return this->basic.speed;
@@ -50,15 +55,6 @@ sf::Texture& Naval::Ram(){
 sf::Texture& Naval::Rows(){
 	return this->rows;
 }
-void Naval::loadTexture(short id){
-	//Texture
-	this->body.loadFromFile("data/navals/"+std::to_string(id)+".png");
-	this->ram.loadFromFile("data/navals/"+std::to_string(id)+"_ram.png");
-	this->rows.loadFromFile("data/navals/"+std::to_string(id)+"_rows.png");
-	this->body.setSmooth(true);
-	this->ram.setSmooth(true);
-	this->rows.setSmooth(true);	
-}
+//Variables
 std::vector<Naval> naval;
-//The sails
-sf::Texture sails;
+sf::Texture sails,oar;

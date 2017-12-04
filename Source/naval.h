@@ -9,7 +9,7 @@ private:
 	float cost;
 	short rowers;
 public:
-	Naval(short id);
+	Naval(std::string directory);
 	//Get data
 	std::string Name();
 	std::string Description();
@@ -25,10 +25,8 @@ public:
 	sf::Texture& Body();
 	sf::Texture& Ram();
 	sf::Texture& Rows();
-	//Load texture
-	void loadTexture(short id);
 };
 //Gameplay global variable
 extern std::vector<Naval> naval;
-extern sf::Texture sails;
+extern sf::Texture sails,oar;
 #endif

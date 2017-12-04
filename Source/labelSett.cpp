@@ -1,28 +1,63 @@
 #include "labelSett.h"
 //Display for settlement
 LabelSett::LabelSett(short selected){
+	this->label=new Label(32+gui.x,64+gui.y,400,140,1);
+	this->select(selected);
+}
+void LabelSett::select(short selected){
+	this->select(selected,this->getPosition().x,this->getPosition().y);
+}
+void LabelSett::select(short selected,short x,short y){
+	this->L=this->I=0;
+	this->recruit.clear();
 	this->selected=selected;
 	//Label
-	this->label=new Label(gui.x,180+gui.y,325,140,1);
-	this->label->setTitle(::settlement[selected].getName());
+	this->label->setTitle(this->sett().getName());
 	//Population
-	this->pop=new LabelIcon(5+gui.x,255+gui.y,"data/game/icons/coins.png");
-	this->pop->setText(::settlement[selected].getPopulationString());
-	this->growth=new LabelIcon(5+gui.x,225+gui.y,"data/game/icons/coins.png");
-	this->growth->setText(::settlement[selected].getGrowthString());
+	this->pop=new LabelIcon(5+x,75+y,"data/game/icons/coins.png");
+	this->pop->setText(this->sett().getPopulationString());
+	this->growth=new LabelIcon(5+x,45+y,"data/game/icons/coins.png");
+	this->growth->setText(this->sett().getGrowthString());
 	//Economy
-	this->income=new LabelIcon(130+gui.x,225+gui.y,"data/game/icons/coins.png");
-	this->income->setText(gui.Format(getIncomeOf(selected)));
+	this->income=new LabelIcon(128+x,45+y,"data/game/icons/coins.png");
+	this->income->setText(Format(getIncomeOf(selected)));
 	//Military
-	if(isYourSett(selected))
-		recruit=new Button("data/game/icons/naval/3.png",220+gui.x,210+gui.y);
-	//Goods
-	this->local=new Button("data/game/goods/"+std::to_string(::settlement[selected].getGood())+".png",260+gui.x,210+gui.y);
-	this->import=new Button("data/game/goods/"+std::to_string(getImportedGood(selected))+".png",300+gui.x,210+gui.y);
+	if(isYourSett(selected)){
+		for(short i=0;i<2+hasGood(selected,1);i++){
+			recruit.push_back(Button("data/game/icons/naval/"+Format(i+3*(!hasGood(selected,1)))+".png",x+15+45*i,y+120));
+			if(!canRecruit(i+3*(!hasGood(selected,1)),selected))
+				this->recruit[i].setColor(sf::Color(220,80,40));
+		}
+	}else{
+		this->dip=new LabelIcon(5+x,105+y,"data/game/icons/coins.png");
+		this->dip->setText(PlayerInfo(this->sett().getOwner()));
+	}
+	//Import
+	if(hasImport(selected)){
+		this->import=new Button("data/game/goods/"+std::to_string(getImportedGood(selected))+".png",338+x,30+y);
+		this->Import=getGuide(
+			this->sett().getPosition(),
+			getTradeRoute(this->selected,this->sett().getImport()),
+			sf::Color(220,220,220)
+		);
+	}
+	//Local and export
+	if(hasImport(selected)){
+		this->Export=getGuide(
+			this->sett().getPosition(),
+			getTradeRoute(this->selected,getImporter(selected)),
+			sf::Color(220,220,220)
+		);
+	}
+	this->local=new Button("data/game/goods/"+std::to_string(this->sett().getGood())+".png",374+x,30+y);
 	//Player of settlement
-	this->dip=new LabelIcon(5+gui.x,285+gui.y,"data/game/icons/coins.png");
-	this->dip->setText(PlayerInfo(::settlement[selected].getPlayer()));
-	this->player=new Button("data/game/icons/"+std::to_string(::settlement[selected].getOwner())+".png",275+gui.x,275+gui.y);
+	this->player=new Button("data/game/icons/"+std::to_string(this->sett().getOwner())+".png",353+x,95+y);
+	//Range
+	this->range=new sf::CircleShape(90,64);
+	this->range->setFillColor(sf::Color(220,220,220,64));
+	this->range->setOutlineColor(sf::Color(220,220,220,100));
+	this->range->setOutlineThickness(1);
+	this->range->setPosition(this->sett().getPosition().x-90,this->sett().getPosition().y-90);
 }
 void LabelSett::Render(sf::RenderWindow *window){
 	this->label->Render(window);
@@ -33,39 +68,89 @@ void LabelSett::Render(sf::RenderWindow *window){
 	this->income->Render(window);
 	this->pop->Render(window);
 	this->growth->Render(window);
-	this->dip->Render(window);
-	if(isYourSett(this->selected))
-		this->recruit->Render(window);
+	if(isYourSett(selected))
+		for(unsigned i=0;i<recruit.size();i++)
+			this->recruit[i].Render(window);
+	else
+		this->dip->Render(window);
+}
+void LabelSett::RenderGuides(sf::RenderWindow *window){
+	window->draw(*this->range);
+	if(this->import->mouseOver()){
+		if(this->Export.size())
+			window->draw(&this->Export[0],this->Export.size(),sf::Quads);
+		if(this->Import.size())
+			window->draw(&this->Import[0],this->Import.size(),sf::Quads);
+	}else{
+		if(this->Import.size())
+			window->draw(&this->Import[0],this->Import.size(),sf::Quads);
+		if(this->Export.size())
+			window->draw(&this->Export[0],this->Export.size(),sf::Quads);		
+	}
 }
 void LabelSett::move(float x,float y){
 	this->label->move(x,y);
-	this->dip->move(x,y);
 	this->player->move(x,y);
 	this->pop->move(x,y);
 	this->growth->move(x,y);
 	this->local->move(x,y);
 	this->import->move(x,y);
 	this->income->move(x,y);
-	if(isYourSett(this->selected))
-		this->recruit->move(x,y);
+	if(isYourSett(selected))
+		for(unsigned i=0;i<recruit.size();i++)
+			this->recruit[i].move(x,y);
+	else
+		this->dip->move(x,y);
 }
 bool LabelSett::playerLeft(){
-	return this->player->left(PlayerInfo(::settlement[this->selected].getPlayer()),"Click to see information about owner of this settlement.");
+	return this->player->left(PlayerInfo(::settlement[this->selected].getOwner()),"Click to see information about owner of this settlement.");
 }
 bool LabelSett::localLeft(){
-	return this->local->left(ExportedGoodStatus(this->selected),goodDescription(this->sett().getGood()));
+	if(this->Export.size()){
+		if(this->local->mouseOver()!=L){
+			L=!L;
+			this->Export=setGuideColor(this->Export,sf::Color(220-L*40,220-L*40,220-L*140));
+		}
+		return this->local->left(ExportedGoodStatus(this->selected),goodDescription(this->sett().getGood()));
+
+	}
+	this->local->mouseOver(::good[this->sett().getGood()].Name(),goodDescription(this->sett().getGood()));
+	return 0;
 }
 bool LabelSett::importLeft(){
-	return this->import->left(ImportedGoodStatus(this->selected),goodDescription(getImportedGood(this->selected)));
+	if(this->sett().getImport()<(short)::settlement.size()){
+		if(this->import->mouseOver()!=I){
+			I=!I;
+			this->Import=setGuideColor(this->Import,sf::Color(220-I*40,220-I*40,220-I*140));
+		}
+		return this->import->left(ImportedGoodStatus(this->selected),goodDescription(getImportedGood(this->selected)));
+	}
+	return 0;
 }
 bool LabelSett::right(){
 	return this->label->right();
 }
 bool LabelSett::mouseOver(){
-	return this->label->mouseOver();
+	if(this->label->mouseOver()){
+		this->income->mouseOver("Income","");
+		this->pop->mouseOver("Population","");
+		this->growth->mouseOver("Growth","");
+		if(!isYourSett(selected))
+			this->dip->mouseOver("Diplomacy","");
+		return 1;
+	}
+	return 0;
 }
-short LabelSett::getShip(){
-	//Navy buttons
+short LabelSett::Ship(){
+	for(unsigned i=0;i<recruit.size();i++){
+		short id=i+3*(!hasGood(this->selected,1));
+		if(canRecruit(id,this->selected)){
+			if(this->recruit[i].left(naval[id].Name(),naval[id].Description())){
+				return id;
+			}
+		}else if(this->recruit[i].mouseOver(naval[id].Name(),naval[id].Description()))
+			break;
+	}
 	return -1;
 }
 //Get data
@@ -75,26 +160,11 @@ short LabelSett::Selected(){
 Settlement LabelSett::sett(){
 	return ::settlement[this->selected];
 }
+sf::Vector2f LabelSett::getPosition(){
+	return this->label->getPosition();
+}
 LabelSett::~LabelSett(){
 
 }
 //Global variable for GUI
 LabelSett *labelSett=NULL;
-//Global functions
-void deselectSett(){
-	if(labelSett!=NULL){
-		delete labelSett;
-		labelSett=NULL;
-	}
-}
-void reloadLabelSett(short i){
-	if(isSelectedSett(i)){
-		deselectSett();
-		labelSett=new LabelSett(i);
-	}
-}
-bool isSelectedSett(short i){
-	if(labelSett!=NULL)
-		return (i==labelSett->Selected());
-	return 0;
-}

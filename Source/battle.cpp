@@ -9,6 +9,7 @@ Battle::Battle(short yourFleet,short enemyFleet,sf::View *view){
 	this->text=new sf::Text(sf::String(""),*gui.Font(),36);
 	this->text->setPosition(gui.width(50)-100,gui.height(50)-36);
 	this->text->setColor(sf::Color(255,255,255));
+	this->detail=new Label(0,0,325,180,0);
 	//Water
 	this->water=new Layer(1,256,"data/img/water.png");
 	//Music
@@ -26,7 +27,7 @@ Battle::Battle(short yourFleet,short enemyFleet,sf::View *view){
 	this->friends=::fleet[yourFleet].size();
 	this->enemies=::fleet[enemyFleet].size();
 	//Statistics
-	detail.show("Battle",this->getStatistic());
+	this->detail->show("Battle",this->getStatistic());
 	//Get tactics for AI
 	this->tactic=::fleet[enemyFleet].Formation();
 }
@@ -35,7 +36,7 @@ void Battle::AddFleet(sf::View *view,short fleet){
 	this->fleets.push_back(fleet);
 	short x,y,angle;
 	//Add ships
-	for(short i=0;i<(short)::fleet[fleet].size();i++){
+	for(short i=0;i<::fleet[fleet].size();i++){
 		//Get position and rotation
 		if(::fleet[fleet].Formation()==2){
 			angle=360/::fleet[fleet].size()*i;
@@ -52,7 +53,7 @@ void Battle::AddFleet(sf::View *view,short fleet){
 			y=this->size*3/4-this->size/2*(fleets.size()%2);
 		}
 		//Deploy ship
-		this->ship.push_back(Ship(fleet,::fleet[fleet].Ship(i),player[::fleet[fleet].Player()].Faction(),::fleet[fleet].Integrity(i),x,y,angle));
+		this->ship.push_back(Ship(fleet,i,::fleet[fleet].Ship(i),player[::fleet[fleet].Player()].Faction(),::fleet[fleet].Integrity(i),x,y,angle));
 	}
 	//Camera for human player
 	if(isYourFleet(fleet)){
@@ -63,24 +64,24 @@ void Battle::Render(sf::RenderWindow *window){
 	//Water
 	this->water->Render(window);
 	//Ships rows
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=0;i<this->ship.size();i++)
 		if(this->ship[i].Integrity()>40)
 			this->ship[i].RenderRows(window);
 	//Ships ram
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=0;i<this->ship.size();i++)
 		if(this->ship[i].Integrity()>20)
 			this->ship[i].RenderRam(window);
 	//Ships body
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=0;i<this->ship.size();i++)
 		if(this->ship[i].Integrity()>20)
 			this->ship[i].RenderBody(window);
 	//Ships sails
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=0;i<this->ship.size();i++)
 			this->ship[i].RenderSails(window);
 	//Labels
 	if(about)
 		about.Render(window);
-	detail.Render(window);
+	this->detail->Render(window);
 	//Retreat button
 	this->retreat->Render(window);
 	//Pause
@@ -89,7 +90,7 @@ void Battle::Render(sf::RenderWindow *window){
 }
 //AI
 void Battle::Periplous(){
-	for(short i=0;i<(short)this->ship.size();i++){
+	for(unsigned i=0;i<this->ship.size();i++){
 		//Move
 		if(!this->isYourShip(i)){
 			this->target[i].clear();
@@ -97,7 +98,7 @@ void Battle::Periplous(){
 				this->SetTarget(i,this->localForward(200,i));
 		}
 		//Into in attack if is possible
-		for(short j=0;j<(short)this->ship.size();j++){
+		for(unsigned j=0;j<this->ship.size();j++){
 			if(isEnemyShip(i,j)){
 				if(distShip(i,j)<550){
 					this->tactic=4;
@@ -109,12 +110,12 @@ void Battle::Periplous(){
 	}
 }
 void Battle::Diekplous(){
-	for(short i=0;i<(short)this->ship.size();i++){
+	for(unsigned i=0;i<this->ship.size();i++){
 		if(!this->isYourShip(i)){
 			float dist=99999999;
 			short nearest=-1;
 			//Get nearest enemy ship
-			for(short j=0;j<(short)this->ship.size();j++){
+			for(unsigned j=0;j<this->ship.size();j++){
 				if(isEnemyShip(i,j)){
 					if(dist>this->ship[i].dist(this->localLeft(100,j))){
 						dist=this->ship[i].dist(this->localLeft(100,j));
@@ -137,17 +138,17 @@ void Battle::Diekplous(){
 }
 void Battle::Kyklos(){
 	short begin=-1;
-	for(short i=0;i<(short)this->ship.size();i++){
+	for(unsigned i=0;i<this->ship.size();i++){
 		if(!this->isYourShip(i)){
 			if(begin<0)
 				begin=i;
 			//Move
-			if(i<(short)this->ship.size()-1)
+			if(i<this->ship.size()-1)
 				this->SetTarget(i,this->ship[i+1].rowsBackLeft());
 			else					
 				this->SetTarget(i,this->ship[begin].rowsBackLeft());
 			//Into in attack if is possible
-			for(short j=0;j<(short)this->ship.size();j++){
+			for(unsigned j=0;j<this->ship.size();j++){
 				if(isEnemyShip(i,j)){
 					if(distShip(i,j)<320){
 						this->tactic=4;
@@ -160,12 +161,12 @@ void Battle::Kyklos(){
 	}
 }
 void Battle::Attack(){
-	for(short i=0;i<(short)this->ship.size();i++){
+	for(unsigned i=0;i<this->ship.size();i++){
 		if(!this->isYourShip(i)){
 			float dist=99999999;
 			short nearest=-1;
 			//Get nearest enemy ship
-			for(short j=0;j<(short)this->ship.size();j++){
+			for(unsigned j=0;j<this->ship.size();j++){
 				if(isEnemyShip(i,j)){
 					if(distShip(i,j)<dist&&distShip(i,j)<this->ship[i].dist(this->ship[j].Back())){
 						dist=distShip(i,j);
@@ -289,7 +290,7 @@ bool Battle::ramming(short i,short j){
 			}
 			//Statistics
 			if(!this->selected)
-				detail.show("Battle",this->getStatistic());
+				this->detail->show("Battle",this->getStatistic());
 			return 1;
 		}else
 			this->SetTarget(i,this->localBackward(30,i));
@@ -415,7 +416,7 @@ bool Battle::collision(short i,short j){
 }
 //GUI
 std::string Battle::getStatistic(){
-	return "Friend ships: "+gui.Format(this->friends)+"\nEnemy ships: "+gui.Format(this->enemies);
+	return "Friend ships: "+Format(this->friends)+"\nEnemy ships: "+Format(this->enemies);
 }
 bool Battle::Pause(){
 	this->text->setString(sf::String("PAUSED"));
@@ -436,7 +437,7 @@ void Battle::moveView(sf::View *view,float x,float y){
 	gui.x+=x;
 	gui.y+=y;
 	about.move(x,y);
-	detail.move(x,y);
+	this->detail->move(x,y);
 	view->move(x,y);
 	this->water->move(x,y);
 	this->text->move(x,y);
@@ -445,9 +446,9 @@ void Battle::moveView(sf::View *view,float x,float y){
 void Battle::moveCamera(sf::RenderWindow *window,sf::View *view){
 	//View and camera
 	sf::Vector2f camera=gui.mousePosition();
-	if((short)camera.x<0)
+	if(camera.x<0)
 		camera.x=0;
-	if((short)camera.y<0)
+	if(camera.y<0)
 		camera.y=0;
 	//Move camera by mouse cursor
 	if(camera.x<window->getSize().x/20+gui.x)
@@ -470,12 +471,12 @@ void Battle::moveCamera(sf::RenderWindow *window,sf::View *view){
 		this->moveView(view,0,10);
 }
 //Human
-void Battle::select(short ship){
+void Battle::select(unsigned ship){
 	if(ship<0)
 		ship=0;
 	if(this->selected)
 		deselect();
-	if(ship<(short)this->ship.size())
+	if(ship<this->ship.size())
 		if(this->isYourShip(ship)&&this->ship[ship].Float()){
 			this->selected=ship+1;
 			this->ship[ship].setColor(sf::Color(255,95,118));
@@ -491,7 +492,7 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 	about.hide();
 	if(this->retreat->left("Retreat","Click or press R to retreat from battle.",sf::Keyboard::R)){
 		gui.selected=4;
-		for(short i=0;i<(short)this->fleets.size();i++)
+		for(unsigned i=0;i<this->fleets.size();i++)
 			if(isYourFleet(this->fleets[i])){
 				::fleet[this->fleets[i]].Retreat();
 			}
@@ -506,20 +507,6 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 		this->moveCamera(window,view);
 		//Water
 		this->water->Update();
-		//Zoom
-		if(gui.canClick(30)){
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
-				view->zoom(0.98);
-				window->setView(*view);
-				gui.clickRestart();
-			}
-			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-				view->zoom(1/0.98);
-				window->setView(*view);
-				gui.clickRestart();
-			}
-		}
-
 		//Selected
 		if(this->selected){
 			//Selected ship by player
@@ -532,14 +519,14 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 			//Deselect
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				this->deselect();
-				detail.show("Battle",this->getStatistic());
+				this->detail->show("Battle",this->getStatistic());
 			}
 		}
 		//Ships
-		for(short i=0;i<(short)this->ship.size();i++){
+		for(unsigned i=0;i<this->ship.size();i++){
 			//Unbroken Ships
 			if(this->ship[i].Float()){
-				for(short j=0;j<(short)this->ship.size();j++){
+				for(unsigned j=0;j<this->ship.size();j++){
 					if(i!=j){
 						//Collision
 						if(this->ship[i].dist(this->ship[j].Origin())<=this->ship[i].width()+this->ship[j].width())
@@ -568,11 +555,11 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 			//Broken ships
 			}else if(this->ship[i].sink()){
 				//Selected
-				if(i+1<this->selected)
-					this->selected--;
+				if(i+1<(unsigned)this->selected)
+					this->select(this->selected-1);
 				//Delete from fleet
 				short sinked=i;
-				for(short j=0;j<(short)this->fleets.size();j++){
+				for(unsigned j=0;j<this->fleets.size();j++){
 					if(fleets[j]==this->ship[i].Fleet())
 						break;
 					sinked-=::fleet[this->fleets[j]].size();
@@ -583,12 +570,12 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 				this->ship.erase(this->ship.begin()+i);
 				this->target.erase(this->target.begin()+i);
 				//GUI
-				detail.show("Battle",this->getStatistic());
+				this->detail->show("Battle",this->getStatistic());
 			}
 		}
 	}
 	//Exit if a fleet is destroyed
-	for(short i=0;i<(short)this->fleets.size();i++)
+	for(unsigned i=0;i<this->fleets.size();i++)
 		if(!fleet[this->fleets[i]].size()){
 			gui.selected=4;
 			break;
@@ -596,8 +583,6 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 	//Exit from battle
 	if(gui.selected==4){
 		//Camera
-		view->setSize(sf::Vector2f((float)gui.width(),(float)gui.height()));
-		window->setView(*view);
 		this->moveView(view,-gui.x,-gui.y);
 		//Empty memory
 		this->target.clear();
@@ -607,5 +592,5 @@ void Battle::Update(sf::RenderWindow *window,sf::View *view){
 	}
 }
 Battle::~Battle(){
-
+	audio.changeMusic("data/audio/music/Winds of Ithaca.ogg");
 }

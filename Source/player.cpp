@@ -40,8 +40,8 @@ std::string Player::Name(){
 }
 std::string Player::Statistics(){
 	if(this->won||this->lost)
-		return "\nWon/lost battles: "+gui.Format(this->won)+"/"+gui.Format(this->lost);
-	return "\n"+this->Name()+" didn't have battles.";
+		return Format(this->won)+"/"+Format(this->lost);
+	return "No battles.";
 }
 float Player::Coins(){
 	return this->coins;

@@ -16,5 +16,5 @@ public:
 	void setPosition(float x,float y);
 	operator bool();
 	~SubMenu();
-};
+}extern *subMenu;
 #endif

@@ -5,7 +5,7 @@
 //Ship
 class Ship{
 private:
-	short fleet,id;
+	short fleet,rank,id;
 	float speed,integrity,clock;
 	//Sprites
 	sf::Sprite *body,*ram,*rows,*sails;
@@ -13,7 +13,7 @@ private:
 	void Move(float x,float y);
 public:
 	//Constructor
-	Ship(short fleet,short id,short faction,short integrity,short x,short y,float angle);
+	Ship(short fleet,short rank,short id,short faction,short integrity,short x,short y,float angle);
 	//Render
 	void RenderBody(sf::RenderWindow *window);
 	void RenderRam(sf::RenderWindow *window);
@@ -22,6 +22,7 @@ public:
 	//Basic
 	void show();
 	void setColor(sf::Color color);
+	void rankDown();
 	//Rotation
 	void rotate(float angle);
 	void setRotation(float angle);
@@ -30,6 +31,9 @@ public:
 	//Points
 	void setPosition(float x,float y);
 	float dist(sf::Vector2f point);
+	float dist(Ship ship);
+	float distFront(sf::Vector2f point);
+	float distFront(Ship ship);
 	bool contains(sf::Vector2f point);
 	bool rowsContains(sf::Vector2f point);
 	sf::Vector2f Origin();
@@ -67,6 +71,7 @@ public:
 	float Power();
 	short Direction();
 	short Fleet();
+	short Rank();
 	//Size
 	short width();
 	short widthRows();

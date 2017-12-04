@@ -10,12 +10,12 @@ private:
 	Region *region;
 	short x,y,player;
 	//Population
-	int population,limit,rate;
+	int population,limit;
 	//Goods
 	short local,import,occupied;
 public:
 	//Basic
-	Settlement(short x,short y,short player,int population,int limit,int rate,short local,short import,short occupied,std::string name);
+	Settlement(short x,short y,short player,int population,int limit,short local,short import,short occupied,std::string name);
 	void Render(sf::RenderWindow *window);
 	//Update
 	void Monthly();
@@ -49,5 +49,5 @@ public:
 };
 //Global variable
 extern std::vector<Settlement> settlement;
-//End declaration
+//End declarations
 #endif

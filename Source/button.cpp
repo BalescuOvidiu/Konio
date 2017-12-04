@@ -1,6 +1,5 @@
 #include "button.h"
-
-//Fixed 
+//Fixed
 Button::Button(std::string directory,short x,short y){
 	this->tex=new sf::Texture();
 	this->tex->loadFromFile(directory);
@@ -41,6 +40,9 @@ void Button::move(float x,float y){
 }
 void Button::setPosition(float x,float y){
 	this->sprite->setPosition(x,y);
+}
+void Button::setColor(sf::Color color){
+	this->sprite->setColor(color);
 }
 //Mouse over
 bool Button::mouseOver(){

@@ -15,9 +15,7 @@ public:
 	bool right();
 	bool mouseOver();
 	~LabelDip();
-};
-//Global variable
-extern LabelDip *labelDip;
+}extern *labelDip;
 //Global function
 void deselectDip();
 void reloadLabelDip();

@@ -2,20 +2,19 @@
 //Display for player
 LabelDip::LabelDip(){
 	//Label
-	this->label=new Label(gui.x+gui.width(50)-300,gui.y+gui.height(50)-200,600,250,1);
+	this->label=new Label(gui.x+464,gui.y+64,400,50+(::player.size()*25),1);
 	this->label->setTitle("Diplomacy");
 	//Buttons
-	for(short i=0;i<(short)::player.size();i++)
-		this->player.push_back(Button("data/game/icons/"+std::to_string(i)+".png",gui.x+gui.width(50)-250+100*i%600,gui.y+gui.height(50)-100+100*(short)(i/6)));
+	for(unsigned i=0;i<::player.size();i++)
+		this->player.push_back(Button("data/game/icons/"+std::to_string(i)+".png",gui.x+514+100*i%400,gui.y+164+100*(short)(i/4)));
 }
 void LabelDip::Render(sf::RenderWindow *window){
 	this->label->Render(window);
-	for(short i=0;i<(short)player.size();i++)
+	for(unsigned i=0;i<player.size();i++)
 		this->player[i].Render(window);
 }
 short LabelDip::Update(){
-	for(short i=0;i<(short)player.size();i++){
-		//Select
+	for(unsigned i=0;i<player.size();i++){
 		if(this->player[i].left(::player[i].Name()+getDiplomaticStatus(i),""))
 			return i;
 	}
@@ -27,9 +26,21 @@ void LabelDip::move(float x,float y){
 		this->player[i].move(x,y);
 }
 bool LabelDip::right(){
-	for(short i=0;i<(short)player.size();i++)
-		if(this->player[i].mouseOver())
+	for(unsigned i=0;i<player.size();i++)
+		this->player[i].setColor(sf::Color(255,255,255));
+	for(unsigned i=0;i<player.size();i++){
+		if(this->player[i].mouseOver()){
+			for(unsigned j=0;j<player.size();j++){
+				if(areAllies(i,j)&&i!=j)
+					this->player[j].setColor(sf::Color(60,255,100));
+				else if(areEnemies(i,j))
+					this->player[j].setColor(sf::Color(255,100,60));
+				else
+					this->player[j].setColor(sf::Color(255,255,255));
+			}
 			return 0;
+		}
+	}
 	return this->label->right();
 }
 bool LabelDip::mouseOver(){

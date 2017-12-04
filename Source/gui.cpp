@@ -1,4 +1,7 @@
 #include "gui.h"
+//File variables
+std::ifstream in;
+std::ifstream out;
 //Math functions
 bool isInTriangle(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c,sf::Vector2f d){
 	return ((det(a,d,b)*det(a,c,d)>0)&&(det(a,d,b)*det(b,d,c)>0));
@@ -12,6 +15,9 @@ float det(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c){
 float dist(sf::Vector2f start,sf::Vector2f end){
 	return sqrt((start.x-end.x)*(start.x-end.x)+(start.y-end.y)*(start.y-end.y));
 }
+float distSquare(sf::Vector2f start,sf::Vector2f end){
+	return ((start.x-end.x)*(start.x-end.x)+(start.y-end.y)*(start.y-end.y));
+}
 float getAngle(sf::Vector2f start,sf::Vector2f end){
 	//Calculate the angle
 	float angle=atan((end.y-start.y)/(end.x-start.x))/0.017453293;
@@ -22,9 +28,37 @@ float getAngle(sf::Vector2f start,sf::Vector2f end){
 		angle+=360;
 	return angle;
 }
+float getRadians(sf::Vector2f start,sf::Vector2f end){
+	//Calculate the angle
+	float angle=atan((end.y-start.y)/(end.x-start.x))/0.017453293;
+	//Get value on trigonometric circle
+	if(end.x<start.x)
+		angle+=180;
+	if(angle<0)
+		angle+=360;
+	return angle*0.017453293;
+}
+//Text
+std::string Format(double value){
+	std::stringstream stream;
+	stream<<std::fixed<<std::setprecision(1)<<value;
+	return stream.str();
+}
+std::string Format(int value){
+	if(value>999){
+		return std::to_string(value/1000)+"."+std::to_string(value/100%10)+" k";
+	}
+	return std::to_string(value);
+}
+std::string Format(unsigned value){
+	if(value>999){
+		return std::to_string(value/1000)+"."+std::to_string(value/100%10)+" k";
+	}
+	return std::to_string(value);
+}
 //Constructor
 GUI::GUI(){
-	this->selected=0;
+	this->selected=1;
 	//Screen
 	this->winH=sf::VideoMode::getDesktopMode().height;
 	this->winW=sf::VideoMode::getDesktopMode().width;
@@ -67,17 +101,6 @@ sf::Vector2f GUI::mousePosition(){
 //Text
 sf::Font* GUI::Font(){
 	return this->font;
-}
-std::string GUI::Format(double value){
-	std::stringstream stream;
-	stream<<std::fixed<<std::setprecision(1)<<value;
-	return stream.str();
-}
-std::string GUI::Format(int value){
-	if(value>999){
-		return std::to_string(value/1000)+"."+std::to_string(value/100%10)+" k";
-	}
-	return std::to_string(value);
 }
 //Destructor
 GUI::~GUI(){

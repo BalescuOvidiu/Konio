@@ -21,5 +21,5 @@ public:
 	void reset();
 	operator bool();
 	~Options();
-}extern op;
+}extern *op;
 #endif

@@ -15,7 +15,7 @@ void History::Update(){
 		for(short j=0;j<2&&!(*this->info);j++){
 			if(sf::IntRect(gui.width(25)*i,gui.width(12)+gui.width(20)*j,gui.width(25),gui.width(20)).contains(gui.mousePosition().x,gui.mousePosition().y)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				//Label
-				std::ifstream in("data/history/"+std::to_string(i+j*5)+".txt");
+				in.open("data/history/"+std::to_string(i+j*5)+".txt");
 				if(in.is_open()){
 					std::string title,text;
 					getline(in,title);
@@ -37,3 +37,5 @@ void History::Update(){
 History::~History(){
 
 }
+//Variable
+History *history;

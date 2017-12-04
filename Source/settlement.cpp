@@ -1,13 +1,12 @@
 #include "settlement.h"
 //Basic
-Settlement::Settlement(short x,short y,short player,int population,int limit,int rate,short local,short import,short occupied,std::string name){
+Settlement::Settlement(short x,short y,short player,int population,int limit,short local,short import,short occupied,std::string name){
 	this->region=new Region(x-6*name.length(),y-18,30,name);
 	this->x=x;
 	this->y=y;
 	this->player=player;
 	this->population=population;
 	this->limit=limit;
-	this->rate=rate;
 	this->local=local;
 	this->import=import;
 	this->occupied=occupied;
@@ -35,7 +34,7 @@ void Settlement::Recruit(short population){
 }
 //Mouse
 bool Settlement::mouseOver(){
-	return (dist(sf::Vector2f(x,y),gui.mousePosition())<=40);
+	return (distSquare(sf::Vector2f(x,y),gui.mousePosition())<=1600);
 }
 bool Settlement::left(){
 	if(this->mouseOver())
@@ -50,13 +49,13 @@ std::string Settlement::getGrowthString(){
 	if(!this->getGrowth())
 		return "Stagned";
 	if(this->getGrowth()>0)
-		return "+"+gui.Format(this->getGrowth());
-	return gui.Format(this->getGrowth());
+		return "+"+Format(this->getGrowth());
+	return Format(this->getGrowth());
 }
 std::string Settlement::getPopulationString(){
 	if(!this->population)
 		return "Abandoned";
-	return gui.Format(this->getPopulation())+"/"+gui.Format(this->getLimit());
+	return Format(this->getPopulation())+"/"+Format(this->getLimit());
 }
 std::string Settlement::getText(){
 	return "          "+this->getPopulationString()+" freemen\n          "+this->getGrowthString()+" growth";
@@ -88,7 +87,7 @@ bool Settlement::hasGood(short good){
 //Population
 float Settlement::getRate(){
 	//Rate
-	return this->rate/100.;
+	return this->limit/367879.;
 }
 int Settlement::getGrowth(){
 	//Bonuses

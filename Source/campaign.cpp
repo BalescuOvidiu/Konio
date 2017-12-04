@@ -16,16 +16,14 @@ void Campaign::Render(sf::RenderWindow *window){
 	if(about)
 		about.Render(window);
 	this->menu->Render(window);
-	for(short i=0;i<(short)(button.size());i++)
+	for(unsigned i=0;i<this->button.size();i++)
 		this->button[i].Render(window);
 }
 void Campaign::Update(sf::View *view){
 	about.hide();
-	if(gui.selected!=4)
-		this->game=NULL;
 	if(this->menu->left("Menu","Click or press M to leave from campaign.",sf::Keyboard::M))
 		gui.selected=1;
-	for(short i=0;i<(short)(this->button.size());i++){
+	for(unsigned i=0;i<this->button.size();i++){
 		if(this->button[i].mouseOver()){
 			std::ifstream saved("data/game/saved/"+std::to_string(i)+".txt");
 			if(this->button[i].left()){
@@ -61,3 +59,5 @@ void Campaign::Update(sf::View *view){
 Campaign::~Campaign(){
 
 }
+//Variable
+Campaign *campaign;

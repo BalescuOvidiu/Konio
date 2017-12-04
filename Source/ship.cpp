@@ -1,8 +1,9 @@
 #include "ship.h"
 //Constructor
-Ship::Ship(short fleet,short id,short faction,short integrity,short x,short y,float angle){
+Ship::Ship(short fleet,short rank,short id,short faction,short integrity,short x,short y,float angle){
 	//Data
 	this->fleet=fleet;
+	this->rank=rank;
 	this->id=id;
 	this->integrity=integrity;
 	//Physic
@@ -40,17 +41,16 @@ void Ship::RenderSails(sf::RenderWindow *window){
 }
 //Basic
 void Ship::show(){
-	if(this->integrity)
-		detail.show(naval[this->id].Name(),
-			"Integrity "+gui.Format(this->integrity)+"%\nSpeed "+gui.Format(fabs(this->speed))+" km/h\nMax speed "+gui.Format(naval[this->id].Speed())+" km/h\n"+gui.Format(naval[this->id].Rowers())+" rowers");
-	else
-		detail.hide();
+
 }
 void Ship::setColor(sf::Color color){
 	this->body->setColor(color);
 	this->ram->setColor(color);
 	this->sails->setColor(color);
 	this->rows->setColor(color);
+}
+void Ship::rankDown(){
+	this->rank--;
 }
 //Private
 void Ship::Move(float x,float y){
@@ -88,7 +88,16 @@ void Ship::setPosition(float x,float y){
 	this->sails->setPosition(x,y);
 }
 float Ship::dist(sf::Vector2f point){
+	return ::dist(this->Origin(),point);
+}
+float Ship::dist(Ship ship){
+	return ::dist(this->Origin(),ship.Origin());
+}
+float Ship::distFront(sf::Vector2f point){
 	return ::dist(this->Front(),point);
+}
+float Ship::distFront(Ship ship){
+	return ::dist(this->Front(),ship.Origin());	
 }
 bool Ship::contains(sf::Vector2f point){
 	if(isInTriangle(this->BackLeft(),this->BackRight(),this->Back(),point))
@@ -210,8 +219,8 @@ bool Ship::mouseOver(){
 	if(this->contains(gui.mousePosition())){
 		if(this->integrity)
 			about.show(
-				naval[this->id].Name()+getDiplomaticStatus(::fleet[this->fleet].Player())+" "+gui.Format((int)this->integrity)+"%",
-				"Max speed "+gui.Format(naval[this->id].Speed())+" km/h\n"+gui.Format(naval[this->id].Rowers())+" rowers"
+				naval[this->id].Name()+getDiplomaticStatus(::fleet[this->fleet].Player())+" "+Format((int)this->integrity)+"%",
+				"Max speed "+Format(naval[this->id].Speed())+" km/h\n"+Format(naval[this->id].Rowers())+" rowers"
 			);
 		return 1;
 	}
@@ -259,6 +268,9 @@ short Ship::Direction(){
 }
 short Ship::Fleet(){
 	return this->fleet;
+}
+short Ship::Rank(){
+	return this->rank;
 }
 //Size
 short Ship::width(){
@@ -369,6 +381,7 @@ void Ship::takeDamage(short damage){
 }
 bool Ship::sink(){
 	this->integrity-=0.08;
+	this->setColor(sf::Color(255,255,255,255*(short)(this->integrity)/50));
 	if(this->integrity<=0)
 		return 1;
 	return 0;

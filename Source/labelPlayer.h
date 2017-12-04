@@ -1,14 +1,18 @@
 #ifndef LABELPLAYER_H
 #define LABELPLAYER_H
 #include "gameData.h"
+#include "labelIcon.h"
 //Display for player
 class LabelPlayer{
 private:
 	short selected;
 	Label *label;
+	LabelIcon *pop,*ships,*coins,*income,*statistics;
 	Button *shield;
 public:
 	LabelPlayer(short selected);
+	void select(short selected);
+	void select(short selected,short x,short y);
 	void Render(sf::RenderWindow *window);
 	//Update
 	void move(float x,float y);
@@ -17,12 +21,7 @@ public:
 	//Get data
 	short Selected();
 	Player player();
+	sf::Vector2f getPosition();
 	~LabelPlayer();
-};
-//Global variable
-extern LabelPlayer *labelPlayer;
-//Global functions
-void deselectPlayer();
-void reloadLabelPlayer(short i);
-bool isSelectedPlayer(short i);
+}extern *labelPlayer;
 #endif

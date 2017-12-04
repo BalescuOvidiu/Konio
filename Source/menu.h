@@ -11,5 +11,5 @@ public:
 	void Render(sf::RenderWindow *window);
 	void Update(sf::RenderWindow *window);
 	~Menu();
-};
+}extern *menu;
 #endif

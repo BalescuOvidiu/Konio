@@ -7,6 +7,7 @@ private:
 	sf::Vector2f pos;
 	short radius;
 public:
+	Node(sf::Vector2f point,short radius);
 	Node(short x,short y,short radius);
 	//Get data
 	sf::Vector2f getPosition();
@@ -18,4 +19,7 @@ public:
 	bool collision(Node node);
 	~Node();
 };
+//Guide
+std::vector<sf::Vertex> getGuide(sf::Vector2f point,std::vector<Node> route,sf::Color color);
+std::vector<sf::Vertex> setGuideColor(std::vector<sf::Vertex> guide,sf::Color color);
 #endif

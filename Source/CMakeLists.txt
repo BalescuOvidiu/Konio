@@ -24,7 +24,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "Konio")
-add_executable(${EXECUTABLE_NAME} gui.cpp audio.cpp background.cpp button.cpp value.cpp label.cpp labelIcon.cpp options.cpp menu.cpp submenu.cpp  history.cpp player.cpp  entity.cpp naval.cpp ship.cpp layer.cpp fleet.cpp battle.cpp region.cpp good.cpp settlement.cpp gameData.cpp labelSett.cpp labelPlayer.cpp labelFleet.cpp labelDip.cpp node.cpp map.cpp game.cpp campaign.cpp Konio.cpp)
+add_executable(${EXECUTABLE_NAME} gui.cpp audio.cpp background.cpp button.cpp value.cpp label.cpp labelIcon.cpp options.cpp menu.cpp submenu.cpp  history.cpp player.cpp  entity.cpp naval.cpp ship.cpp layer.cpp fleet.cpp battle.cpp region.cpp good.cpp settlement.cpp gameData.cpp gameGUI.cpp labelSett.cpp labelPlayer.cpp labelFleet.cpp labelDip.cpp node.cpp map.cpp game.cpp campaign.cpp Konio.cpp)
 
 
 # Detect and add SFML

@@ -13,5 +13,5 @@ public:
 	void Render(sf::RenderWindow *window);
 	void Update(sf::View *view);
 	~Campaign();
-};
+}extern *campaign;
 #endif

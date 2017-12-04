@@ -12,10 +12,18 @@ private:
 	//Trade and player
 	Button *local,*import,*player;
 	//Military
-	Button *recruit;
+	std::vector<Button> recruit;
+	//Range
+	sf::CircleShape *range;
+	//Guides
+	bool L,I;
+	std::vector<sf::Vertex> Export,Import;
 public:
 	LabelSett(short selected);
+	void select(short selected);
+	void select(short selected,short x,short y);
 	void Render(sf::RenderWindow *window);
+	void RenderGuides(sf::RenderWindow *window);
 	//Update
 	void move(float x,float y);
 	bool playerLeft();
@@ -23,16 +31,11 @@ public:
 	bool importLeft();
 	bool right();
 	bool mouseOver();
-	short getShip();
+	short Ship();
 	//Get data
 	short Selected();
 	Settlement sett();
+	sf::Vector2f getPosition();
 	~LabelSett();
-};
-//Global variable for GUI
-extern LabelSett *labelSett;
-//Global functions
-void deselectSett();
-void reloadLabelSett(short i);
-bool isSelectedSett(short i);
+}extern *labelSett;
 #endif

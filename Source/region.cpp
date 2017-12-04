@@ -6,8 +6,8 @@ Region::Region(short x,short y,short size,std::string name){
 	this->name->setColor(sf::Color(0,0,0));
 }
 void Region::Render(sf::RenderWindow *window){
-	if(dist(this->name->getPosition(),gui.mousePosition())<1020){
-		this->name->setColor(sf::Color(0,0,0,(255-dist(this->name->getPosition(),gui.mousePosition())/4)));
+	if(distSquare(this->name->getPosition(),gui.mousePosition())<1040400){
+		this->name->setColor(sf::Color(0,0,0,(255-distSquare(this->name->getPosition(),gui.mousePosition())/4080)));
 		window->draw(*this->name);
 	}
 }

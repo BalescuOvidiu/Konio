@@ -5,6 +5,7 @@ Options::Options(){
 	this->music=new Value(30,70,15,"data/img/buttons/options/music.png");
 	this->sound=new Value(50,70,15,"data/img/buttons/options/sound.png");
 	this->close=new Button(70,70,15,"data/img/buttons/menu/close.png");
+	this->move(gui.x,gui.y);
 }
 void Options::Render(sf::RenderWindow *window){
 	this->music->Render(window);
@@ -49,4 +50,5 @@ Options::operator bool(){
 Options::~Options(){
 
 }
-Options op;
+//Global Variable
+Options *op=NULL;

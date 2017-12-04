@@ -63,15 +63,30 @@ bool Label::mouseOver(){
 	return (this->rectangle->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y));
 }
 bool Label::left(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left));
+	if(this->mouseOver()){
+		if(gui.canLeft(400)){
+			gui.clickRestart();
+			return 1;
+		}
+	}
+	return 0;
 }
 bool Label::right(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right));
+	if(this->mouseOver()){
+		if(gui.canRight(400)){
+			gui.clickRestart();
+			return 1;
+		}
+	}
+	return 0;
 }
 void Label::Render(sf::RenderWindow *window){
 	window->draw(*this->rectangle);
 	window->draw(*this->title);
 	window->draw(*this->text);
+}
+sf::Vector2f Label::getPosition(){
+	return this->rectangle->getPosition();
 }
 Label::operator bool(){
 	return this->visible;
@@ -80,4 +95,4 @@ Label::~Label(){
 	
 }
 //Label with information about content
-Label about(0,gui.height()-120,gui.width(),120,0),detail(0,0,325,180,0);
+Label about(0,0,0,0,0);

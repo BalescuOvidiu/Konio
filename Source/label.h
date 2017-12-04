@@ -22,7 +22,8 @@ public:
 	bool left();
 	bool right();
 	void Render(sf::RenderWindow *window);
+	sf::Vector2f getPosition();
 	operator bool();
 	~Label();
-}extern about,detail;
+}extern about;
 #endif

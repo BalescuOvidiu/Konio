@@ -13,5 +13,5 @@ public:
 	void Render(sf::RenderWindow *window);
 	void Update();
 	~History();
-};
+}extern *history;
 #endif

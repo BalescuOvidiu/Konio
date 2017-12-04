@@ -6,17 +6,13 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	this->provision=provision;
 	this->formation=formation;
 	this->speed=0;
-	//Rows
-	this->rows=new sf::Sprite(nFleet.Rows());
-	this->Clock(0);
 	//Body
-	this->body=new sf::Sprite(nFleet.Body());
+	this->body=new sf::Sprite(fleetBody);
 	//Sails
 	this->sails=new sf::Sprite(::sails);
 	this->sails->setTextureRect(sf::IntRect(13*(::player[player].Faction()),0,12,100));
 	//Origin
-	this->body->setOrigin(nFleet.Body().getSize().x/2,nFleet.Body().getSize().y/2);
-	this->rows->setOrigin(nFleet.Rows().getSize().x/24,nFleet.Rows().getSize().y/2);
+	this->body->setOrigin(fleetBody.getSize().x/2,fleetBody.getSize().y/2);
 	this->sails->setOrigin(0,::sails.getSize().y/2);
 	//Orientation
 	this->setPosition(pos);
@@ -26,12 +22,11 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 }
 //Update and rendering
 void Fleet::Render(sf::RenderWindow *window){
-	window->draw(*this->rows);
 	window->draw(*this->body);
 	window->draw(*this->sails);
 }
 void Fleet::Update(){
-	this->provision-=0.01;
+	this->provision-=0.011;
 	if(this->route.size()){
 		//Get the angles
 		float angleShip=this->body->getRotation();
@@ -40,8 +35,6 @@ void Fleet::Update(){
 		//If direction is change
 		if(this->speed<0){
 			this->speed=0;
-			//Rows
-			this->Clock(0);
 		}
 		if(!this->route[0].contains(this->getPosition())){
 			//Get way
@@ -61,20 +54,7 @@ void Fleet::Update(){
 					this->rotateTo(-way*this->Randament());
 			}
 			//Modify speed
-			this->speed=nFleet.Speed()*this->Randament();	
-			//Rows
-			if(this->speed){
-				//Forward
-				if(floor(this->clock)==11)
-					Clock(0);
-				//Reverse
-				if(this->clock<0)
-					Clock(11);
-				//Stop
-				if(!this->speed)
-					Clock(0);
-				Clock(this->clock+0.065);
-			}
+			this->speed=10*this->Randament();
 		//Stop
 		}else
 			this->route.erase(this->route.begin());
@@ -110,6 +90,11 @@ void Fleet::Supply(){
 	for(short i=0;i<(short)this->integrity.size();i++)
 		this->integrity[i]=100;
 }
+void Fleet::Supply(float provision){
+	this->provision+=provision;
+	if(this->provision>100)
+		this->provision=100;
+}
 //Route
 void Fleet::addNodeRoute(Node node){
 	this->route.push_back(node);
@@ -125,22 +110,9 @@ void Fleet::resetRoute(){
 void Fleet::Move(float x,float y){
 	this->body->move(x,y);
 	this->sails->move(x,y);
-	this->rows->move(x,y);
-}
-void Fleet::Clock(float clock){
-	this->clock=clock;
-	this->rows->setTextureRect(
-		sf::IntRect(
-			nFleet.Rows().getSize().x/12*floor(clock),
-			0,
-			nFleet.Rows().getSize().x/12,
-			nFleet.Rows().getSize().y
-		)
-	);	
 }
 void Fleet::Stop(){
 	this->speed=0;
-	this->Clock(0);
 	this->route.clear();
 }
 //Get data
@@ -160,6 +132,13 @@ short Fleet::Direction(){
 }
 short Fleet::size(){
 	return this->ship.size();
+}
+short Fleet::getShips(short id){
+	short number=0;
+	for(short i=0;i<(short)this->ship.size();i++)
+		if(ship[i]==id)
+			number++;
+	return number;
 }
 short Fleet::Ship(short i){
 	return this->ship[i];
@@ -195,7 +174,6 @@ void Fleet::rotateTo(float angle){
 void Fleet::setRotation(float angle){
 	//Set angle of fleet
 	this->body->setRotation(angle);
-	this->rows->setRotation(angle);
 	//Set angle of sail
 	if(angle>=0&&angle<=180)
 		this->sails->setRotation(angle/2);
@@ -211,31 +189,42 @@ float Fleet::getRotationRad(){
 //Points
 void Fleet::setPosition(sf::Vector2f point){
 	this->body->setPosition(point);
-	this->rows->setPosition(point);
 	this->sails->setPosition(point);
 }
 float Fleet::dist(sf::Vector2f point){
 	return ::dist(this->getPosition(),point);
 }
 bool Fleet::contains(sf::Vector2f point){
-	return (this->dist(point)<=65);
+	return (distSquare(this->getPosition(),point)<=4225);
 }
 sf::Vector2f Fleet::getPosition(){
 	return this->body->getPosition();
+}
+sf::Vector2f Fleet::getTarget(){
+	if(this->route.size())
+		return this->route[this->route.size()-1].getPosition();
+	return this->body->getPosition();
+}
+std::vector<Node> Fleet::getRoute(){
+	return this->route;
 }
 //Mouse
 bool Fleet::mouseOver(){
 	if(this->contains(gui.mousePosition())){
 		about.show(
-			::player[this->player].Name()+"'s fleet"+getDiplomaticStatus(this->player)+" - "+gui.Format((int)this->provision)+"%",
-			FormationName(this->formation)+"\n"+gui.Format(this->size())+" ships  "+gui.Format(this->Upkeep())+" upkeep"
+			::player[this->player].Name()+"'s fleet"+getDiplomaticStatus(this->player)+" - Provision "+Format((int)this->provision)+"%",
+			FormationName(this->formation)+"\n"+Format(this->size())+" ships  "+Format(this->Upkeep())+" upkeep"
 		);
 		return 1;
 	}
 	return 0;
 }
 bool Fleet::left(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left));
+	if(this->mouseOver()&&gui.canLeft(200)){
+		gui.clickRestart();
+		return 1;
+	}
+	return 0;
 }
 Fleet::~Fleet(){
 	
@@ -264,4 +253,4 @@ std::string FormationText(short formation){
 	}
 	return "";
 }
-Naval nFleet(-1);
+sf::Texture fleetBody;

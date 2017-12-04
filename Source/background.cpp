@@ -26,3 +26,5 @@ void Background::setPosition(float x,float y){
 Background::~Background(){
 
 }
+//Variable
+Background *background;

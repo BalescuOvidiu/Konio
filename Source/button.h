@@ -14,6 +14,7 @@ public:
 	void Render(sf::RenderWindow *window);
 	void move(float x,float y);
 	void setPosition(float x,float y);
+	void setColor(sf::Color color);
 	bool mouseOver();
 	bool mouseOver(std::string title,std::string text);
 	bool left();

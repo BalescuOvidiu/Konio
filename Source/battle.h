@@ -11,6 +11,7 @@ private:
 	sf::Vector2f position;
 	sf::Text *text;
 	Button *retreat;
+	Label *detail;
 	bool pause;
 	short selected,enemies,friends;
 	unsigned size;
@@ -51,7 +52,7 @@ private:
 	void moveView(sf::View *view,float x,float y);
 	void moveCamera(sf::RenderWindow *window,sf::View *view);
 	//Human
-	void select(short ship);
+	void select(unsigned ship);
 	void deselect();
 public:
 	//Basic

@@ -12,12 +12,21 @@
 #include <sstream>
 #include <string>
 #include <vector>
+//File variables
+extern std::ifstream in;
+extern std::ifstream out;
 //Math functions
 bool isInTriangle(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c,sf::Vector2f d);
 float area(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c);
 float det(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c);
 float dist(sf::Vector2f start,sf::Vector2f end);
+float distSquare(sf::Vector2f start,sf::Vector2f end);
 float getAngle(sf::Vector2f start,sf::Vector2f end);
+float getRadians(sf::Vector2f start,sf::Vector2f end);
+//Text
+std::string Format(double value);
+std::string Format(int value);
+std::string Format(unsigned value);
 //GUI
 class GUI{
 private:
@@ -44,10 +53,7 @@ public:
 	sf::Vector2f mousePosition();
 	//Text
 	sf::Font* Font();
-	std::string Format(double value);
-	std::string Format(int value);
 	//Destructor
 	~GUI();
-};
-extern GUI gui;
+}extern gui;
 #endif
