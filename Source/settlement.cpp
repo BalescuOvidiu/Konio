@@ -34,7 +34,7 @@ void Settlement::Recruit(short population){
 }
 //Mouse
 bool Settlement::mouseOver(){
-	return (distSquare(sf::Vector2f(x,y),gui.mousePosition())<=1600);
+	return (Dist(sf::Vector2f(x,y),gui.mousePosition())<=1600);
 }
 bool Settlement::left(){
 	if(this->mouseOver())
@@ -42,6 +42,12 @@ bool Settlement::left(){
 	return 0;
 }
 //Get data
+sf::Vector2f Settlement::getPosition(){
+	return sf::Vector2f(this->x,this->y);
+}
+sf::Vector2f Settlement::getRangePosition(){
+	return sf::Vector2f(this->x-this->getRange(),this->y-this->getRange());
+}
 std::string Settlement::getName(){
 	return this->region->getName();
 }
@@ -60,9 +66,6 @@ std::string Settlement::getPopulationString(){
 std::string Settlement::getText(){
 	return "          "+this->getPopulationString()+" freemen\n          "+this->getGrowthString()+" growth";
 }
-sf::Vector2f Settlement::getPosition(){
-	return sf::Vector2f(this->x,this->y);
-}
 short Settlement::getOwner(){
 	if(!this->isOccupied())
 		return this->player;
@@ -74,6 +77,9 @@ short Settlement::getPlayer(){
 short Settlement::getOccupied(){
 	return this->occupied;
 }
+short Settlement::getRange(){
+	return 90+this->population/300;
+}
 //Goods
 short Settlement::getGood(){
 	return this->local;
@@ -82,11 +88,13 @@ short Settlement::getImport(){
 	return this->import;
 }
 bool Settlement::hasGood(short good){
-	return (this->local==good||(::settlement[this->import].getGood()==good&&areAllies(this->getOwner(),::settlement[this->getImport()].getOwner())));
+	if((unsigned)this->import<::settlement.size())
+		if((::settlement[this->import].getGood()==good&&areAllies(this->getOwner(),::settlement[this->getImport()].getOwner())))
+			return 1;
+	return this->local==good;
 }
 //Population
 float Settlement::getRate(){
-	//Rate
 	return this->limit/367879.;
 }
 int Settlement::getGrowth(){
@@ -118,11 +126,15 @@ int Settlement::getLimit(){
 int Settlement::getPopulation(){
 	return this->population;
 }
+//Military
 bool Settlement::isOccupied(){
 	return this->occupied;
 }
 bool Settlement::canRecruit(int population){
 	return (this->population>population);
+}
+bool Settlement::isInRange(sf::Vector2f point){
+	return ((8100+this->population*9/15+this->population*this->population/90000)>Dist(sf::Vector2f(x,y),point));
 }
 Settlement::~Settlement(){
 	

@@ -12,6 +12,7 @@ private:
 	//Trade and player
 	Button *local,*import,*player;
 	//Military
+	std::vector<short> id;
 	std::vector<Button> recruit;
 	//Range
 	sf::CircleShape *range;

@@ -1,13 +1,14 @@
 #include "player.h"
 //Constructor
-Player::Player(short faction,float coins,short team,std::string name){
+Player::Player(short faction,float coins,short team,std::string name,short won,short lost){
 	//Basic
 	this->faction=faction;
 	this->name=name;
 	this->coins=coins;
 	this->team=team;
 	//Statistics
-	this->reset();
+	this->won=won;
+	this->lost=lost;
 }
 //Set data functions
 void Player::Faction(short faction){
@@ -43,6 +44,9 @@ std::string Player::Statistics(){
 		return Format(this->won)+"/"+Format(this->lost);
 	return "No battles.";
 }
+std::string Player::Battles(){
+	return Format(this->won)+" "+Format(this->lost);
+}
 float Player::Coins(){
 	return this->coins;
 }
@@ -69,12 +73,17 @@ bool areAllies(short i,short j){
 bool areEnemies(short i,short j){
 	return ::player[i].Team()!=::player[j].Team();
 }
+bool areNeutrals(short i,short j){
+	return areAllies(i,j)&&areEnemies(i,j);
+}
 std::string getDiplomaticStatus(short player){
 	if(player==human)
 		return " - You";
 	if(areAllies(human,player))
 		return " - Ally";
-	return " - Enemy";
+	if(areEnemies(human,player))
+		return " - Enemy";
+	return " - Neutral";
 }
 std::string PlayerInfo(short player){
 	return ::player[player].Name()+getDiplomaticStatus(player);

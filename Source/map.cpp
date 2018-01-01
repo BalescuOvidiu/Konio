@@ -5,7 +5,7 @@ Map::Map(){
 	this->tex->loadFromFile("data/game/map/sprite.png");
 	this->sprite=new sf::Sprite(*tex);
 	this->sprite->setPosition(0,0);
-	water=new Layer(1,64,"data/game/map/water.png");
+	water=new Layer(1,256,"data/game/map/water.png");
 }
 //Rendering and update
 void Map::Render(sf::RenderWindow *window){
@@ -18,8 +18,14 @@ void Map::RenderRegions(sf::RenderWindow *window){
 	for(unsigned i=0;i<this->region.size();i++)
 		this->region[i].Render(window);
 }
+void Map::RenderWater(sf::RenderWindow *window){
+	this->water->Render(window);
+}
 void Map::move(short x,short y){
 	this->water->move(x,y);
+}
+void Map::zoom(float factor){
+	this->water->zoom(factor);
 }
 void Map::Update(){
 	//Water
@@ -92,19 +98,19 @@ bool Map::isOnWater(sf::Vector2f point){
 			return 1;
 	return 0;
 }
-float Map::dist(short i,short j){
-	return this->node[i].dist(this->node[j]);
+float Map::Dist(short i,short j){
+	return this->node[i].Dist(this->node[j]);
 }
 short Map::getNearestNode(sf::Vector2f point){
 	short nearest=0;
-	float Dist=this->node[0].dist(point);
+	float Dist=this->node[0].Dist(point);
 	if(this->node[0].contains(point))
 		return 0;
 	for(unsigned i=1;i<this->node.size();i++){
 		if(this->node[i].contains(point))
 			return i;
-		if(Dist>this->node[i].dist(point)){
-			Dist=this->node[i].dist(point);
+		if(Dist>this->node[i].Dist(point)){
+			Dist=this->node[i].Dist(point);
 			nearest=i;
 		}
 	}

@@ -1,5 +1,5 @@
 #include "fleet.h"
-
+//Constructor
 Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float provision){
 	//Main properties
 	this->player=player;
@@ -10,7 +10,7 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	this->body=new sf::Sprite(fleetBody);
 	//Sails
 	this->sails=new sf::Sprite(::sails);
-	this->sails->setTextureRect(sf::IntRect(13*(::player[player].Faction()),0,12,100));
+	this->sails->setTextureRect(sf::IntRect(14*(::player[player].Faction()),0,14,140));
 	//Origin
 	this->body->setOrigin(fleetBody.getSize().x/2,fleetBody.getSize().y/2);
 	this->sails->setOrigin(0,::sails.getSize().y/2);
@@ -18,48 +18,61 @@ Fleet::Fleet(sf::Vector2f pos,float angle,short player,short formation,float pro
 	this->setPosition(pos);
 	this->setRotation(angle);
 	//Scale
-	this->sails->setScale(0.6,0.6);
+	this->sails->setScale(0.4,0.4);
 }
 //Update and rendering
-void Fleet::Render(sf::RenderWindow *window){
+void Fleet::RenderBody(sf::RenderWindow *window){
 	window->draw(*this->body);
+}
+void Fleet::RenderSail(sf::RenderWindow *window){
 	window->draw(*this->sails);
 }
 void Fleet::Update(){
-	this->provision-=0.011;
+	this->provision-=0.014;
+	//Move
 	if(this->route.size()){
-		//Get the angles
-		float angleShip=this->body->getRotation();
-		float angle=getAngle(this->getPosition(),this->route[0].getPosition());
-		int way=1;
-		//If direction is change
-		if(this->speed<0){
-			this->speed=0;
-		}
-		if(!this->route[0].contains(this->getPosition())){
-			//Get way
-			if(fabs(angleShip-angle)>180)
-				way*=-1;
-			//Change angle
-			if(angleShip<angle){
-				if(angle<angleShip+way*this->Randament())
-					this->setRotation(angle);
-				else
-					this->rotateTo(way*this->Randament());
-			}
-			else if(angleShip>angle){
-				if(angle>angleShip-way*this->Randament())
-					this->setRotation(angle);
-				else
-					this->rotateTo(-way*this->Randament());
-			}
-			//Modify speed
-			this->speed=10*this->Randament();
 		//Stop
-		}else
+		if(this->route[0].contains(this->getPosition())){
 			this->route.erase(this->route.begin());
+			return;
+		}
+		if(this->Dist(route[0].getPosition())<64&&route.size()<16){
+			this->route.erase(this->route.begin());
+			return;
+		}
+		//Get the angles
+		float angle=getAngle(this->getPosition(),this->route[0].getPosition());
+		float delta=this->body->getRotation()-angle;
+		float rotationSpeed=this->Randament();
+		//Get way
+		if(fabs(delta)>180)
+			rotationSpeed*=-1;
+		//Change angle
+		if(delta<0){
+			if(0<delta+rotationSpeed)
+				this->rotate(angle-this->body->getRotation());
+			else{
+				this->rotate(rotationSpeed);
+			}
+		}
+		else if(delta>0){
+			if(0>delta-rotationSpeed)
+				this->rotate(angle-this->body->getRotation());
+			else{
+				rotationSpeed*=-1;
+				this->rotate(rotationSpeed);
+			}
+		}else
+			rotationSpeed=0;
+		//Sails
+		if(rotationSpeed){
+			if(fabs(rotationSpeed+this->sails->getRotation()-this->body->getRotation())<30)
+				this->sails->rotate(rotationSpeed);
+		}
+		//Modify speed
+		this->speed=10*this->Randament();
 		//Move
-		this->Move(
+		this->move(
 			this->SpeedOnFrame()*cos(this->getRotationRad()),
 			this->SpeedOnFrame()*sin(this->getRotationRad())
 		);
@@ -67,16 +80,21 @@ void Fleet::Update(){
 		this->Stop();
 	}
 }
-void Fleet::addShip(short ship,short integrity){
+void Fleet::addShip(short ship,short integrity,short marines){
 	this->ship.push_back(ship);
 	this->integrity.push_back(integrity);
+	this->marines.push_back(marines);
 }
 void Fleet::removeShip(short ship){
 	this->ship.erase(this->ship.begin()+ship);
 	this->integrity.erase(this->integrity.begin()+ship);
+	this->marines.erase(this->marines.begin()+ship);
 }
 void Fleet::setIntegrity(short ship,short integrity){
 	this->integrity[ship]=integrity;
+}
+void Fleet::setMarines(short ship,short marines){
+	this->marines[ship]=marines;
 }
 void Fleet::Reform(short formation){
 	this->formation=formation;
@@ -95,19 +113,29 @@ void Fleet::Supply(float provision){
 	if(this->provision>100)
 		this->provision=100;
 }
-//Route
-void Fleet::addNodeRoute(Node node){
-	this->route.push_back(node);
-}
-void Fleet::getRoute(std::vector<Node> route){
-	this->route.clear();
-	this->route=route;
-}
-void Fleet::resetRoute(){
-	this->route.clear();
+void Fleet::setColor(sf::Color color){
+	this->body->setColor(color);
+	this->sails->setColor(color);
 }
 //Move
-void Fleet::Move(float x,float y){
+void Fleet::Move(sf::Vector2f target){
+	if(map->isOnWater(target)&&::Dist(this->getTarget(),target)>=64){
+		this->route.clear();
+		this->route=map->getRoute(this->getPosition(),target);
+		this->route.push_back(Node(target,60));
+	}
+}
+void Fleet::MoveAdd(sf::Vector2f target){
+	if(map->isOnWater(target)&&::Dist(this->getTarget(),target)>=64){
+		std::vector<Node> data=map->getRoute(this->getTarget(),target);
+		while(data.size()){
+			this->route.push_back(data[0]);
+			data.erase(data.begin());
+		}
+		this->route.push_back(Node(target,60));
+	}
+}
+void Fleet::move(float x,float y){
 	this->body->move(x,y);
 	this->sails->move(x,y);
 }
@@ -135,10 +163,17 @@ short Fleet::size(){
 }
 short Fleet::getShips(short id){
 	short number=0;
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=this->ship.size();i--;)
 		if(ship[i]==id)
 			number++;
 	return number;
+}
+std::string Fleet::getShipsString(short id){
+	std::string string="";
+	for(unsigned i=this->ship.size();i--;)
+		if(ship[i]==id)
+			string+=Format(this->marines[i])+"/"+Format(this->integrity[i])+"%  ";
+	return string;
 }
 short Fleet::Ship(short i){
 	return this->ship[i];
@@ -146,8 +181,18 @@ short Fleet::Ship(short i){
 short Fleet::Integrity(short i){
 	return this->integrity[i];
 }
+short Fleet::Marines(short i){
+	return this->marines[i];
+}
+short Fleet::Range(){
+	return 90+this->ship.size()*5;
+}
 float Fleet::Upkeep(){
-	return this->integrity.size()*0.1;
+	float upkeep=0;
+	for(unsigned i=this->ship.size();i--;){
+		upkeep+=naval[this->ship[i]].Upkeep();
+	}
+	return upkeep;
 }
 float Fleet::Speed(){
 	return this->speed;
@@ -157,28 +202,21 @@ float Fleet::SpeedOnFrame(){
 }
 float Fleet::Power(){
 	float power=0;
-	for(short i=0;i<(short)this->ship.size();i++)
+	for(unsigned i=this->ship.size();i--;)
 		power+=::naval[this->ship[i]].Power();
-	return (power*this->formation*this->integrity.size());
+	return (power*this->formation*this->integrity.size()*this->provision/100);
 }
 float Fleet::Randament(){
-	return this->provision/100;
+	return 0.3+this->provision*0.007;
 }
 //Rotation
 void Fleet::rotate(float angle){
-	this->setRotation(this->getRotation()+angle);
-}
-void Fleet::rotateTo(float angle){
-	this->rotate(angle);
+	this->body->rotate(angle);
+	this->sails->rotate(angle);
 }
 void Fleet::setRotation(float angle){
-	//Set angle of fleet
 	this->body->setRotation(angle);
-	//Set angle of sail
-	if(angle>=0&&angle<=180)
-		this->sails->setRotation(angle/2);
-	else
-		this->sails->setRotation(360-(360-angle)/2);
+	this->sails->setRotation(angle);
 }
 float Fleet::getRotation(){
 	return this->body->getRotation();
@@ -191,14 +229,26 @@ void Fleet::setPosition(sf::Vector2f point){
 	this->body->setPosition(point);
 	this->sails->setPosition(point);
 }
-float Fleet::dist(sf::Vector2f point){
-	return ::dist(this->getPosition(),point);
+float Fleet::Dist(sf::Vector2f point){
+	return ::Dist(this->getPosition(),point);
 }
 bool Fleet::contains(sf::Vector2f point){
-	return (distSquare(this->getPosition(),point)<=4225);
+	return (this->Dist(point)<=4225);
+}
+bool Fleet::isInRange(sf::Vector2f point){
+	return (this->Range()*Range()>this->Dist(point));
+}
+sf::Vector2f Fleet::Front(){
+	sf::Vector2f point;
+	point.x=this->getPosition().x+fleetBody.getSize().x/2*cos(this->getRotationRad());
+	point.y=this->getPosition().y+fleetBody.getSize().x/2*sin(this->getRotationRad());
+	return point;
 }
 sf::Vector2f Fleet::getPosition(){
 	return this->body->getPosition();
+}
+sf::Vector2f Fleet::getRangePosition(){
+	return sf::Vector2f(this->body->getPosition().x-this->Range(),this->body->getPosition().y-this->Range());
 }
 sf::Vector2f Fleet::getTarget(){
 	if(this->route.size())
@@ -215,12 +265,21 @@ bool Fleet::mouseOver(){
 			::player[this->player].Name()+"'s fleet"+getDiplomaticStatus(this->player)+" - Provision "+Format((int)this->provision)+"%",
 			FormationName(this->formation)+"\n"+Format(this->size())+" ships  "+Format(this->Upkeep())+" upkeep"
 		);
+		this->setColor(sf::Color(255,95,118));
 		return 1;
 	}
 	return 0;
 }
 bool Fleet::left(){
 	if(this->mouseOver()&&gui.canLeft(200)){
+		gui.clickRestart();
+		this->setColor(sf::Color(255,255,255));
+		return 1;
+	}
+	return 0;
+}
+bool Fleet::right(){
+	if(this->mouseOver()&&gui.canRight(200)){
 		gui.clickRestart();
 		return 1;
 	}
@@ -231,6 +290,8 @@ Fleet::~Fleet(){
 }
 //Global variables
 std::vector<Fleet> fleet;
+sf::Texture fleetBody;
+short nFormation;
 //Formations
 std::string FormationName(short formation){
 	std::ifstream in("data/game/formations/"+std::to_string(formation)+".txt");
@@ -253,4 +314,3 @@ std::string FormationText(short formation){
 	}
 	return "";
 }
-sf::Texture fleetBody;

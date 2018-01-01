@@ -24,14 +24,16 @@ public:
 	//Rendering and update
 	void Render(sf::RenderWindow *window);
 	void RenderRegions(sf::RenderWindow *window);
+	void RenderWater(sf::RenderWindow *window);
 	void move(short x,short y);
+	void zoom(float factor);
 	void Update();
 	//Graphs
 	void Dijkstra(short begin,short end);
 	void clearRoute();
 	bool collision(short i,short j);
 	bool isOnWater(sf::Vector2f point);
-	float dist(short i,short j);
+	float Dist(short i,short j);
 	short getNearestNode(sf::Vector2f point);
 	Node GetNearestNode(sf::Vector2f point);
 	Node getNode(short i);

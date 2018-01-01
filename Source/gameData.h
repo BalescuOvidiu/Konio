@@ -7,21 +7,30 @@
 //Players
 float getIncome(short player);
 void Defeated(short winner,short defeated);
+std::string getDataPlayer(short i);
 //Fleets
+bool canCombat(short i,short j);
 float distFleet(short i,short j);
+float DistFleet(short i,short j);
 short getShips(short player);
 short getNearestFleet(sf::Vector2f point);
+short getSmallestFleetInRange(unsigned i);
 std::string FleetInfo(short i);
 //Settlements
+bool hasSettlement(short player);
 bool hasExport(short i);
 bool hasImport(short i);
 bool hasGood(short settlement,short good);
 bool isYourSett(short settlement);
-bool isFree(short k);
+bool isInDanger(short sett);
+bool isRecruitable(short id,short sett);
 bool canRecruit(short id,short sett);
 float getIncomeOf(short i);
 short getNearestSett(sf::Vector2f point);
-short getPopulation(short player);
+unsigned getPopulation(short player);
+std::string getPopulationStatus(short i);
+std::string getSettlementTitle(short i);
+std::string getSettlementDescription(short i);
 std::vector<Node> getTradeRoute(short i,short j);
 //Diplomacy
 bool isOf(short i,short player);
@@ -39,6 +48,9 @@ short getImportedGood(short settlement);
 std::string ExportedGoodStatus(short sett);
 std::string ImportedGoodStatus(short sett);
 std::string EconomicStatus(short sett);
+//Distances
+float Dist(Fleet fleet,sf::Vector2f point);
+float Dist(Fleet fleet,Settlement settlement);
 //Add functions
 void add(Settlement settlement);
 void add(Player player);

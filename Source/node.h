@@ -12,14 +12,15 @@ public:
 	//Get data
 	sf::Vector2f getPosition();
 	short r();
-	float dist(sf::Vector2f point);
-	float dist(Node node);
+	float Dist(sf::Vector2f point);
+	float Dist(Node node);
 	//Collisions
 	bool contains(sf::Vector2f point);
 	bool collision(Node node);
 	~Node();
 };
 //Guide
+std::vector<sf::Vertex> getGuide(sf::Vector2f point,std::deque<sf::Vector2f> route,sf::Color color);
 std::vector<sf::Vertex> getGuide(sf::Vector2f point,std::vector<Node> route,sf::Color color);
 std::vector<sf::Vertex> setGuideColor(std::vector<sf::Vertex> guide,sf::Color color);
 #endif

@@ -5,13 +5,14 @@
 class Audio{
 private:
 	//Sounds and music
-	sf::Music *music,*ambient,*click;
+	sf::Music *music,*ambient,*boom,*click;
 public:
 	//Volume variable
 	float musicVolume,soundVolume;
 	//Methods
 	Audio();
 	void Update();
+	void Boom();
 	void Click();
 	void changeMusic(std::string directory);
 	void changeAmbient(std::string directory);

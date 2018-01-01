@@ -2,17 +2,28 @@
 #define GAME_H
 #include "battle.h"
 #include "gameGUI.h"
-//Other functions
+//Other data
+bool isFree(short sett);
+//Actions
 void BuyShip(short id,short sett);
 void CombatFleet(short i,short j);
 void DefeatedFleet(short i,short j);
-void takeSettlement(short i,short player);
+void GiveCoins(short i,short j,float coins);
+void MergeFleet(short i,short j);
 void MoveFleet(short fleet,sf::Vector2f target);
+void MoveFleetPlayer(short fleet,sf::Vector2f target);
+void Reform(short fleet,short formation);
+void takeSettlement(short i,short player);
+void supply(short f,short i);
 //Definition
 class Game{
 private:
-	//GUI
-	sf::Text *paused;
+	//GUI variable
+	bool paused;
+	unsigned hoveredFleet;
+	float distFleet;
+	sf::CircleShape *range;
+	//GUI functions
 	bool mouseOverGUI();
 	void gameGUI(sf::RenderWindow *window,sf::View *view);
 	//View
@@ -26,6 +37,7 @@ private:
 	bool Pause();
 	std::string getMonthName();
 	std::string getCalendar();
+	void Save();
 	void Clock();
 	void Monthly();
 	//AI

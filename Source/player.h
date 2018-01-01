@@ -12,7 +12,7 @@ private:
 	short lost,won;
 public:
 	//Constructor
-	Player(short faction,float coins,short team,std::string name);
+	Player(short faction,float coins,short team,std::string name,short won,short lost);
 	//Set data functions
 	void Faction(short faction);
 	void Name(std::string name);
@@ -25,6 +25,7 @@ public:
 	short Team();
 	std::string Name();
 	std::string Statistics();
+	std::string Battles();
 	float Coins();
 	bool canBuy(float cost);
 	//Operator
@@ -38,6 +39,7 @@ extern std::vector<Player> player;
 //Global functions
 bool areAllies(short i,short j);
 bool areEnemies(short i,short j);
+bool areNeutrals(short i,short j);
 std::string getDiplomaticStatus(short player);
 std::string PlayerInfo(short player);
 //End of declarations

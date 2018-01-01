@@ -26,6 +26,7 @@ public:
 	bool left();
 	//Get data
 	sf::Vector2f getPosition();
+	sf::Vector2f getRangePosition();
 	std::string getName();
 	std::string getGrowthString();
 	std::string getPopulationString();
@@ -33,6 +34,7 @@ public:
 	short getOwner();
 	short getPlayer();
 	short getOccupied();
+	short getRange();
 	//Goods
 	short getGood();
 	short getImport();
@@ -45,6 +47,7 @@ public:
 	//Military
 	bool isOccupied();
 	bool canRecruit(int population);
+	bool isInRange(sf::Vector2f point);
 	~Settlement();
 };
 //Global variable

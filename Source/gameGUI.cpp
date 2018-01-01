@@ -7,8 +7,8 @@ Bar::Bar(std::string data){
 	this->rectangle->setFillColor(sf::Color(0,0,0,200));
 	//Game data
 	this->coins=new LabelIcon(0,0,"data/game/icons/coins.png");
-	this->pop=new LabelIcon(125,0,"data/game/icons/coins.png");
-	this->calendar=new LabelIcon(250,0,"data/game/icons/coins.png");
+	this->pop=new LabelIcon(125,0,"data/game/icons/population.png");
+	this->calendar=new LabelIcon(250,0,"data/game/icons/time.png");
 	//Buttons
 	this->main=new Button("data/game/icons/"+std::to_string(human)+".png",gui.width()-250,30);
 	this->diplomacy=new Button("data/game/icons/diplomacy.png",gui.width()-150,30);
@@ -72,13 +72,10 @@ void Bar::move(float x,float y){
 	this->submenu->move(x,y);
 }
 bool Bar::mouseOver(){
-	if(this->rectangle->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y)){
-		this->calendar->mouseOver("Calendar","");
-		this->coins->mouseOver("Coins","Coins are used to buy ships and pay marines.\nYou can get coins from populations and trades.");
-		this->pop->mouseOver("Population","It's used to recruit marines.\nPopulation increase revenue in your settlements.");
-		return 1;
-	}
-	return 0;
+	this->calendar->mouseOver("Calendar","That show year and month.");
+	this->coins->mouseOver("Coins","You use coins to recruit navy and to pay marines and oarsmen.\nYou gain coins from taxes and trades.");
+	this->pop->mouseOver("Population","Population increase revenue in your settlements.\nYou can recruit oarsmen and marines from population.\n");
+	return (this->rectangle->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y));
 }
 //Destructor
 Bar::~Bar(){
@@ -87,6 +84,18 @@ Bar::~Bar(){
 //Variables
 Bar *bar=NULL;
 //LabelFleet global functions
+void changedFleets(short i,short j){
+	if(labelFleet!=NULL){
+		if(labelFleet->Selected()>j)
+			selectFleet(labelFleet->Selected()-1);
+		else{
+			if(isSelectedFleet(j))
+				deselectFleet();
+			else
+				reloadLabelFleet(i);
+		}
+	}
+}
 void selectFleet(short fleet){
 	if(labelFleet==NULL){
 		labelFleet=new LabelFleet(fleet);

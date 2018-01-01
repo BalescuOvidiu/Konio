@@ -8,6 +8,8 @@ Audio::Audio(){
 	//Click sound
 	this->click=new sf::Music();
 	this->click->openFromFile("data/audio/sound/click.wav");
+	this->boom=new sf::Music();
+	this->boom->openFromFile("data/audio/sound/boom.ogg");
 	//Ambient
 	this->ambient=new sf::Music();
 	this->ambient->setLoop(true);
@@ -24,12 +26,16 @@ Audio::Audio(){
 }
 void Audio::Update(){
 	this->music->setVolume((short)this->musicVolume);
+	this->boom->setVolume((short)this->soundVolume);
 	this->click->setVolume((short)this->soundVolume);
 	this->ambient->setVolume((short)this->soundVolume);
 	//Write new volumes
 	std::ofstream out("data/audio/volume.txt");
 	out<<this->musicVolume<<' '<<this->soundVolume;
 	out.close();
+}
+void Audio::Boom(){
+	this->boom->play();
 }
 void Audio::Click(){
 	if(this->click->getStatus()==sf::Sound::Stopped)

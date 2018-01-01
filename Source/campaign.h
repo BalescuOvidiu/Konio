@@ -12,6 +12,7 @@ public:
 	Campaign();	
 	void Render(sf::RenderWindow *window);
 	void Update(sf::View *view);
+	void LoadGames();
 	~Campaign();
 }extern *campaign;
 #endif

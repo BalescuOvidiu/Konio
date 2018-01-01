@@ -13,6 +13,7 @@ public:
 	Button(short x,short y,short width,std::string directory);
 	void Render(sf::RenderWindow *window);
 	void move(float x,float y);
+	void zoom(float factor);
 	void setPosition(float x,float y);
 	void setColor(sf::Color color);
 	bool mouseOver();

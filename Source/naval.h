@@ -7,7 +7,7 @@ class Naval:Entity{
 private:
 	sf::Texture ram,rows;
 	float cost;
-	short rowers;
+	short rowers,marines;
 public:
 	Naval(std::string directory);
 	//Get data
@@ -15,8 +15,11 @@ public:
 	std::string Description();
 	float Speed();
 	float Cost();
+	float Upkeep();
 	float Power();
 	short Rowers();
+	short Marines();
+	short Men();
 	//Size
 	short width();
 	short widthRows();
@@ -28,5 +31,7 @@ public:
 };
 //Gameplay global variable
 extern std::vector<Naval> naval;
-extern sf::Texture sails,oar;
+extern sf::Texture sails;
+extern short mercenaries;
+//Get functions
 #endif

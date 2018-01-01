@@ -4,7 +4,7 @@
 //Local
 int main(){
 	//Window
-	sf::RenderWindow window(sf::VideoMode(0,0,32),"Konio",sf::Style::Fullscreen,sf::ContextSettings(21,4,2,2,1));
+	sf::RenderWindow window(sf::VideoMode(0,0,32),"Konio",sf::Style::Fullscreen,sf::ContextSettings(24,8,0,2,1));
 	sf::View view(sf::FloatRect(0,0,(float)gui.width(),(float)gui.height()));
 	//Initialize
 	window.setFramerateLimit(60);
@@ -14,15 +14,23 @@ int main(){
 	background=new Background("data/img/backgrounds/menu.png");
 	menu=new Menu();
 	about=Label(0,gui.height()-120,gui.width(),120,0);
-	//Navals
+	//Marine texture
+	arrowTexture.loadFromFile("data/texture/arrowTexture.png");
+	arrowTexture.setSmooth(true);
+	marineBody.loadFromFile("data/texture/marineBody.png");
+	marineBody.setSmooth(true);
+	//Navals texture
 	sails.loadFromFile("data/navals/sails.png");
 	sails.setSmooth(true);
-	oar.loadFromFile("data/navals/oar.png");
-	oar.setSmooth(true);
 	fleetBody.loadFromFile("data/navals/fleet.png");
 	fleetBody.setSmooth(true);
-	for(short i=0;i<5;i++)
+	//Navals data
+	in.open("data/numbers.txt");
+	in>>nFormation;
+	for(short i=0;i<nFormation;i++)
 		naval.push_back(Naval("data/navals/"+std::to_string(i)));
+	in>>nFormation>>mercenaries;
+	in.close();
 	//Running
 	while(window.isOpen()){
 		//Clear
@@ -74,10 +82,8 @@ int main(){
 			campaign->game->Render(&window);
 			campaign->game->Update(&window,&view);
 			//Back to campaign
-			if(gui.selected==2){
+			if(gui.selected==2)
 				background=new Background("data/img/backgrounds/campaign.png");
-				delete campaign->game;
-			}
 		}else if(gui.selected==5){
 			//Battle
 			campaign->game->battle->Render(&window);

@@ -28,9 +28,19 @@ void Label::move(float x,float y){
 	this->text->move(x,y);
 	this->rectangle->move(x,y);
 }
+void Label::zoom(float factor){
+	//Text
+	this->title->scale(factor,factor);
+	this->text->scale(factor,factor);
+	this->title->setPosition(gui.zoomed(this->title->getPosition(),factor));
+	this->text->setPosition(gui.zoomed(this->text->getPosition(),factor));
+	//Rectangle
+	this->rectangle->setPosition(gui.zoomed(this->rectangle->getPosition(),factor));
+	this->rectangle->setSize(sf::Vector2f(this->rectangle->getSize().x*factor,this->rectangle->getSize().y*factor));
+}
 void Label::setPosition(float x,float y){
-	this->title->setPosition(x,y);
-	this->text->setPosition(x,y);
+	this->title->setPosition(x+8,y+5);
+	this->text->setPosition(x+8,y+55);
 	this->rectangle->setPosition(x,y);
 }
 void Label::setTitle(std::string string){
@@ -60,7 +70,7 @@ void Label::reset(){
 }
 //Mouse
 bool Label::mouseOver(){
-	return (this->rectangle->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y));
+	return (this->rectangle->getGlobalBounds().contains(gui.mouseCoordinates().x,gui.mouseCoordinates().y));
 }
 bool Label::left(){
 	if(this->mouseOver()){

@@ -15,14 +15,14 @@ void History::Update(){
 		for(short j=0;j<2&&!(*this->info);j++){
 			if(sf::IntRect(gui.width(25)*i,gui.width(12)+gui.width(20)*j,gui.width(25),gui.width(20)).contains(gui.mousePosition().x,gui.mousePosition().y)&&sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				//Label
-				in.open("data/history/"+std::to_string(i+j*5)+".txt");
+				in.open("data/history/"+std::to_string(i+j*4)+".txt");
 				if(in.is_open()){
 					std::string title,text;
 					getline(in,title);
 					getline(in,text,'*');
 					this->info->show(title,text);
 				}else
-					this->info->show("Unvailable!","The file "+std::to_string(i+j*5)+".txt is unvailable.");
+					this->info->show("Unvailable!","The file "+std::to_string(i+j*4)+".txt is unvailable.");
 				in.close();
 			}
 		}

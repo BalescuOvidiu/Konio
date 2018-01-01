@@ -15,7 +15,7 @@ float det(sf::Vector2f a,sf::Vector2f b,sf::Vector2f c){
 float dist(sf::Vector2f start,sf::Vector2f end){
 	return sqrt((start.x-end.x)*(start.x-end.x)+(start.y-end.y)*(start.y-end.y));
 }
-float distSquare(sf::Vector2f start,sf::Vector2f end){
+float Dist(sf::Vector2f start,sf::Vector2f end){
 	return ((start.x-end.x)*(start.x-end.x)+(start.y-end.y)*(start.y-end.y));
 }
 float getAngle(sf::Vector2f start,sf::Vector2f end){
@@ -38,6 +38,23 @@ float getRadians(sf::Vector2f start,sf::Vector2f end){
 		angle+=360;
 	return angle*0.017453293;
 }
+float max(float a,float b){
+	if(a<b)
+		return b;
+	return a;
+}
+float square(float a){
+	return a*a;
+}
+float Sin(float angle){
+	return sin(angle*0.017453293);
+}
+float Cos(float angle){
+	return cos(angle*0.017453293);
+}
+float Rad(float angle){
+	return angle*0.017453293;
+}
 //Text
 std::string Format(double value){
 	std::stringstream stream;
@@ -58,29 +75,49 @@ std::string Format(unsigned value){
 }
 //Constructor
 GUI::GUI(){
-	this->selected=1;
 	//Screen
-	this->winH=sf::VideoMode::getDesktopMode().height;
-	this->winW=sf::VideoMode::getDesktopMode().width;
+	this->factor=1;
+	this->selected=1;
+	this->w=sf::VideoMode::getDesktopMode().width;
+	this->h=sf::VideoMode::getDesktopMode().height;
 	//Font
 	this->font=new sf::Font();
 	this->font->loadFromFile("data/GFSNeohellenic.ttf");
 }
+//Screen
 unsigned GUI::width(){
-	return this->winW;
+	return this->w;
 }
 unsigned GUI::height(){
-	return this->winH;
+	return this->h;
 }
 float GUI::width(unsigned percent){
-	return this->winW*percent/100.;
+	return this->w*percent/100.;
 }
 float GUI::height(unsigned percent){
-	return this->winH*percent/100.;
+	return this->h*percent/100.;
+}
+sf::Vector2f GUI::center(){
+	return sf::Vector2f(
+		this->x+this->w/2,
+		this->y+this->h/2
+	);
+}
+sf::Vector2f GUI::zoomed(sf::Vector2f point,float factor){
+	return sf::Vector2f(
+		(point.x-this->center().x)*factor+this->center().x,
+		(point.y-this->center().y)*factor+this->center().y
+	);
+}
+sf::Vector2f GUI::zoomed(sf::Vector2f point){
+	return sf::Vector2f(
+		(point.x-this->center().x)*this->factor+this->center().x,
+		(point.y-this->center().y)*this->factor+this->center().y
+	);
 }
 //Mouse
 bool GUI::canClick(short time){
-	return (sf::milliseconds(this->click.getElapsedTime().asMilliseconds())>=sf::milliseconds(time));
+	return (this->click.getElapsedTime().asMilliseconds()>=time);
 }
 bool GUI::canLeft(short time){
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -94,6 +131,9 @@ bool GUI::canRight(short time){
 }
 void GUI::clickRestart(){
 	this->click.restart();
+}
+sf::Vector2f GUI::mouseCoordinates(){
+	return this->zoomed(this->mousePosition());
 }
 sf::Vector2f GUI::mousePosition(){
 	return sf::Vector2f(sf::Mouse::getPosition().x+this->x,sf::Mouse::getPosition().y+this->y);

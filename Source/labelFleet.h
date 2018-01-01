@@ -9,7 +9,8 @@ private:
 	Label *label;
 	//Buttons and icons
 	LabelIcon *formation,*upkeep,*dip,*provision;
-	Button *player,*form1,*form2;
+	std::vector<Button> form;
+	Button *player;
 	//Ships
 	std::vector<LabelIcon> ships;
 	//Range

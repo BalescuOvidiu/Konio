@@ -10,6 +10,7 @@ private:
 public:
 	Label(short x,short y,short width,short height,bool visible);
 	void move(float x,float y);
+	void zoom(float factor);
 	void setPosition(float x,float y);
 	void setTitle(std::string string);
 	void setText(std::string string);

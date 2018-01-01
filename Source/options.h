@@ -17,8 +17,9 @@ public:
 	void show();
 	void hide();
 	void move(float x,float y);
+	void zoom(float factor);
 	void setPosition(float x,float y);
-	void reset();
+	bool mouseOver();
 	operator bool();
 	~Options();
 }extern *op;

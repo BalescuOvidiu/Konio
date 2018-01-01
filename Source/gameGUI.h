@@ -27,6 +27,7 @@ public:
 	~Bar();
 }extern *bar;
 //LabelFleet global functions
+void changedFleets(short i,short j);
 void selectFleet(short fleet);
 void deselectFleet();
 void reloadLabelFleet(short i);

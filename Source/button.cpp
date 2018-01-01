@@ -38,6 +38,10 @@ void Button::Render(sf::RenderWindow *window){
 void Button::move(float x,float y){
 	this->sprite->move(x,y);
 }
+void Button::zoom(float factor){
+	this->sprite->setPosition(gui.zoomed(this->sprite->getPosition(),factor));
+	this->sprite->scale(factor,factor);
+}
 void Button::setPosition(float x,float y){
 	this->sprite->setPosition(x,y);
 }
@@ -46,7 +50,7 @@ void Button::setColor(sf::Color color){
 }
 //Mouse over
 bool Button::mouseOver(){
-	if(this->sprite->getGlobalBounds().contains(gui.mousePosition())){
+	if(this->sprite->getGlobalBounds().contains(gui.mouseCoordinates())){
 		this->sprite->setTextureRect(sf::IntRect(0,this->tex->getSize().y/2,this->tex->getSize().x,this->tex->getSize().y/2));
 		return 1;
 	}else

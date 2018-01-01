@@ -14,8 +14,8 @@ void LabelDip::Render(sf::RenderWindow *window){
 		this->player[i].Render(window);
 }
 short LabelDip::Update(){
-	for(unsigned i=0;i<player.size();i++){
-		if(this->player[i].left(::player[i].Name()+getDiplomaticStatus(i),""))
+	for(unsigned i=player.size();i--;){
+		if(this->player[i].left(::player[i].Name()+getDiplomaticStatus(i),getDataPlayer(i)))
 			return i;
 	}
 	return -1;
@@ -26,11 +26,11 @@ void LabelDip::move(float x,float y){
 		this->player[i].move(x,y);
 }
 bool LabelDip::right(){
-	for(unsigned i=0;i<player.size();i++)
+	for(unsigned i=player.size();i--;)
 		this->player[i].setColor(sf::Color(255,255,255));
-	for(unsigned i=0;i<player.size();i++){
+	for(unsigned i=player.size();i--;){
 		if(this->player[i].mouseOver()){
-			for(unsigned j=0;j<player.size();j++){
+			for(unsigned j=player.size();j--;){
 				if(areAllies(i,j)&&i!=j)
 					this->player[j].setColor(sf::Color(60,255,100));
 				else if(areEnemies(i,j))
@@ -47,7 +47,7 @@ bool LabelDip::mouseOver(){
 	return this->label->mouseOver();
 }
 LabelDip::~LabelDip(){
-
+	this->player.clear();
 }
 //Global variable
 LabelDip *labelDip=NULL;

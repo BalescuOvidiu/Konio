@@ -19,11 +19,18 @@ Layer::Layer(short speed,short width,std::string directory){
 //In game
 void Layer::move(float x,float y){
 	this->rectangle->move(x,y);
-	this->rectangle->setTextureRect(sf::IntRect(((int)this->rectangle->getPosition().x)%this->width,((int)this->rectangle->getPosition().y)%this->width,sf::VideoMode::getDesktopMode().width,sf::VideoMode::getDesktopMode().height));
+}
+void Layer::zoom(float factor){
+	this->move(
+		-this->rectangle->getSize().x/2*factor+this->rectangle->getSize().x/2,
+		-this->rectangle->getSize().y/2*factor+this->rectangle->getSize().y/2
+	);
+	this->rectangle->setSize(sf::Vector2f(this->rectangle->getSize().x*factor,this->rectangle->getSize().y*factor));
+	this->rectangle->setTextureRect(sf::IntRect(0,0,this->rectangle->getSize().x,this->rectangle->getSize().y));
 }
 void Layer::Update(){
-	this->clock=(this->clock+speed)%this->width;
-	this->tex->loadFromFile(this->directory,sf::IntRect(abs(clock),0,this->width,this->width));
+	this->clock=(this->clock+speed)%(this->width*2);
+	this->tex->loadFromFile(this->directory,sf::IntRect(abs(clock),0,this->width*2,this->width));
 }
 void Layer::Reset(){
 	this->clock=0;

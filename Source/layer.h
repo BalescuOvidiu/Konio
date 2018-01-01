@@ -11,6 +11,7 @@ private:
 public:
 	Layer(short speed,short width,std::string directory);
 	void move(float x,float y);
+	void zoom(float factor);
 	void Update();
 	void Reset();
 	void Render(sf::RenderWindow *window);

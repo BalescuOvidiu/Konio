@@ -21,6 +21,14 @@ void LabelIcon::move(float x,float y){
 	this->sprite->move(x,y);
 	this->text->move(x,y);
 }
+void LabelIcon::zoom(float factor){
+	//Sprite
+	this->sprite->setPosition(gui.zoomed(this->sprite->getPosition(),factor));
+	this->sprite->scale(factor,factor);
+	//Text
+	this->text->setPosition(gui.zoomed(this->text->getPosition(),factor));
+	this->text->scale(factor,factor);
+}
 void LabelIcon::setPosition(float x,float y){
 	this->sprite->setPosition(x,y);
 	this->text->setPosition(x,y);
@@ -28,9 +36,9 @@ void LabelIcon::setPosition(float x,float y){
 void LabelIcon::setText(std::string string){
 	this->text->setString(sf::String(string));
 }
-//Mouse
+//Mouse over
 bool LabelIcon::mouseOver(){
-	if(this->sprite->getGlobalBounds().contains(gui.mousePosition())){
+	if(this->sprite->getGlobalBounds().contains(gui.mouseCoordinates())){
 		this->sprite->setTextureRect(sf::IntRect(0,this->tex->getSize().y/2,this->tex->getSize().x,this->tex->getSize().y/2));
 		return 1;
 	}else
@@ -44,15 +52,50 @@ bool LabelIcon::mouseOver(std::string title,std::string text){
 	}
 	return 0;
 }
+//Mouse button
 bool LabelIcon::left(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Left));
+	if(this->mouseOver()){
+		if(gui.canLeft(400)){
+			this->Pressed();
+			return 1;
+		}
+	}
+	return 0;
 }
 bool LabelIcon::right(){
-	return (this->mouseOver()&&sf::Mouse::isButtonPressed(sf::Mouse::Right));
+	if(this->mouseOver()){
+		if(gui.canRight(400)){
+			this->Pressed();
+			return 1;
+		}
+	}
+	return 0;
+}
+bool LabelIcon::left(std::string title,std::string text){
+	if(this->mouseOver(title,text)){
+		if(gui.canLeft(400)){
+			this->Pressed();
+			return 1;
+		}
+	}
+	return 0;
+}
+bool LabelIcon::right(std::string title,std::string text){
+	if(this->mouseOver(title,text)){
+		if(gui.canRight(400)){
+			this->Pressed();
+			return 1;
+		}
+	}
+	return 0;
 }
 void LabelIcon::Render(sf::RenderWindow *window){
 	window->draw(*this->sprite);
 	window->draw(*this->text);
+}
+void LabelIcon::Pressed(){
+	gui.clickRestart();
+	audio.Click();	
 }
 LabelIcon::~LabelIcon(){
 	

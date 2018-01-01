@@ -12,17 +12,23 @@ void LabelPlayer::select(short selected,short x,short y){
 	//Label
 	this->label->setTitle(::player[selected].Name()+getDiplomaticStatus(selected));
 	//Population and ships
-	this->pop=new LabelIcon(5+x,45+y,"data/game/icons/coins.png");
+	this->pop=new LabelIcon(5+x,45+y,"data/game/icons/population.png");
 	this->pop->setText(Format(getPopulation(selected)));
-	this->ships=new LabelIcon(210+gui.x,45+y,"data/game/icons/coins.png");
+	this->ships=new LabelIcon(210+gui.x,45+y,"data/game/icons/ships.png");
 	this->ships->setText(Format(getShips(selected)));
 	//Economy
 	this->coins=new LabelIcon(5+x,75+y,"data/game/icons/coins.png");
 	this->coins->setText(Format(::player[selected].Coins()));
-	this->income=new LabelIcon(210+gui.x,75+y,"data/game/icons/coins.png");
+	//Income
+	if(getIncome(selected)>0)
+		this->income=new LabelIcon(215+gui.x,75+y,"data/game/icons/up.png");
+	else if(getIncome(selected)<0)
+		this->income=new LabelIcon(215+gui.x,75+y,"data/game/icons/down.png");
+	else
+		this->income=new LabelIcon(215+gui.x,75+y,"data/game/icons/null.png");
 	this->income->setText(Format(getIncome(selected)));
 	//Statistics
-	this->statistics=new LabelIcon(5+x,105+y,"data/game/icons/coins.png");
+	this->statistics=new LabelIcon(5+x,105+y,"data/game/icons/battles.png");
 	this->statistics->setText(::player[selected].Statistics());
 	//Buttons
 	this->shield=new Button("data/game/icons/"+std::to_string(selected)+".png",353+x,95+y);
@@ -50,11 +56,11 @@ bool LabelPlayer::right(){
 }
 bool LabelPlayer::mouseOver(){
 	if(this->label->mouseOver()){
-		this->pop->mouseOver("Total population","");
-		this->ships->mouseOver("Ships","");
-		this->coins->mouseOver("Coins","");
-		this->income->mouseOver("Income","");
-		this->statistics->mouseOver("Won/lost battles","");
+		this->pop->mouseOver("Total population","Population increase revenue in your settlements.\nYou can recruit oarsmen and marines from population.\n");
+		this->ships->mouseOver("Ships","That is number of ships from fleets of player.");
+		this->coins->mouseOver("Coins","You use coins to recruit navy and to pay marines and oarsmen.\nYou gain coins from taxes and trades.");
+		this->income->mouseOver("Income","That is monthly income of player.\nIncome is represented by taxes of population and trade revenue.");
+		this->statistics->mouseOver("Won/lost battles","This is a statistics.");
 		this->shield->mouseOver("Shield","This is symbol of player.");
 		return 1;
 	}

@@ -22,12 +22,20 @@ void Value::move(float x,float y){
 	this->text->move(x,y);
 	this->sprite->move(x,y);
 }
+void Value::zoom(float factor){
+	//Sprite
+	this->sprite->setPosition(gui.zoomed(this->sprite->getPosition(),factor));
+	this->sprite->scale(factor,factor);
+	//Text
+	this->text->setPosition(gui.zoomed(this->text->getPosition(),factor));
+	this->text->scale(factor,factor);
+}
 void Value::setPosition(float x,float y){
 	this->text->setPosition(x,y);
 	this->sprite->setPosition(x,y);
 }
 bool Value::mouseOver(){
-	if(this->sprite->getGlobalBounds().contains(gui.mousePosition().x,gui.mousePosition().y)){
+	if(this->sprite->getGlobalBounds().contains(gui.mouseCoordinates().x,gui.mouseCoordinates().y)){
 		this->sprite->setTextureRect(sf::IntRect(0,this->tex->getSize().y/2,this->tex->getSize().x,this->tex->getSize().y/2));
 		return 1;
 	}else
@@ -56,11 +64,11 @@ bool Value::Update(float &value,float min,short max,float step,short type,std::s
 		}
 	}
 	if(value<10)
-		this->text->setPosition(sprite->getPosition().x-tex->getSize().x/5+18,sprite->getPosition().y-tex->getSize().y/32);
+		this->text->setPosition(sprite->getPosition().x-gui.factor*tex->getSize().x/5+gui.factor*18,sprite->getPosition().y-gui.factor*tex->getSize().y/32);
 	else if(value<100)
-		this->text->setPosition(sprite->getPosition().x-tex->getSize().x/5+9,sprite->getPosition().y-tex->getSize().y/32);
+		this->text->setPosition(sprite->getPosition().x-gui.factor*tex->getSize().x/5+gui.factor*9,sprite->getPosition().y-gui.factor*tex->getSize().y/32);
 	else
-		this->text->setPosition(sprite->getPosition().x-tex->getSize().x/5,sprite->getPosition().y-tex->getSize().y/32);
+		this->text->setPosition(sprite->getPosition().x-gui.factor*tex->getSize().x/5,sprite->getPosition().y-gui.factor*tex->getSize().y/32);
 	if(type)
 		this->text->setString(sf::String(std::to_string((int)value)+" %"));
 	else

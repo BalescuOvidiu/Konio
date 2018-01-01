@@ -10,6 +10,7 @@ private:
 public:
 	Value(short x,short y,short width,std::string directory);
 	void move(float x,float y);
+	void zoom(float factor);
 	void setPosition(float x,float y);
 	bool mouseOver();
 	bool left();

@@ -2,7 +2,7 @@
 #define FLEET_H
 #include "naval.h"
 #include "player.h"
-#include "node.h"
+#include "map.h"
 
 class Fleet{
 private:
@@ -14,26 +14,28 @@ private:
 	short player,formation;
 	std::vector<short> ship;
 	std::vector<short> integrity;
+	std::vector<short> marines;
 	//Route
 	std::vector<Node> route;
 public:
 	Fleet(sf::Vector2f pos,float angle,short player,short formation,float provision);
 	//Update and rendering
-	void Render(sf::RenderWindow *window);
+	void RenderBody(sf::RenderWindow *window);
+	void RenderSail(sf::RenderWindow *window);
 	void Update();
-	void addShip(short ship,short integrity);
+	void addShip(short ship,short integrity,short marines);
 	void removeShip(short ship);
 	void setIntegrity(short ship,short integrity);
+	void setMarines(short ship,short marines);
 	void Reform(short formation);
 	void Retreat();
 	void Supply();
 	void Supply(float provision);
-	//Route
-	void addNodeRoute(Node node);
-	void getRoute(std::vector<Node> route);
-	void resetRoute();
+	void setColor(sf::Color color);
 	//Move
-	void Move(float x,float y);
+	void Move(sf::Vector2f target);
+	void MoveAdd(sf::Vector2f target);
+	void move(float x,float y);
 	void Stop();
 	//Get data
 	short Player();
@@ -42,8 +44,11 @@ public:
 	short Direction();
 	short size();
 	short getShips(short id);
+	std::string getShipsString(short id);
 	short Ship(short i);
 	short Integrity(short i);
+	short Marines(short i);
+	short Range();
 	float Upkeep();
 	float Speed();
 	float SpeedOnFrame();
@@ -51,25 +56,29 @@ public:
 	float Randament();
 	//Rotation
 	void rotate(float angle);
-	void rotateTo(float angle);
 	void setRotation(float angle);
 	float getRotation();
 	float getRotationRad();
 	//Points
 	void setPosition(sf::Vector2f point);
-	float dist(sf::Vector2f point);
+	float Dist(sf::Vector2f point);
 	bool contains(sf::Vector2f point);
+	bool isInRange(sf::Vector2f point);
+	sf::Vector2f Front();
 	sf::Vector2f getPosition();
+	sf::Vector2f getRangePosition();
 	sf::Vector2f getTarget();
 	std::vector<Node> getRoute();
 	//Mouse
 	bool mouseOver();
 	bool left();
+	bool right();
 	~Fleet();
 };
 //Global variables
 extern std::vector<Fleet> fleet;
 extern sf::Texture fleetBody;
+extern short nFormation;
 //Formations
 std::string FormationName(short formation);
 std::string FormationText(short formation);

@@ -1,26 +1,29 @@
 #ifndef SHIP_H
 #define SHIP_H
-#include "naval.h"
-#include "gameData.h"
+#include "marine.h"
 //Ship
 class Ship{
 private:
-	short fleet,rank,id;
-	float speed,integrity,clock;
+	//Extern data
+	short fleet,marines,rank,id;
+	//Move
+	float speed,integrity,clock,floating;
+	float rotationSpeed;
 	//Sprites
 	sf::Sprite *body,*ram,*rows,*sails;
-	//Move
-	void Move(float x,float y);
+	std::vector<sf::Vertex> strings;
 public:
+	//Soldiers
+	std::vector<Marine> marine;
 	//Constructor
-	Ship(short fleet,short rank,short id,short faction,short integrity,short x,short y,float angle);
+	Ship(short fleet,short rank,short id,short faction,short x,short y,float angle);
 	//Render
 	void RenderBody(sf::RenderWindow *window);
 	void RenderRam(sf::RenderWindow *window);
 	void RenderRows(sf::RenderWindow *window);
 	void RenderSails(sf::RenderWindow *window);
 	//Basic
-	void show();
+	void setString();
 	void setColor(sf::Color color);
 	void rankDown();
 	//Rotation
@@ -30,13 +33,18 @@ public:
 	float getRotationRad();
 	//Points
 	void setPosition(float x,float y);
-	float dist(sf::Vector2f point);
-	float dist(Ship ship);
-	float distFront(sf::Vector2f point);
-	float distFront(Ship ship);
+	void setPositionMarines();
+	float Dist(sf::Vector2f point);
+	float Dist(Ship ship);
+	float DistFront(sf::Vector2f point);
+	float DistFront(Ship ship);
+	float DistBack(sf::Vector2f point);
+	float DistBack(Ship ship);
+	//Collision
 	bool contains(sf::Vector2f point);
-	bool rowsContains(sf::Vector2f point);
 	sf::Vector2f Origin();
+	sf::Vector2f A();
+	sf::Vector2f B();
 	//Front points
 	sf::Vector2f Ram();
 	sf::Vector2f Front();
@@ -49,29 +57,40 @@ public:
 	//Side points
 	sf::Vector2f Left();
 	sf::Vector2f Right();
-	//Rows points
-	sf::Vector2f rowsFrontLeft();
-	sf::Vector2f rowsFrontRight();
-	sf::Vector2f rowsBackLeft();
-	sf::Vector2f rowsBackRight();
-	sf::Vector2f rowsLeft();
-	sf::Vector2f rowsRight();
+	//Sails points
+	sf::Vector2f SailsLeft();
+	sf::Vector2f SailsRight();
+	sf::Vector2f StringsFront();
+	sf::Vector2f StringsBack();
+	sf::Vector2f StringsLeft();
+	sf::Vector2f StringsRight();
 	//Mouse
 	bool mouseOver();
 	bool left();
 	bool right();
-	//Get data
+	//Main data
+	std::string getDetails();
 	bool Stopped();
+	//Float
+	bool FloatBody();
+	bool FloatRam();
+	bool FloatRows();
+	bool FloatSails();
 	bool Float();
+	//Data
 	float Integrity();
+	float RotationSpeed();
 	float SpeedMax();
 	float SpeedOnFrame();
 	float Speed();
 	float SpeedRatio();
 	float Power();
+	float Floating();
 	short Direction();
 	short Fleet();
+	short Player();
 	short Rank();
+	short Id();
 	//Size
 	short width();
 	short widthRows();
@@ -79,10 +98,12 @@ public:
 	sf::Vector2f getSize();
 	//Move
 	bool move(sf::Vector2f target);
+	void push(float x,float y);
 	void Speed(float speed);
 	void Rows(float clock);
 	//Fight
-	void takeDamage(short damage);
+	void marineDeath();
+	void takeDamage(float damage);
 	bool sink();
 	~Ship();
 };

@@ -6,6 +6,7 @@ Naval::Naval(std::string directory){
 	std::ifstream in(directory+".txt");
 	in>>this->basic;
 	in>>this->rowers;
+	in>>this->marines;
 	in>>this->cost;
 	in.close();
 	//Load texture
@@ -21,7 +22,7 @@ std::string Naval::Name(){
 	return this->basic.name;
 }
 std::string Naval::Description(){
-	return "Cost: "+Format(this->cost)+" coins    Speed: "+Format(this->basic.speed)+" km/h with "+Format(this->rowers)+" rowers";
+	return "Cost: "+Format(this->cost)+" coins    Upkeep: "+Format(this->Upkeep())+" coins    Speed: "+Format(this->basic.speed)+" km/h with "+Format(this->rowers)+" rowers and "+Format(this->marines)+" marines";
 }
 float Naval::Speed(){
 	return this->basic.speed;
@@ -29,11 +30,20 @@ float Naval::Speed(){
 float Naval::Cost(){
 	return this->cost;
 }
+float Naval::Upkeep(){
+	return this->rowers/500.+this->marines/300.;
+}
 float Naval::Power(){
 	return this->basic.speed*this->rowers;
 }
 short Naval::Rowers(){
 	return this->rowers;
+}
+short Naval::Marines(){
+	return this->marines;
+}
+short Naval::Men(){
+	return this->rowers+this->marines;
 }
 //Size
 short Naval::width(){
@@ -57,4 +67,5 @@ sf::Texture& Naval::Rows(){
 }
 //Variables
 std::vector<Naval> naval;
-sf::Texture sails,oar;
+sf::Texture sails;
+short mercenaries;
