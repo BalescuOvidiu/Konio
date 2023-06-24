@@ -1,0 +1,14 @@
+6
+Stone
+6
+Wood
+8
+Metals
+4
+Olives
+4
+Grain
+6
+Goats
+4
+Fish

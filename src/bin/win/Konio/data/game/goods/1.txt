@@ -1,0 +1,2 @@
+Allow to build navies in your city: Pentekonter(6 coins), Bireme(8 coins) and Trireme(10 coins).
+Without it, you can recruit pirates navy, Hemiolia(15 coins) and Trihemiolia(17 coins).*
