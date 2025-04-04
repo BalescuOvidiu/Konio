@@ -1,1 +1,0 @@
-Increase capacity of population with 10% and growth population with 10%.*

@@ -1,1 +1,0 @@
-Increase capacity of population in city with 40% and income from taxes with 10%.*

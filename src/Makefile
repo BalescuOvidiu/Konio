@@ -1,118 +1,84 @@
-NAME = Konio
-OBJECTS = gui.o audio.o background.o button.o value.o label.o labelIcon.o options.o menu.o submenu.o  history.o player.o  entity.o naval.o arrow.o marine.o ship.o layer.o fleet.o battle.o battleGUI.o region.o good.o settlement.o gameData.o gameGUI.o labelSett.o labelPlayer.o labelFleet.o labelDip.o node.o map.o game.o campaign.o Konio.o
+# FILES
+
+#OBJECTS += $(patsubst %, Basics/%, Json Ruller Log Writer Mathematics)
+OBJECTS += $(patsubst %, %, gui audio background button value label labelIcon options menu submenu  history player  entity naval arrow marine ship layer fleet battle battleGUI region good settlement gameData gameGUI labelSett labelPlayer labelFleet labelDip node map game campaign Konio)
+
+NAME     = Konio
+
+EXTERNS  = SFML nlohmann
 
 
 # DIRECTORIES
 
-DIRECTORY_SRC = src
-DIRECTORY_INC = include
-DIRECTORY_LIB = -Llib
+DIRECTORY_EXT   = extern
+DIRECTORY_SRC   = src
+DIRECTORY_INC   = -Iinclude $(patsubst %,-I$(DIRECTORY_EXT)/%/include, $(EXTERNS))
+DIRECTORY_LIB   = $(patsubst %,-L$(DIRECTORY_EXT)/%/lib, $(EXTERNS))
 
-DIRECTORY_BIN_LINUX = bin/linux
-DIRECTORY_BIN_MAC = bin/mac
-DIRECTORY_BIN_WINDOWS = bin/windows
+DIRECTORY_OBJ   = obj
+DIRECTORY_BUILD = build
+DIRECTORY_LOGS  = logs
 
-LOGS_LINUX = $(DIRECTORY_BIN_LINUX)/logs
-LOGS_MAC = $(DIRECTORY_BIN_MAC)/logs
-LOGS_WINDOW = $(DIRECTORY_BIN_WINDOW)/logs
+SYSTEM = Linux
 
-
-# COMPILER FLAGS
-
-CPP = g++
-CPP_MAC = g++
-MINGW = i686-w64-mingw32-g++
-
-FLAGS_LINUX =  -Wall -std=gnu++0x
-FLAGS_MAC =  -Wall -std=gnu++0x
-FLAGS_WINDOWS = -std=c++11 -static -mwindows -DSFML_SHARED
-
-LIBS_LINUX = $(DIRECTORY_LIB) -lpthread -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
-LIBS_MAC = $(DIRECTORY_LIB) -lpthread -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
-LIBS_WINDOWS = $(DIRECTORY_LIB) -L/usr/i686-w64-mingw32/lib -lsfml-audio-s -lsfml-graphics-s -lsfml-window-s -lsfml-system-s
+include $(SYSTEM).make
 
 
-# EXECUTABLES FILES
+# COMMANDS FOR TESTING
 
-TARGET_LINUX = $(DIRECTORY_BIN_LINUX)/$(NAME)
-TARGET_MAC = $(DIRECTORY_BIN_LINUX)/$(NAME)
-TARGET_WINDOWS = $(DIRECTORY_BIN_WINDOWS)/$(NAME).exe
+beginSection:
+	@echo
+	@echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	@echo
 
-DEPS_LINUX = $(patsubst %, $(DIRECTORY_BIN_LINUX)/%, $(OBJECTS))
-DEPS_MAC = $(patsubst %, $(DIRECTORY_BIN_LINUX)/%, $(OBJECTS))
-DEPS_WINDOWS = $(patsubst %, $(DIRECTORY_BIN_WINDOWS)/%, $(OBJECTS))
+endSection: 
+	@echo
+	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+	@echo
 
+viewFiles:
+	@echo NAME: $(NAME)
+	@echo OBJECTS: $(OBJECTS)
+	@echo 
 
-# CLEAR LOGS
+viewDirectories:
+	@echo DIRECTORY_EXT: $(DIRECTORY_EXT)
+	@echo DIRECTORY_SRC: $(DIRECTORY_SRC)
+	@echo DIRECTORY_INC: $(DIRECTORY_INC)
+	@echo 
+	@echo DIRECTORY_OBJ: $(DIRECTORY_OBJ)
+	@echo DIRECTORY_BUILD: $(DIRECTORY_BUILD)
+	@echo DIRECTORY_LOGS: $(DIRECTORY_LOGS)
+	@echo TARGET: $(TARGET)
+	@echo 
 
-clearConsole:
-	-clear;
+viewCompiler:
+	@echo COMPILER: $(COMPILER)
+	@echo FLAGS: $(FLAGS)
+	@echo LIBS: $(LIBS)
+	@echo 
 
-clearLogsForLinux: clearConsole
-	-rm -r $(LOGS_LINUX); mkdir $(LOGS_LINUX);
-
-clearLogsForMac: clearConsole
-	-rm -r $(LOGS_MAC); mkdir $(LOGS_MAC);
-
-clearLogsForWindow: clearConsole
-	-rm -r $(LOGS_WINDOW); mkdir $(LOGS_WINDOW);
-
-
-# CLEAR OBJECT FILES
-
-clearObjectsForLinux:
-	-rm -f $(DEPS_LINUX)
-
-clearObjectsForMac:
-	-rm -f $(DEPS_MAC)
-
-clearObjectsForWindows:
-	-rm -f $(DEPS_WINDOWS)
-
-
-# CLEAR BINARY FILES
-
-clearTargetForLinux: clearConsole
-	-rm -f $(TARGET_LINUX)
-
-clearTargetForMac: clearConsole
-	-rm -f $(TARGET_MAC)
-
-clearTargetForWindows: clearConsole
-	-rm -f $(TARGET_WINDOWS)
-
-runForLinux: clearConsole
-	sh ./RunForLinux.sh
+test: beginSection viewFiles viewDirectories viewCompiler endSection
 
 
-# BUILD FOR LINUX
+# COMMANDS FOR CLEANING
 
-$(DIRECTORY_BIN_LINUX)/%.o: $(DIRECTORY_SRC)/%.cpp
-	$(CPP) $(FLAGS_LINUX) -I$(DIRECTORY_INC) -c $^ -o $@
-
-$(TARGET_LINUX): $(DEPS_LINUX)
-	$(CPP) $(DEPS_LINUX) $(LIBS_LINUX) $(FLAGS_LINUX) -o $@
-
-buildForLinux: clearTargetForLinux $(TARGET_LINUX)
+clearForBuild: clearLogs clearTarget
+clearForBuildAll: clearLogs clearTarget clearObjects
 
 
-# BUILD FOR MAC
+# COMMANDS FOR BUILDING
 
-$(DIRECTORY_BIN_MAC)/%.o: $(DIRECTORY_SRC)/%.cpp
-	$(CPP_MAC) $(FLAGS_MAC) -I$(DIRECTORY_INC) -c $^ -o $@
+$(DIRECTORY_OBJ)/%$(EXTENSION_OBJ): $(DIRECTORY_SRC)/%.cpp
+	$(COMPILER) $(FLAGS) $(DIRECTORY_INC) -c $^ -o $@
 
-$(TARGET_MAC): $(DEPS_MAC)
-	$(CPP_MAC) $(DEPS_MAC) $(LIBS_MAC) $(FLAGS_MAC) -o $@
+$(TARGET): $(OBJECTS)
+	$(COMPILER) $(OBJECTS) $(LIBS) $(FLAGS) -o $@
 
-buildForMac: clearTargetForMac $(TARGET_MAC)
+build: beginSection clearForBuild $(TARGET) endSection
+buildAll: beginSection clearForBuildAll $(TARGET) endSection
 
 
-#BUILD FOR WINDOWS
+# COMMANDS FOR RUN
 
-$(DIRECTORY_BIN_WINDOWS)/%.o: $(DIRECTORY_SRC)/%.cpp
-	$(MINGW) $(FLAGS_WINDOWS) -I$(DIRECTORY_INC) -c $^ -o $@
-
-$(TARGET_WINDOWS): $(DEPS_WINDOWS)
-	$(MINGW) $(DEPS_WINDOWS) $(LIBS_WINDOWS) $(FLAGS_WINDOWS) -o $@
-
-buildForWindows: clearTargetForWindows $(TARGET_WINDOWS)
+run: runCommand
