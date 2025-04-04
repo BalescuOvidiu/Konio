@@ -4,7 +4,7 @@
 
 1. [Descriere](https://github.com/BalescuOvidiu/Konio#descriere)<br>
 3. [Flote](https://github.com/BalescuOvidiu/Konio#flote)<br>
-2. [Tactici și formatii](https://github.com/BalescuOvidiu/Konio#tactici-și-formatii)<br>
+2. [Tactici și formatii](https://github.com/BalescuOvidiu/Konio#tactici-și-formașii)<br>
 5. [Sistem economic](https://github.com/BalescuOvidiu/Konio#sistem-economic)<br>
 5. [Resurse](https://github.com/BalescuOvidiu/Konio#resurse)<br>
 6. [Nave](https://github.com/BalescuOvidiu/Konio#nava)<br>
@@ -29,7 +29,7 @@
 
 ![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-battle-0.png)
 
-## Tactici și formatii
+## Tactici și formații
 
 1. Periplous: navele sunt asezate într-o singură linie, înaintează în formatie până ce flota inamica e aproape și sparg linia, navele ataCând individual.<br/>
 2. Diekplous: formația navelor are formă de triunghi. Inamicul încearcă sa pătrundă prin centru.<br/>
