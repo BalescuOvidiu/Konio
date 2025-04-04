@@ -1,69 +1,92 @@
-# Konio
+# Konio - Joc de strategie 2D
 
-<p align=justify>Konio este un joc 2D de strategie in timp real, singleplayer, militar si economic. Actiunea acestui joc se situeaza in secolul 6 i.Hr, in peninsula Greaca. Jucatorul isi alege un oras-stat din cele 12 si trebuie sa se foloseasca de resursele economice, flota, orasele aliate si chiar de dusmani pentru a pastra suprematia navala. Momentan proiectul este in dezvoltare.</p>
+## Cuprins
 
-<p align=justify>In contextul istoric al jocului (550 i.Hr), orasele-stat grecesti nu au avut de intampinat un rival care sa le fi pus libertatea in pericol. Venitul in bani al orasului consta din taxele populatiei si comert. Fiecare oras-stat are o resursa pe care o produce si o exporta intr-un oras-stat aliat, la randul sau importa o anumita resursa dintr-un oras stat grecesc.</p>
+1. [Descriere](https://github.com/BalescuOvidiu/Konio#descriere)<br>
+3. [Nave](https://github.com/BalescuOvidiu/Konio#nave)<br>
+2. [Tactici și formatii](https://github.com/BalescuOvidiu/Konio#tactici-și-formatii)<br>
+5. [Sistem economic](https://github.com/BalescuOvidiu/Konio#circuit-electric)<br>
+5. [Resurse](https://github.com/BalescuOvidiu/Konio#software)<br>
+6. [Cost producție navă](https://github.com/BalescuOvidiu/Konio#viitoare-îmbunătățiri)<br>
+7. [Tehnologii folosite](https://github.com/BalescuOvidiu/Konio#versiuni)<br>
+8. [Muzică și efecte audio](https://github.com/BalescuOvidiu/Konio#unități)<br>
+9. [Bibliografie](https://github.com/BalescuOvidiu/Konio#teste)<br>
+10. [Rezultate](https://github.com/BalescuOvidiu/Submarine#rezultate)<br>
 
-<p align=justify>Dezvoltarea proiectului a durat aproximativ 4 luni. Tot codul este scris si gandit de la zero. Imi asum raspunderea pentru orice bug sau eroare de rulare ce tine de codul sursa. Momentan jocul este disponibil doar pentru Linux. Fiecare element grafic este facut personal, fiind folosite anumite resurse externe.</p>
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-menu.png)
 
-<p align=justify>Scopul jocului este sa dezvolte creativitatea, gandirea analitica, rabdarea si concentrarea jucatorului. De asemenea contextul acestui joc este unu educativ.</p>
+## Descriere
 
-<p align=justify>Grafica jocului este simplista ce imita anumite elemente din realitate(scuturi, picturi, apa, terenuri, corabii) si pune in valoare tema acestui joc. Textul este alb, pe fundal inchis, fiind foarte vizibil pentru jucator.</p>
+<p align=justify>Konio este un joc 2D de strategie în timp real, singleplayer, militar și economic. Actiunea acestui joc se desfășoară în secolul 6 i.Hr, în peninsula Greaca. Jucatorul isi alege un oraș-stat din cele 12 și trebuie sa se foloseasca de resursele economice, flota, orașele aliate și chiar de dușmani pentru a pastra supremația navală. Momentan jocul este în dezvoltare și disponibil direct pe Linux. Pentru alte sisteme de operare, trebuie compilat separat.</p>
 
-<img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/0.png'/>
-<img height=250 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/1.png'/>
+<p align=justify>In contextul istoric al jocului (550 i.Hr), orașele-stat grecesti nu au avut de intampinat un rival care sa le fi pus libertatea în pericol. Venitul în bani al orașului consta din taxele populației și comerț. Fiecare oraș-stat are o resursa pe care o produce și o exportă într-un oraș-stat aliat, la randul sau importă o anumită resursă dintr-un oraș stat grecesc.</p>
 
-<p align=justify>Flotele sunt unitati militare ce au in componenta lor mai multe nave. Navele unei flote pot fi asezate in trei formatii, acestea stabilind tactica AI-ului. Fiecare flota are o anumita cantitate de provizii iar atunci cand aceasta ajunge la zero, flota este pierduta. Cand doua flote inamice se intalnesc incepe o batalie. In batalie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) in lateral, in spate sau in fata(cea mai puternica si rapida o scufunda pe cea mai lenta si mai mica). Cand jucatorul se retrage din batalie pierde intreaga flota. Batalia se termina cand una dintre tabere ramane fara nave.</p>
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-campaign.png)
 
-<img height=260 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/7.png'/>
-<img height=260 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/8.png'/>
+## Nave
 
-Tactici si formatii:<br/>
-1. Periplous: navele sunt asezate intr-o singura linie, inainteaza in formatie pana ce flota inamica e aproape si sparg linia, navele atacand individual.<br/>
-2. Diekplous: navele sunt asezate in linii perpediculare fata de linia frontului. AI-ul  incearca sa patrunda printre nave.<br/>
-3. Kyklos: navele sunt asezate in cerc. Navele se misca in cerc pana ce se apropie suficient inamicul, atunci flota trece in contra-atac.<br/>
+<p align=justify>Flotele sunt unități militare ce au în componenta lor mai multe nave. Navele unei flote pot fi asezate în trei formatii, acestea stabilind tactica inamicului. Fiecare flota are o anumita cantitate de provizii iar atunci Când aceasta ajunge la zero, flota este pierduta. Când doua flote inamice se intalnesc incepe o bătălie. în bătălie, o nava poate fi doborata daca e lovita de una inamica cu partea frontala(berbecul de bronz) în lateral, în spate sau în fata(cea mai puternică și rapidă o scufunda pe cea mai lentă și mai mică). Când jucătorul se retrage din bătălie pierde întreaga flota. Batălia se termină Când una dintre tabere rămâne fără nave.</p>
 
-<img height=260 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/10.png'/>
-<img height=260 align=left src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/6.png'/>
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-battle-0.png)
 
-<p align=justify>Sistemul economic al jocului este simplist. Fiecare jucator(sau AI) are un oras cu deschidere la mare ce produce o anumita resursa. Fiecare oras exporta aceea resursa catre un oras aliat si importa o alta resursa de la un aliat. Venitul in bani pentru fiecare jucator consta in taxe si comert. Taxele constau intr-o moneda la fiecare 1000 de locuitori al oraselor pe care il detine. Un oras este cucerit daca se afla o flota inamica in aproprierea sa. De asemenea orasul poate fi recucerit de aliati, orasul devenind proprietatea vechiului jucator.</p>
+## Tactici și formatii
 
-Resurse:<br/>
-1. Piatra (6 monezi): Creste capacitatea populatiei a orasului cu 40% si venitul din taxe cu 10%. Capacitatea populatiei este in jur de 60000-70000.<br/>
-2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme si Trireme.<br/>
-   Fara lemn, orasul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia si Trihemiolia.<br/>
-3. Metale (8 monezi): Cresc venitul in oras din comert cu 20%.<br/>
-4. Masline (4 monezi): Creste capacitatea populatiei orasului cu 10% si sporul natural cu 10%.<br/>
-5. Grau (4 monezi): Creste capacitatea populatiei a orasului cu 20%.<br/>
-6. Capre (6 monezi): Creste capacitatea populatiei orasului cu 10% mai mare si venitul din comert cu 10%.<br>
+1. Periplous: navele sunt asezate într-o singură linie, înaintează în formatie până ce flota inamica e aproape și sparg linia, navele ataCând individual.<br/>
+2. Diekplous: navele sunt asezate în linii perpediculare fata de linia frontului. Inamicul încearcă sa patrunda printre nave.<br/>
+3. Kyklos: navele sunt asezate în cerc. Navele se miscă în cerc până ce se apropie suficient inamicu atunci flota contra-atacă.<br/>
+
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-battle-1.png)
+
+## Sistem economic
+
+<p align=justify>Sistemul economic al jocului este simplist. Fiecare jucător(sau inamicul) are un oraș cu deschidere la mare ce produce o anumita resursa. Fiecare oraș exporta aceea resursa catre un oraș aliat și importa o alta resursa de la un aliat. Venitul în bani pentru fiecare jucător consta în taxe și comerț. Taxele constau într-o monedă la fiecare 1000 de locuitori al orașelor pe care îl deține. Un oraș este cucerit daca se află o flota inamică lângă malul său. De asemenea, orașul poate fi recucerit de aliati, orașul devenind proprietatea vechiului jucător.</p>
+
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-settlement.png)
+
+## Resurse
+
+1. Piatra (6 monezi): Crește capacitatea populației a orașului cu 40% și venitul din taxe cu 10%. Capacitatea populației este în jur de 60000-70000.<br/>
+2. Lemn (6 monezi): Permite construirea urmatoarelor nave: Pentekonter, Bireme și Trireme.<br/>
+   Fara lemn, orașul poate recruta nave mercenare, dar la un pret mai mare: Hemiolia și Trihemiolia.<br/>
+3. Metale (8 monezi): Cresc venitul în oraș din comerț cu 20%.<br/>
+4. Masline (4 monezi): Crește capacitatea populației orașului cu 10% și sporul natural cu 10%.<br/>
+5. Grau (4 monezi): Crește capacitatea populației a orașului cu 20%.<br/>
+6. Capre (6 monezi): Crește capacitatea populației orașului cu 10% mai mare și venitul din comerț cu 10%.<br>
 7. Peste (4 monezi): Sporul natural este cu 20% mai mare.<br/>
 
-<img src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/5.png'/>
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-formation.png)
 
-Nave:<br/>
-1. Pentekonter (6 monezi): Nava usoara cu 50 de vaslasi(un rand cu 25 pe ambele parti), 17km/h.<br/>
-2. Bireme (8 monezi): Nava media cu 120 de vaslasi(2 randuri cu 30 pe ambele parti), 17km/h.<br/>
-3. Trireme (10 monezi): Nava grea cu 180 de vaslasi(3 randuri cu 30 pe ambele parti), 17km/h.<br/>
-4. Hemiolia (15 monezi): Nava medie cu 60 de vaslasi(un rand 20 si unu de 10), 20km/h.<br/>
-5. Trihemiolia (17 monezi): Nava medie cu 120 de vaslasi(2 randuri de 40 si unu de 20), 20km/h.<br/>
+## Cost producție navă
 
-<img src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/4.png'/>
+1. Pentekonter (6 monezi): Navă usoară cu 50 de vâslași(un rând cu 25 pe ambele părți), 17km/h.<br/>
+2. Bireme (8 monezi): Navă media cu 120 de vâslași(2 rânduri cu 30 pe ambele părți), 17km/h.<br/>
+3. Trireme (10 monezi): Navă grea cu 180 de vâslași(3 rânduri cu 30 pe ambele părți), 17km/h.<br/>
+4. Hemiolia (15 monezi): Navă medie cu 60 de vâslași(un rând 20 și unu de 10), 20km/h.<br/>
+5. Trihemiolia (17 monezi): navă medie cu 120 de vâslași(2 rânduri de 40 și unu de 20), 20km/h.<br/>
 
-Tehnologii folosite:<br/>
-1. Photoshop CS5 pentru creearea elementelor grafice.<br/>
-2. Biblioteca grafica SFML pentru limbajul C++.<br/>
-3. Limbajul C++.<br/>
-4. cmake, g++ pentru compilarea codului sursa, pe Linux.<br/>
-5. IDE Sublime Text pentru editarea codului sursa.<br/>
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-diplomacy.png)
 
-<img src='https://raw.githubusercontent.com/BalescuOvidiu/Konio/refs/heads/master/img/2.png'/>
+## Tehnologii folosite
 
-Muzica si sunet:<br/>
+1. Limbajul de programare C++.<br/>
+2. Framework-ul SFML pentru limbajul C++.<br/>
+3. Photopea pentru creearea elementelor grafice.<br/>
+
+## Muzică și efecte audio
+
 1. <a href='https://www.youtube.com/watch?v=Eh51m6glEHo'>Winds of Ithaca - Antti Martikainen</a><br/>
 2. <a href='https://www.youtube.com/watch?v=L-xEJxmxY_w'>Athena - Derek & Brandon Fiechter</a><br/>
 3. <a href='www.soundbible.com'>soundbible.com</a><br/>
 
-Bibliografie:<br/>
+## Bibliografie
+
 1. <a href='www.wikipedia.en'>wikipedia.en</a><br/>
 2. <a href='www.ancientgreece.com'>ancientgreece.com</a><br/>
 3. <a href='http://www.piticipecreier.ro/carte/52338-Grecia-antica.html'>"Grecia antica" - Editura Litera International - Louise Schofield</a><br/>
+
+## Rezultate
+
+<p align=justify>InfoEducație 2017 - Etapa județeană - Premiul III</p>
+<p align=justify>GREPIT 2017 - Calificat la etapa națională</p>
+
+![](https://raw.githubusercontent.com/BalescuOvidiu/Konio/master/img/screenshoot-battle-3.png)
